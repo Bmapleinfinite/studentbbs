@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header::head-fragment('用户注册')">
+</head>
+
+<body>
+    <div th:replace="header::header-fragment"></div>
+
+    <div class="layui-container">
+        <div class="layui-panel">
+            <div class="layui-tab layui-tab-brief" style="margin: 20px;">
+                <ul class="layui-tab-title">
+                    <li><a th:href="@{/user/login}">登录</a></li>
+                    <li class="layui-this">注册</li>
+                </ul>
+                <div class="layui-tab-content" style="margin: 10px;">
+                    <div class="layui-tab-item"></div>
+                    <div class="layui-tab-item layui-show">
+                        <div class="layui-form layui-form-pane">
+                            <form method="post" id="registerForm" onsubmit="return false;" action="##">
+                                <div class="layui-form-item">
+                                    <label for="loginName" class="layui-form-label">邮箱</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="loginName" name="loginName" required lay-verify="email"
+                                            autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux">将会成为您唯一的登入名</div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="nickName" class="layui-form-label">昵称</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="nickName" name="nickName" required lay-verify="required"
+                                            autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="password" class="layui-form-label">密码</label>
+                                    <div class="layui-input-inline">
+                                        <input type="password" id="password" name="password" required
+                                            lay-verify="required" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux">6到20个字符</div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="repass" class="layui-form-label">确认密码</label>
+                                    <div class="layui-input-inline">
+                                        <input type="password" id="repass" name="repass" required lay-verify="required"
+                                            autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="verifyCode" class="layui-form-label">验证码</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" id="verifyCode" name="verifyCode" required
+                                            lay-verify="required" placeholder="请输入验证码" autocomplete="off"
+                                            class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid">
+                                        <span><img data-tooltip="看不清楚？换一张" th:src="@{/common/captcha}"
+                                                onclick="this.src='/common/captcha?d='+new Date()*1"
+                                                alt="单击图片刷新！"></span>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <button class="layui-btn" lay-filter="*" lay-submit
+                                        onclick="register()">立即注册</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-footer">
+        <p></p>
+    </div>
+
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:scr="@{/js/public.js}"></script>
+    <script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+    <script>
+        layui.use(['layer', 'form', 'element', 'jquery'], function () {
+            var layer = layui.layer,
+                form = layui.form,
+                element = layui.element
+            var $ = layui.$
+            window.register = function () {
+                var loginName = $("#loginName").val()
+                if (!validEmail(loginName)) {
+                    layer.alert('请输入正确的登录名!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var nickName = $("#nickName").val()
+                if (!validUserName(nickName)) {
+                    layer.alert('请输入正确的用户名!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var password = $("#password").val()
+                if (!validPassword(password)) {
+                    layer.alert('请输入正确的密码格式!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var repass = $("#repass").val()
+                if (!validPassword(repass)) {
+                    layer.alert('请输入正确的密码格式!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                if (repass != password) {
+                    layer.alert('两次输入的密码不一致!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var verifyCode = $("#verifyCode").val()
+                if (!validLength(verifyCode)) {
+                    layer.alert('请输入正确的验证码!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var params = $("#registerForm").serialize()
+                var url = 'user/register'
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    data: params,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.href = "/user/login"
+                        } else {
+                            layer.message(result.message)
+                        }
+                        ;
+                    },
+                    error: function () {
+                        layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+/**
+ 
+ @Name: Fly社区
+ @Author: 贤心
+ @Site: fly.layui.com
+ 
+ */
+
+
+/* 全局 */
+html,body{overflow-x: hidden;}
+html{background-color: #F2F2F2;}
+i{font-style: normal;}
+
+.header {height: 59px;border-bottom: 1px solid #404553;background-color: #393D49; margin-bottom: 10px;}
+.logo{position: absolute;left: 47px;top: 16px;}
+.logo img{width: 122px; height: 31px;}
