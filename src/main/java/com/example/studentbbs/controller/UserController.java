@@ -6,7 +6,6 @@ import javax.servlet.http.HttpSession;
 import com.example.studentbbs.common.ServiceResultEnum;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.UserService;
-import com.example.studentbbs.util.MD5Util;
 import com.example.studentbbs.util.PatternUtil;
 import com.example.studentbbs.util.Result;
 import com.example.studentbbs.util.ResultGenerator;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.thymeleaf.util.PatternUtils;
 
 @Controller
 @RequestMapping("/user")
@@ -33,27 +31,31 @@ public class UserController {
 
     @PostMapping("/login")
     @ResponseBody
-    public Result login(@RequestParam("loginName") String loginName, @RequestParam("password") String password,
-            @RequestParam("verifyCode") String verifyCode, HttpSession session) {
+    public Result login(
+            @RequestParam("loginName") String loginName,
+            @RequestParam("password") String password,
+            @RequestParam("verifyCode") String verifyCode,
+            HttpSession session) {
         if (!StringUtils.hasLength(loginName)) {
-            return ResultGenerator.getFailResult(ServiceResultEnum.NO_LOGIN_NAME.getResult());
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_LOGIN_NAME.getResult());
         }
-        if(!PatternUtil.isEmail(loginName)){
-            return ResultGenerator.getFailResult(ServiceResultEnum.NOT_EMAIL.getResult());
+        if (!PatternUtil.isEmail(loginName)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NOT_EMAIL.getResult());
         }
         if (!StringUtils.hasLength(password)) {
-            return ResultGenerator.getFailResult(ServiceResultEnum.NO_PASSWORD.getResult());
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_PASSWORD.getResult());
         }
         if (!StringUtils.hasLength(verifyCode)) {
-            return ResultGenerator.getFailResult(ServiceResultEnum.NO_VERIFYCODE.getResult());
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_VERIFYCODE.getResult());
         }
         String captcha = (String) session.getAttribute("VerifyCode");
         if (!verifyCode.equals(captcha)) {
-            return ResultGenerator.getFailResult(ServiceResultEnum.WRONG_VERIFYCODE.getResult());
+            return ResultGenerator.genFailResult(ServiceResultEnum.WRONG_VERIFYCODE.getResult());
         }
         User user = userService.login(loginName, password);
-        if (user == null) {
-            return ResultGenerator.getFailResult(ServiceResultEnum.NO_USER.getResult());
+        Integer result = userService.updateLastLoginTimeById(user.getId());
+        if (user == null || result != 1) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_USER.getResult());
         } else {
             session.setAttribute("user", user);
             return ResultGenerator.genSuccessResult();
@@ -67,19 +69,44 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseBody
-    public Result register(@RequestParam("loginName") String loginName, @RequestParam("password") String password,
-            @RequestParam("nickName") String nickName, @RequestParam("verifyCode") String verifyCode,
+    public Result register(
+            @RequestParam("loginName") String loginName,
+            @RequestParam("password") String password,
+            @RequestParam("nickName") String nickName,
+            @RequestParam("verifyCode") String verifyCode,
             HttpSession session) {
-        
-        String passwordMD5 = MD5Util.MD5Encode(loginName + password, "UTF-8");
+        if (!StringUtils.hasLength(loginName)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_LOGIN_NAME.getResult());
+        }
+        if (!PatternUtil.isEmail(loginName)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NOT_EMAIL.getResult());
+        }
+        if (!StringUtils.hasLength(password)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_PASSWORD.getResult());
+        }
+        if (!StringUtils.hasLength(verifyCode)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_VERIFYCODE.getResult());
+        }
+        String captcha = (String) session.getAttribute("VerifyCode");
+        if (!verifyCode.equals(captcha)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.WRONG_VERIFYCODE.getResult());
+        }
+
         User user = new User();
-        user.setGender("未知");
-        user.setLocation("未知");
-        user.setHeadImgUrl("/images/avatar/default.png");
-        user.setIntroduce("这个人很懒，什么都没留下~");
+        user.setGender(ServiceResultEnum.DEFAULT_UNKNOW.getResult());
+        user.setLocation(ServiceResultEnum.DEFAULT_UNKNOW.getResult());
+        user.setHeadImgUrl(ServiceResultEnum.DEFAULT_HEADIMGURL.getResult());
+        user.setIntroduce(ServiceResultEnum.DEFAULT_INTRODUCE.getResult());
         user.setLoginName(loginName);
-        user.setPassword(passwordMD5);
-        return ResultGenerator.genSuccessResult();
+        user.setPassword(password);
+        user.setNickName(nickName);
+
+        Integer result = userService.register(user);
+        if (result == 1) {
+            return ResultGenerator.genSuccessResult();
+        } else {
+            return ResultGenerator.genFailResult(ServiceResultEnum.USER_EXCIT.getResult());
+        }
     }
 
     @GetMapping("/logout")

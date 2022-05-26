@@ -33,6 +33,7 @@
                                         <input type="text" id="nickName" name="nickName" required lay-verify="required"
                                             autocomplete="off" class="layui-input">
                                     </div>
+                                    <div class="layui-form-mid layui-word-aux">4-16个字符</div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label for="password" class="layui-form-label">密码</label>
@@ -78,8 +79,7 @@
     </div>
 
     <script th:src="@{/layui/layui.js}"></script>
-    <script th:scr="@{/js/public.js}"></script>
-    <script type="text/javascript" src="//unpkg.com/wangeditor/dist/wangEditor.min.js"></script>
+    <script th:src="@{/js/public.js}"></script>
     <script>
         layui.use(['layer', 'form', 'element', 'jquery'], function () {
             var layer = layui.layer,
@@ -112,21 +112,21 @@
                     return false;
                 }
                 var verifyCode = $("#verifyCode").val()
-                if (!validLength(verifyCode)) {
+                if (!validLength(verifyCode, 5)) {
                     layer.alert('请输入正确的验证码!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
                     return false;
                 }
                 var params = $("#registerForm").serialize()
-                var url = 'user/register'
+                var url = '/user/register'
                 $.ajax({
                     type: 'POST',//方法类型
                     url: url,
                     data: params,
                     success: function (result) {
                         if (result.resultCode == 200) {
-                            window.location.href = "/user/login"
+                            layer.alert('注册成功!', { title: '信息', skin: 'layui-layer-molv', icon: 1 });
                         } else {
-                            layer.message(result.message)
+                            layer.msg(result.message)
                         }
                         ;
                     },

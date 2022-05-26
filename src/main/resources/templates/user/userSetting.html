@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header::head-fragment('用户设置')">
+</head>
+
+<body>
+    <div th:replace="header::header-fragment"></div>
+    <div class="layui-container" style="margin-bottom: 10px;">
+        <div class="layui-panel">
+            <div class="layui-tab layui-tab-brief" style="margin: 20px;">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">用户信息</li>
+                    <li>头像</li>
+                    <li>修改密码</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <div class="layui-from layui-form-pane">
+                            <form type="POST" id="infoUpdateForm" onsubmit="return false" action="##">
+                                <div class="layui-form-item layui-show">
+                                    <label for="loginName" class="layui-form-label">邮箱</label>
+                                    <div class="layui-input-inline">
+                                        <input value="admin@163.com" name="loginName" id="loginName" class="layui-input"
+                                            type="text">
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux">用户名不可更改</div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="nickName" class="layui-form-label">昵称</label>
+                                    <div class="layui-input-inline">
+                                        <input value="棠槿牵樱" name="nickName" id="nickName" class="layui-input"
+                                            type="text">
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux">2-8个字符</div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="gender" class="layui-form-label">性别</label>
+                                    <div class="layui-input-inline">
+                                        <input value="未知" name="gender" id="gender" class="layui-input" type="text">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="location" class="layui-form-label">地区</label>
+                                    <div class="layui-input-inline">
+                                        <input value="贵阳" name="location" id="location" class="layui-input" type="text">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item layui-form-text">
+                                    <label for="introduce" class="layui-form-label">个性签名</label>
+                                    <div class="layui-input-block">
+                                        <textarea class="layui-textarea" name="introduce" id="introduce" cols="30"
+                                            rows="10"></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <button class="layui-btn" lay-submit onclick="infoUpdate()">提交修改</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-from layui-form-pane">
+                            <form type="POST" id="headImgUpdateForm" onsubmit="return false" action="##">
+                                <div class="layui-form-item">
+                                    <div><img style="width: 168px; height: 168px;" src="" alt=""></div>
+                                    <button type="button" class="layui-btn" id="fileUpload"
+                                        style="margin-left: 38px; margin-top: 10px;">上传图片</button>
+                                    <input class="layui-upload-file" type="file" accept name="file">
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-form-mid layui-word-aux">图片尺寸建议为168*168 大小不超过1MB</div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <button class="layui-btn" lay-submit onclick="headImgUpdate()">提交修改</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-from layui-form-pane">
+                            <form type="POST" id="changePassForm" onsubmit="return false" action="##">
+                                <div class="layui-form-item">
+                                    <label for="nowPass" class="layui-form-label">原密码</label>
+                                    <div class="layui-input-inline">
+                                        <input name="nowPass" id="nowPass" class="layui-input" type="text">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="newPass" class="layui-form-label">新密码</label>
+                                    <div class="layui-input-inline">
+                                        <input name="newPass" id="newPass" class="layui-input" type="text">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="reNewPass" class="layui-form-label">确认新密码</label>
+                                    <div class="layui-input-inline">
+                                        <input name="reNewPass" id="reNewPass" class="layui-input" type="text">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label for="verifyCode" class="layui-form-label">验证码</label>
+                                    <div class="layui-input-inline">
+                                        <input name="verifyCode" id="verifyCode" class="layui-input" type="text">
+                                    </div>
+                                    <span><img data-tooltip="看不清楚？换一张" th:src="@{/common/captcha}"
+                                            onclick="this.src='/common/captcha?d='+new Date()*1" alt="单击图片刷新！"></span>
+                                </div>
+                                <div class="layui-form-item">
+                                    <button class="layui-btn" lay-submit onclick="changePass()">提交修改</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/public.js}"></script>
+    <script>
+        layui.use(['layer', 'form', 'element', 'jquery', 'upload'], function () {
+            var layer = layui.layer,
+                form = layui.form,
+                element = layui.element
+            var $ = layui.$
+        });
+    </script>
+</body>
+
+</html>

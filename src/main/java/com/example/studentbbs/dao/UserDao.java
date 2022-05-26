@@ -7,5 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface UserDao {
-    User login(@Param("loginName") String paramString1, @Param("password") String paramString2);
+    User login(@Param("loginName") String loginName, @Param("password") String password);
+
+    Integer register(User user);
+
+    User getUserByLoginName(String loginName);
+
+    Integer updateLastLoginTimeById(Integer id);
 }

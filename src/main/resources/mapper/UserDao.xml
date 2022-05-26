@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.dao.UserDao">
-    <resultMap id="BaseResultMap" type="com.example.demo.entity.User">
+<mapper namespace="com.example.studentbbs.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.example.studentbbs.entity.User">
         <id column="user_id" jdbcType="BIGINT" property="id" />
         <result column="login_name" jdbcType="VARCHAR" property="loginName" />
         <result column="password_md5" jdbcType="VARCHAR" property="password" />
@@ -17,10 +17,31 @@
     <sql id="BaseColumnList">
         user_id, login_name, password_md5, nick_name, head_img_url, gender, location, introduce, user_status, last_login_time, create_time
     </sql>
+
     <select id="login" resultMap="BaseResultMap">
         select
         <include refid="BaseColumnList" />
         from tb_bbs_user
         where login_name = #{loginName} and password_md5 = #{password} and user_status = 0
     </select>
+
+    <select id="getUserByLoginName" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList" />
+        from tb_bbs_user
+        where login_name = #{loginName} and user_status = 0
+    </select>
+
+    <insert id="register" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        tb_bbs_user (login_name, password_md5, nick_name, head_img_url, gender, location, introduce)
+        values(#{loginName}, #{password}, #{nickName}, #{headImgUrl}, #{gender}, #{location}, #{introduce})
+    </insert>
+
+    <update id="updateLastLoginTimeById">
+        update
+        tb_bbs_user 
+        set last_login_time = CURRENT_TIMESTAMP
+        where user_id = #{id}
+    </update>
 </mapper>

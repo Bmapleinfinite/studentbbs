@@ -11,12 +11,31 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceimp implements UserService {
-  @Resource
-  private UserDao userDao;
-  
-  public User login(String loginName, String password) {
-    String passwordMD5 = MD5Util.MD5Encode(String.valueOf(loginName) + password, "UTF-8");
-    System.out.println(passwordMD5);
-    return this.userDao.login(loginName, passwordMD5);
-  }
+    @Resource
+    private UserDao userDao;
+
+    public User login(String loginName, String password) {
+        String passwordMD5 = MD5Util.MD5Encode(String.valueOf(loginName) + password, "UTF-8");
+        return userDao.login(loginName, passwordMD5);
+    }
+
+    @Override
+    public Integer register(User user) {
+        if (userDao.getUserByLoginName(user.getLoginName()) != null) {
+            return 0;
+        }
+        String passwordMD5 = MD5Util.MD5Encode(user.getLoginName() + user.getPassword(), "UTF-8");
+        user.setPassword(passwordMD5);
+        return userDao.register(user);
+    }
+
+    @Override
+    public User getUserByLoginName(String loginName) {
+        return userDao.getUserByLoginName(loginName);
+    }
+
+    @Override
+    public Integer updateLastLoginTimeById(Integer id) {
+        return userDao.updateLastLoginTimeById(id);
+    }
 }

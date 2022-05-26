@@ -3,6 +3,8 @@ package com.example.studentbbs.common;
 public enum ServiceResultEnum {
     USER_NOT_EXCIT("用户不存在！"),
 
+    USER_EXCIT("用户已存在！"),
+
     NO_LOGIN_NAME("请输入用户名！"),
 
     NOT_EMAIL("请输入正确的用户名！"),
@@ -12,6 +14,12 @@ public enum ServiceResultEnum {
     NO_VERIFYCODE("请输入验证码"),
 
     WRONG_VERIFYCODE("错误的验证码！"),
+
+    DEFAULT_UNKNOW("未知"),
+
+    DEFAULT_INTRODUCE("这个人很懒，什么都没留下~"),
+
+    DEFAULT_HEADIMGURL("/images/avatar/default.png"),
     
     NO_USER("用户名或密码错误！");
 

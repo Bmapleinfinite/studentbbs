@@ -25,7 +25,8 @@
                     <a th:href="@{/user/login}">
                         <i class="layui-icon layui-icon-user"></i>登录</a>
                 </li>
-                <li class="layui-nav-item"><a th:href="@{/user/register}">
+                <li class="layui-nav-item">
+                    <a th:href="@{/user/register}">
                         <i class="layui-icon layui-icon-file"></i>注册</a>
                 </li>
             </th:block>
@@ -39,10 +40,10 @@
                         <span class="layui-nav-more"></span>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a th:href="@{/user/userSet}"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+                        <dd><a th:href="@{/user/userSet}"><i class="layui-icon" 
+                                    style="margin-left: 2px; font-size: 22px;">&#xe620;</i>基本设置</a></dd>
                         <dd><a th:href="@{/user/myCenter}"><i class="layui-icon"
-                                    style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
-                        </dd>
+                                    style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
                         <hr style="margin: 5px 0;">
                         <dd><a th:href="@{/user/logout}" style="text-align: center;">退出</a></dd>
                     </dl>

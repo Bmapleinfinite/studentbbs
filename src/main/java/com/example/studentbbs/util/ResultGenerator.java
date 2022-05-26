@@ -19,7 +19,7 @@ public class ResultGenerator {
     public static void genSuccessResult(String message) {
     }
 
-    public static Result getFailResult(String message) {
+    public static Result genFailResult(String message) {
         Result result = new Result();
         result.setMessage(message);
         result.setResultCode(RESULT_CODE_SERVER_ERROR);

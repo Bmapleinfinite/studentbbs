@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header::head-fragment('用户中心')">
+</head>
+
+<body>
+    <div th:replace="header::header-fragment"></div>
+
+    <div class="layui-container" style="margin-bottom: 10px;">
+        <div class="layui-col-space15 layui-row">
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        我的文章
+                    </div>
+                    <div class="layui-card-body">
+                        <div class="" style="height: 624px;">
+                            <div style="font-size: 10px;">
+                                <a href="">我是标题</a>
+                                <span class="layui-word-aux">2022-05-26 15:34:56</span>
+                                <span class="layui-word-aux"
+                                    style="position: absolute; right: 0; margin-right: 15px;">
+                                    <button type="button" class="layui-btn layui-btn-xs">编辑</button>
+                                    <button type="button" class="layui-btn layui-btn-xs layui-bg-red">删除</button>
+                                    阅 <span th:text="${session.article.read}">1</span> 
+                                    / 评 <span th:text="${session.article.comments}">0</span> 
+                                    / 赞 <span th:text="${session.article.like}">0</span> </span>
+                            </div>
+                            <hr>                            
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="layui-card-body" style="text-align: center;">
+                        <div class="layui-btn-group">
+                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
+                                <i class="layui-icon layui-icon-prev"></i>
+                            </button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm">
+                                第 1 页 共 1 页
+                            </button>
+                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
+                                <i class="layui-icon layui-icon-next"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        我的文章
+                    </div>
+                    <div class="layui-card-body">
+                        <div class="layui-none layui-word-aux" style="text-align: center; 
+                                height: 624px;">
+                            您目前还没有任何评论
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="layui-card-body" style="text-align: center;">
+                        <div class="layui-btn-group">
+                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
+                                <i class="layui-icon layui-icon-prev"></i>
+                            </button>
+                            <button class="layui-btn layui-btn-primary layui-btn-sm">
+                                第 1 页 共 1 页
+                            </button>
+                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
+                                <i class="layui-icon layui-icon-next"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/public.js}"></script>
+    <script>
+        layui.use(['layer', 'form', 'element', 'jquery'], function () {
+            var layer = layui.layer,
+                form = layui.form,
+                element = layui.element
+            var $ = layui.$
+        });
+    </script>
+</body>
+
+</html>
