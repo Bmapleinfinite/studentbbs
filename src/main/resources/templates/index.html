@@ -16,6 +16,9 @@
                     <a href="">首页</a>
                     <a href="">首页</a>
                 </span>
+                <div class="layui-layout-right">
+                    <a th:href="@{/article/articlePub}"><button class="layui-btn">发布新贴</button></a>
+                </div>
             </div>
         </div>
     </div>
@@ -51,7 +54,17 @@
             <div class="layui-col-md4">
                 <div class="layui-card">
                     <div class="layui-card-header">
-                        111
+                        查找文章
+                    </div>
+                    <div class="layui-card-body">
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input placeholder="根据关键字查找" value="" name="keyword" id="keyword" class="layui-input" type="text">
+                                </div>
+                                <button class="layui-btn"><i class="layui-icon layui-icon-search"></i></button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

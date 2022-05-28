@@ -24,6 +24,16 @@ public class UserController {
     @Resource
     private UserService userService;
 
+    @GetMapping("/userSetting")
+    public String userSetting() {
+        return "user/userSetting";
+    }
+
+    @GetMapping("/userCenter")
+    public String userCenter() {
+        return "user/userCenter";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "user/login";

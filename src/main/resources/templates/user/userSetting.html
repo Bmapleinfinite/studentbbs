@@ -16,12 +16,12 @@
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
-                        <div class="layui-from layui-form-pane">
-                            <form type="POST" id="infoUpdateForm" onsubmit="return false" action="##">
-                                <div class="layui-form-item layui-show">
+                        <div class="layui-form-pane">
+                            <form class="layui-form" type="POST" id="infoUpdateForm" onsubmit="return false" action="##">
+                                <div class="layui-form-item">
                                     <label for="loginName" class="layui-form-label">邮箱</label>
                                     <div class="layui-input-inline">
-                                        <input value="admin@163.com" name="loginName" id="loginName" class="layui-input"
+                                        <input th:value="${session.user.loginName}" name="loginName" id="loginName" class="layui-input"
                                             type="text">
                                     </div>
                                     <div class="layui-form-mid layui-word-aux">用户名不可更改</div>
@@ -29,7 +29,7 @@
                                 <div class="layui-form-item">
                                     <label for="nickName" class="layui-form-label">昵称</label>
                                     <div class="layui-input-inline">
-                                        <input value="棠槿牵樱" name="nickName" id="nickName" class="layui-input"
+                                        <input th:value="${session.user.nickName}" name="nickName" id="nickName" class="layui-input"
                                             type="text">
                                     </div>
                                     <div class="layui-form-mid layui-word-aux">2-8个字符</div>
@@ -37,20 +37,23 @@
                                 <div class="layui-form-item">
                                     <label for="gender" class="layui-form-label">性别</label>
                                     <div class="layui-input-inline">
-                                        <input value="未知" name="gender" id="gender" class="layui-input" type="text">
+                                        <select name="userGender" id="userGender">
+                                            <option value="1" th:selected="${session.user.gender=='男'} ?true:false">男</option>
+                                            <option value="2" th:selected="${session.user.gender=='女'} ?true:false">女</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label for="location" class="layui-form-label">地区</label>
                                     <div class="layui-input-inline">
-                                        <input value="贵阳" name="location" id="location" class="layui-input" type="text">
+                                        <input th:value="${session.user.location}" name="location" id="location" class="layui-input" type="text">
                                     </div>
                                 </div>
                                 <div class="layui-form-item layui-form-text">
                                     <label for="introduce" class="layui-form-label">个性签名</label>
                                     <div class="layui-input-block">
                                         <textarea class="layui-textarea" name="introduce" id="introduce" cols="30"
-                                            rows="10"></textarea>
+                                            rows="10" th:text="${session.user.introduce}"></textarea>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">

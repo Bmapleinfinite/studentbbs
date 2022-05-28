@@ -16,7 +16,11 @@ public class ResultGenerator {
         return result;
     }
 
-    public static void genSuccessResult(String message) {
+    public static Result genSuccessResult(String message) {
+        Result result = new Result();
+        result.setMessage(message);
+        result.setResultCode(RESULT_CODE_SUCCESS);
+        return result;
     }
 
     public static Result genFailResult(String message) {
