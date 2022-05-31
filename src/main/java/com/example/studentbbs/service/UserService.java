@@ -1,5 +1,7 @@
 package com.example.studentbbs.service;
 
+import java.util.HashMap;
+
 import com.example.studentbbs.entity.User;
 
 public interface UserService {
@@ -10,4 +12,6 @@ public interface UserService {
     Integer register(User user);
 
     Integer updateLastLoginTimeById(Integer id);
+
+    HashMap<Integer, User> getAllUser();
 }

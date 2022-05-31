@@ -21,7 +21,13 @@ public enum ServiceResultEnum {
 
     DEFAULT_HEADIMGURL("/images/avatar/default.png"),
     
-    NO_USER("用户名或密码错误！");
+    NO_USER("用户名或密码错误！"),
+
+    NO_CATEGORY("请选择分类"), 
+
+    NO_CONTENT("请输入正文"),
+
+    NO_TITLE("请输入标题");
 
     private String result;
 

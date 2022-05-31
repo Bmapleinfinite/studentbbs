@@ -32,6 +32,13 @@
         where login_name = #{loginName} and user_status = 0
     </select>
 
+    <select id="getAllUser" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList" />
+        from tb_bbs_user
+        where user_status = 0
+    </select>
+
     <insert id="register" keyProperty="id" useGeneratedKeys="true">
         insert into
         tb_bbs_user (login_name, password_md5, nick_name, head_img_url, gender, location, introduce)

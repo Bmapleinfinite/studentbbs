@@ -12,6 +12,7 @@
         <result column="post_views" jdbcType="BIGINT" property="views" />
         <result column="post_comments" jdbcType="BIGINT" property="comments" />
         <result column="post_collects" jdbcType="BIGINT" property="collects" />
+        <result column="post_likes" jdbcType="BIGINT" property="likes" />
         <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     </resultMap>
@@ -22,8 +23,19 @@
         post_views, post_comments, 
         post_collects, last_update_time, create_time
     </sql>
-    <select id="login" resultMap="BaseResultMap">
-
+    <select id="getAllArticleByLikes" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tb_bbs_post
+        WHERE post_status = 1
+        ORDER BY post_likes DESC;
+    </select>
+    <select id="getAllArticleByTime" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" /> 
+        from tb_bbs_post 
+        WHERE post_status = 1 
+        ORDER BY last_update_time DESC;
     </select>
     <insert id="articlePub" keyProperty="id" useGeneratedKeys="true">
         insert into

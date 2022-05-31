@@ -1,5 +1,7 @@
 package com.example.studentbbs.service.imp;
 
+import java.util.HashMap;
+
 import javax.annotation.Resource;
 
 import com.example.studentbbs.dao.UserDao;
@@ -37,5 +39,10 @@ public class UserServiceimp implements UserService {
     @Override
     public Integer updateLastLoginTimeById(Integer id) {
         return userDao.updateLastLoginTimeById(id);
+    }
+
+    @Override
+    public HashMap<Integer, User> getAllUser() {
+        return userDao.getAllUser();
     }
 }

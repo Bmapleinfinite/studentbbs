@@ -1,5 +1,7 @@
 package com.example.studentbbs.service.imp;
 
+import java.util.ArrayList;
+
 import javax.annotation.Resource;
 
 import com.example.studentbbs.dao.ArticleDao;
@@ -16,5 +18,15 @@ public class AricleServiceimp implements ArticleService {
     @Override
     public Integer articlePub(Article article) {
         return articleDao.articlePub(article);
+    }
+
+    @Override
+    public ArrayList<Article> getAllArticleByTime() {
+        return articleDao.getAllArticleByTime();
+    }
+
+    @Override
+    public ArrayList<Article> getAllArticleByLikes() {
+        return articleDao.getAllArticleByLikes();
     }
 }

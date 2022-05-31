@@ -11,6 +11,7 @@ public class Article {
     private int views;
     private int comments;
     private int collects;
+    private int likes;
     private String lastUpdateTime;
     private String createTime;
 
@@ -18,7 +19,7 @@ public class Article {
     public Article() {
     }
 
-    public Article(int id, int userId, String title, String content, int categoryID, String categoryName, String articleStatus, int views, int comments, int collects, String lastUpdateTime, String createTime) {
+    public Article(int id, int userId, String title, String content, int categoryID, String categoryName, String articleStatus, int views, int comments, int collects, int likes, String lastUpdateTime, String createTime) {
         this.id = id;
         this.userId = userId;
         this.title = title;
@@ -29,6 +30,7 @@ public class Article {
         this.views = views;
         this.comments = comments;
         this.collects = collects;
+        this.likes = likes;
         this.lastUpdateTime = lastUpdateTime;
         this.createTime = createTime;
     }
@@ -113,6 +115,14 @@ public class Article {
         this.collects = collects;
     }
 
+    public int getLikes() {
+        return this.likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
     public String getLastUpdateTime() {
         return this.lastUpdateTime;
     }
@@ -179,6 +189,11 @@ public class Article {
         return this;
     }
 
+    public Article like(int like) {
+        setLikes(like);
+        return this;
+    }
+
     public Article lastUpdateTime(String lastUpdateTime) {
         setLastUpdateTime(lastUpdateTime);
         return this;
@@ -202,9 +217,12 @@ public class Article {
             ", views='" + getViews() + "'" +
             ", comments='" + getComments() + "'" +
             ", collects='" + getCollects() + "'" +
+            ", like='" + getLikes() + "'" +
             ", lastUpdateTime='" + getLastUpdateTime() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             "}";
     }
+
+    
 
 }
