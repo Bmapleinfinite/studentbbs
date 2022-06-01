@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="header::head-fragment('发布新帖')"></head>
+
+<body>
+    <div th:replace="header::header-fragment"></div>
+
+    <div class="layui-container">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md8">
+                <div class="layui-panel">
+                    <div class="layui-card">
+                        <div class="layui-card-body font">
+                            <img class="headImg" th:src="@{${session.users[session.article.userId].headImgUrl}}" alt="">
+                            <div style="margin-left: 54px;">
+                                <span class="layui-border-green layui-btn-xs"
+                                    th:text="${session.article.categoryName}">分享</span></a>
+                                <a th:text="${session.article.title}" href="">默认</a><br>
+                                <span th:text="${session.users[session.article.userId].nickName}"
+                                    class="layui-font-12">嗨嗨嗨 </span>
+                                <span th:text="'发布日期: ' + ${session.article.createTime}"
+                                    class="layui-font-red layui-font-12">发布日期: 2021-08-01 13:01:22</span>
+                                <span th:text="'最近更新日期: ' + ${session.article.lastUpdateTime}"
+                                    class="layui-font-red layui-font-12">最近更新日期: 2022-08-01 13:01:22</span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="layui-card-body" th:utext="${session.article.content}">
+                        </div>
+                        <div class="layui-card-body">
+                            <div style="position: absolute; right: 10px; bottom: 5px;">
+                                <i class="layui-icon layui-icon-praise layui-font-red"></i> <span
+                                    th:text="${session.article.likes}"></span>
+                                <i class="layui-icon layui-icon-star-fill layui-font-orange"></i> <span
+                                    th:text="${session.article.collects}"></span>
+                                <i class="layui-icon layui-icon-reply-fill"></i> <span
+                                    th:text="${session.article.comments}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <th:block th:if="${#lists.isEmpty(session.comments)}">
+                    <div style="margin-top: 10px; padding-top: 10px; height: 324px; text-align: center;">
+                        <span>还没有人评论哦</span>
+                    </div>
+                </th:block>
+                <th:block th:unless="${#lists.isEmpty(session.comments)}">
+                    <div class="layui-panel" style="margin-top: 10px; margin-bottom: 10px;">
+                        <div class="layui-card">
+                            <th:block th:each=" c, iterStat : ${session.comments}">
+                                <div class="layui-card-body">
+                                    <img class="headImg" th:src="@{${session.users[c.userId].headImgUrl}}" alt="">
+                                    <div style="margin-left: 54px;">
+                                        <a th:text="${session.users[c.userId].nickName}" href="">嗨嗨嗨</a><br>
+                                        <span th:text="${c.createTime}" class="layui-font-12">发布日期: 2021-08-01 13:01:22
+                                        </span>
+                                    </div>
+                                    <div style="position: absolute; right: 10px; top: 10px;"
+                                        th:text="${iterStat.count} + 'L'">
+                                        1L
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="layui-card-body" th:utext="${c.commentBody}">
+                                    <p><strike>我的</strike><br /></p>
+                                    <p><strike>嗨嗨嗨</strike></p>
+                                    <p><b>实际上，变大了！</b><strike><br /></strike></p>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        查找文章
+                    </div>
+                    <div class="layui-card-body">
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input placeholder="根据关键字查找" value="" name="keyword" id="keyword"
+                                        class="layui-input" type="text">
+                                </div>
+                                <button class="layui-btn"><i class="layui-icon layui-icon-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-panel">
+            <div class="layui-form-pane" style="margin: 10px;">
+                留下你的评论
+                <form id="commentForm" class="layui-form" action="##" onsubmit="return false">
+                    <div class="layui-form-item layui-form-text">
+                        <div id="wangEditor">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="verifyCode" class="layui-form-label">验证码</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" id="verifyCode" type="text">
+                        </div>
+                        <span><img data-tooltip="看不清楚？换一张" th:src="@{/common/captcha}"
+                            onclick="this.src='/common/captcha?d='+new Date()*1" alt="单击图片刷新！"></span>
+                    </div>
+                    <div class="layui-form-item">
+                        <button class="layui-btn" onclick="comment()">提交评论</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <p></p>
+    </div>
+
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/public.js}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+    <script>
+        layui.use(['layer', 'form', 'element', 'laypage'], function () {
+            var layer = layui.layer
+            var element = layui.element
+            var laypage = layui.laypage
+            var $ = layui.$
+            var form = layui.form;
+
+            var E = window.wangEditor
+            editor = new E('#wangEditor')
+            editor.config.zIndex = 1
+            editor.highlight = hljs
+            editor.create()
+
+            window.comment = function () {
+                var commentBody = editor.txt.html()
+                if (isNull(commentBody)) {
+                    layer.alert('请输入评论内容!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+
+                var verifyCode = $('#verifyCode').val()
+                if (!validLength(verifyCode, 5)) {
+                    layer.alert('请输入正确的验证码!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                
+                var params = {
+                    "commentBody": commentBody,
+                    "verifyCode": verifyCode
+                }
+                var url = '/comment/commentPub'
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    data: params,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        }
+                        ;
+                    },
+                    error: function () {
+                        layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    }
+                });
+            }
+
+            laypage.render({
+                elem: 'Claypage',
+                count: '50'
+            });
+        });
+    </script>
+</body>
+
+</html>

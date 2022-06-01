@@ -1,18 +1,24 @@
 package com.example.studentbbs.controller;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import com.example.studentbbs.common.ServiceResultEnum;
 import com.example.studentbbs.entity.Article;
+import com.example.studentbbs.entity.Comment;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.ArticleService;
+import com.example.studentbbs.service.CommentService;
 import com.example.studentbbs.util.Result;
 import com.example.studentbbs.util.ResultGenerator;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +30,25 @@ public class ArticleController {
 
     @Resource
     private ArticleService articleService;
+
+    @Resource
+    private CommentService commentService;
+
+    @GetMapping("/detail/{id}")
+    public String detailById(@PathVariable Integer id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "user/login";
+        }
+
+        Article article = new Article();
+        ArrayList<Comment> comments = new ArrayList<>();
+        article = articleService.getArticleById(id);
+        comments = commentService.getAllComments(id);
+        session.setAttribute("article", article);
+        session.setAttribute("comments", comments);
+        return "article/detail";
+    }
 
     @GetMapping("/articlePub")
     public String articlePub(HttpSession session) {

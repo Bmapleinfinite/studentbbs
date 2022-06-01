@@ -10,4 +10,6 @@ public interface ArticleService {
     ArrayList<Article> getAllArticleByTime();
 
     ArrayList<Article> getAllArticleByLikes();
+
+    Article getArticleById(Integer id);
 }

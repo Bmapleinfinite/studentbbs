@@ -13,4 +13,6 @@ public interface ArticleDao {
     ArrayList<Article> getAllArticleByTime();
 
     ArrayList<Article> getAllArticleByLikes();
+
+    Article getArticleById(Integer id);
 }

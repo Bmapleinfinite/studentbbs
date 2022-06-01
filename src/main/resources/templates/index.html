@@ -45,7 +45,7 @@
                                 <img class="headImg" th:src="@{${session.users[a.userId].headImgUrl}}" alt="">
                                 <div style="margin-left: 54px;">
                                     <span th:text="${a.categoryName}" class="layui-border-green layui-btn-xs">分享</span></a>
-                                    <a href="" th:text="${a.title}">默认</a><br>
+                                    <a th:href="@{'article/detail/' + ${a.id}}" th:text="${a.title}">默认</a><br>
                                     <span th:text="${session.users[a.userId].nickName}">棠槿牵樱</span>
                                     <span th:text="${a.lastUpdateTime}">2021-08-13 13:01:11</span>
                                     <div style="position: absolute; right: 10px; bottom: 5px;">

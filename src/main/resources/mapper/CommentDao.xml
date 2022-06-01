@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.studentbbs.dao.CommentDao">
+    <resultMap id="BaseResultMap" type="com.example.studentbbs.entity.Comment">
+        <id column="comment_id" jdbcType="BIGINT" property="id" />
+        <result column="post_id" jdbcType="BIGINT" property="postId" />
+        <result column="comment_user_id" jdbcType="BIGINT" property="userId" />
+        <result column="comment_body" jdbcType="VARCHAR" property="commentBody" />
+        <result column="parent_comment_user_id" jdbcType="BIGINT" property="parentUserId" />
+        <result column="comment_create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    </resultMap>
+    <sql id="Base_Column_List">
+       comment_id, post_id, comment_user_id, comment_body, parent_comment_user_id, comment_create_time, is_deleted
+    </sql>
+    <insert id="commentPub" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        tb_post_comment (post_id, comment_user_id, comment_body)
+        values(#{postId}, #{userId}, #{commentBody})
+    </insert>
+
+    <select id="getAllComments" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_post_comment
+        where is_deleted = 0 and post_id = #{id}
+    </select>
+</mapper>

@@ -29,4 +29,9 @@ public class AricleServiceimp implements ArticleService {
     public ArrayList<Article> getAllArticleByLikes() {
         return articleDao.getAllArticleByLikes();
     }
+
+    @Override
+    public Article getArticleById(Integer id) {
+        return articleDao.getArticleById(id);
+    }
 }

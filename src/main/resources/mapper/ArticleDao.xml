@@ -37,6 +37,12 @@
         WHERE post_status = 1 
         ORDER BY last_update_time DESC;
     </select>
+    <select id="getArticleById" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" /> 
+        from tb_bbs_post 
+        WHERE post_status = 1 and post_id = #{id}
+    </select>
     <insert id="articlePub" keyProperty="id" useGeneratedKeys="true">
         insert into
         tb_bbs_post (publish_user_id, post_title, post_content, post_category_id, post_category_name)
