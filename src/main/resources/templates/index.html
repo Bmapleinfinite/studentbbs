@@ -10,9 +10,11 @@
         <div class="layui-panel">
             <div style="margin: 10px; color: black;">
                 <span class="layui-breadcrumb" lay-separator="|">
-                    <a class="layui-this" href="">首页</a>
+                    <a class="layui-this"
+                        th:href="@{index(page=1, orderby=${orderby}, categoryId=null, keyword=${keyword})}">首页</a>
                     <th:block th:each=" c : ${session.categorys}">
-                        <a href="" th:text="${c.categoryName}">首页</a>
+                        <a th:href="@{index(page=1, orderby=${orderby}, categoryId=${c.id}, keyword=${keyword})}"
+                            th:text="${c.categoryName}">首页</a>
                     </th:block>
                 </span>
                 <div class="layui-layout-right">
@@ -29,36 +31,41 @@
                     <div class="layui-card-header">
                         <a href="">默认</a>
                         <div class="layui-layout-right" style="margin-right: 10px;">
-                            <a href="">按热议</a>
+                            <a
+                                th:href="@{index(page=1, orderby=like, categoryId=${categoryId}, keyword=${keyword})}">按点赞</a>
                             <span>|</span>
-                            <a href="">按时间</a>
+                            <a
+                                th:href="@{index(page=1, orderby=time, categoryId=${categoryId}, keyword=${keyword})}">按时间</a>
                         </div>
                     </div>
-                    <th:block th:if="${session.articlesByTime == null}">
+                    <th:block th:if="${#lists.isEmpty(session.articlesList)}">
                         <div class="layui-card-body" style="height: 624px; text-align: center;">
                             <span class="layui-font-gray">没有相关数据</span>
                         </div>
                     </th:block>
-                    <th:block th:unless="${session.articlesByTime == null}">
-                        <th:block th:each=" a : ${session.articlesByTime}">
-                            <div class="layui-card-body">
-                                <img class="headImg" th:src="@{${session.users[a.userId].headImgUrl}}" alt="">
-                                <div style="margin-left: 54px;">
-                                    <span th:text="${a.categoryName}" class="layui-border-green layui-btn-xs">分享</span></a>
-                                    <a th:href="@{'article/detail/' + ${a.id}}" th:text="${a.title}">默认</a><br>
-                                    <span th:text="${session.users[a.userId].nickName}">棠槿牵樱</span>
-                                    <span th:text="${a.lastUpdateTime}">2021-08-13 13:01:11</span>
-                                    <div style="position: absolute; right: 10px; bottom: 5px;">
-                                        <i class="layui-icon layui-icon-praise layui-font-red"></i><span
-                                            th:text="${a.likes}">111</span>
-                                        <i class="layui-icon layui-icon-star-fill layui-font-orange"></i><span
-                                            th:text="${a.collects}">111</span>
-                                        <i class="layui-icon layui-icon-reply-fill"></i><span
-                                            th:text="${a.comments}">111</span>
+                    <th:block th:unless="${#lists.isEmpty(session.articlesList)}">
+                        <th:block th:each=" a, aStat : ${session.articlesList}">
+                            <th:block th:if="${aStat.index} ge ((${page} - 1) * 7) and ${aStat.index} lt (${page} * 7)">
+                                <div class="layui-card-body">
+                                    <img class="headImg" th:src="@{${session.users[a.userId].headImgUrl}}" alt="">
+                                    <div style="margin-left: 54px;">
+                                        <span th:text="${a.categoryName}"
+                                            class="layui-border-green layui-btn-xs">分享</span></a>
+                                        <a th:href="@{'article/detail/' + ${a.id}}" th:text="${a.title}">默认</a><br>
+                                        <span th:text="${session.users[a.userId].nickName}">棠槿牵樱</span>
+                                        <span th:text="${a.lastUpdateTime}">2021-08-13 13:01:11</span>
+                                        <div style="position: absolute; right: 10px; bottom: 5px;">
+                                            <i class="layui-icon layui-icon-praise layui-font-red"></i><span
+                                                th:text="${a.likes}">111</span>
+                                            <i class="layui-icon layui-icon-star-fill layui-font-orange"></i><span
+                                                th:text="${a.collects}">111</span>
+                                            <i class="layui-icon layui-icon-reply-fill"></i><span
+                                                th:text="${a.comments}">111</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
+                                <hr>
+                            </th:block>
                         </th:block>
                         <div class="layui-card-body" style="text-align: center;">
                             <div id="Claypage"></div>
@@ -75,10 +82,12 @@
                         <form class="layui-form" action="">
                             <div class="layui-form-item">
                                 <div class="layui-input-inline">
-                                    <input placeholder="根据关键字查找" value="" name="keyword" id="keyword"
+                                    <input placeholder="根据关键字查找" th:value="${keyword}" name="keyword" id="keyword"
                                         class="layui-input" type="text">
                                 </div>
-                                <button class="layui-btn"><i class="layui-icon layui-icon-search"></i></button>
+                                <a
+                                    th:href="@{index(page=1, orderby=${orderby}, categoryId=${categoryId}, keyword=${keyword})}"><button
+                                        class="layui-btn"><i class="layui-icon layui-icon-search"></i></button></a>
                             </div>
                         </form>
                     </div>
@@ -91,12 +100,42 @@
         <p></p>
     </div>
 
+    <input id="size" name="size" th:value="${size}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+    <input id="orderby" name="orderby" th:value="${orderby}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+    <input id="categoryId" name="categoryId" th:value="${categoryId}" style="position: absolute; visibility: hidden;"
+        type="text" readonly>
+    <input id="keyword" name="keyword" th:value="${keyword}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+    <input id="page" name="page" th:value="${page}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+
     <script th:src="@{/layui/layui.js}"></script>
     <script>
-        layui.use(['layer', 'form', 'element'], function () {
+        layui.use(['layer', 'form', 'element', 'laypage', 'jquery'], function () {
             var layer = layui.layer
-            var element = layui.element;
-            form = layui.form;
+            var element = layui.element
+            var form = layui.form;
+            var $ = layui.$
+            var laypage = layui.laypage
+
+            var size = $('#size').val()
+            var page = $('#page').val()
+            var categoryId = $('#categoryId').val()
+            var keyword = $('#keyword').val()
+            var orderby = $('#orderby').val()
+            laypage.render({
+                elem: 'Claypage',
+                limit: 7,
+                count: size,
+                curr: page,
+                jump: function (obj, first) {
+                    if (!first) {
+                        window.location.href = 'index?page=' + obj.curr + '&orderby=' + orderby + '&categoryId=' + categoryId + '&keyword=' + keyword
+                    }
+                }
+            });
         });
     </script>
 </body>

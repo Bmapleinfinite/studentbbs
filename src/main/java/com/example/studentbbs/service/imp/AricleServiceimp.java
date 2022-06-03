@@ -34,4 +34,9 @@ public class AricleServiceimp implements ArticleService {
     public Article getArticleById(Integer id) {
         return articleDao.getArticleById(id);
     }
+
+	@Override
+    public ArrayList<Article> getAllArticleByParams(String orderby, String categoryId, String keyword) {
+		return articleDao.getAllArticleByParams(orderby, categoryId, keyword);
+	}
 }

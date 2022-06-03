@@ -20,9 +20,27 @@
         post_id, publish_user_id, post_title, 
         post_content, post_category_id, 
         post_category_name, post_status, 
-        post_views, post_comments, 
-        post_collects, last_update_time, create_time
+        post_views, post_comments, post_collects
+        post_likes, last_update_time, create_time
     </sql>
+    <select id="getAllArticleByParams" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from tb_bbs_post
+        WHERE post_status = 1
+        <if test="categoryId!=null and categoryId!=''">
+            and post_category_id = #{categoryId}
+        </if>
+        <if test="keyword!=null and keyword!=''">
+            and post_title like CONCAT('%',#{keyword},'%')
+        </if>
+        <if test="orderby=='time'">
+            ORDER BY last_update_time DESC;
+        </if>
+        <if test="orderby=='like'">
+            ORDER BY post_likes DESC;
+        </if>
+    </select>
     <select id="getAllArticleByLikes" resultMap="BaseResultMap">
         select 
         <include refid="Base_Column_List" />

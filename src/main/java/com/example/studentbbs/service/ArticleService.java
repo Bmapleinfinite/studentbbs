@@ -12,4 +12,6 @@ public interface ArticleService {
     ArrayList<Article> getAllArticleByLikes();
 
     Article getArticleById(Integer id);
+
+    ArrayList<Article> getAllArticleByParams(String orderby, String categoryId, String keyword);
 }
