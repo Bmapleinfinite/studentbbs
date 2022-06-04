@@ -38,13 +38,13 @@
                                 th:href="@{index(page=1, orderby=time, categoryId=${categoryId}, keyword=${keyword})}">按时间</a>
                         </div>
                     </div>
-                    <th:block th:if="${#lists.isEmpty(session.articlesList)}">
+                    <th:block th:if="${#lists.isEmpty(articlesList)}">
                         <div class="layui-card-body" style="height: 624px; text-align: center;">
                             <span class="layui-font-gray">没有相关数据</span>
                         </div>
                     </th:block>
-                    <th:block th:unless="${#lists.isEmpty(session.articlesList)}">
-                        <th:block th:each=" a, aStat : ${session.articlesList}">
+                    <th:block th:unless="${#lists.isEmpty(articlesList)}">
+                        <th:block th:each=" a, aStat : ${articlesList}">
                             <th:block th:if="${aStat.index} ge ((${page} - 1) * 7) and ${aStat.index} lt (${page} * 7)">
                                 <div class="layui-card-body">
                                     <img class="headImg" th:src="@{${session.users[a.userId].headImgUrl}}" alt="">
@@ -53,7 +53,8 @@
                                             class="layui-border-green layui-btn-xs">分享</span></a>
                                         <a th:href="@{'article/detail/' + ${a.id}}" th:text="${a.title}">默认</a><br>
                                         <span th:text="${session.users[a.userId].nickName}">棠槿牵樱</span>
-                                        <span th:text="${a.lastUpdateTime}">2021-08-13 13:01:11</span>
+                                        <span class="layui-font-red" th:text="'最近更新时间：' + ${a.lastUpdateTime}">2021-08-13 13:01:11</span>
+                                        <span th:text="'阅读数' + ${a.views}">111</span>
                                         <div style="position: absolute; right: 10px; bottom: 5px;">
                                             <i class="layui-icon layui-icon-praise layui-font-red"></i><span
                                                 th:text="${a.likes}">111</span>
@@ -110,8 +111,11 @@
         readonly>
     <input id="page" name="page" th:value="${page}" style="position: absolute; visibility: hidden;" type="text"
         readonly>
+    <input id="errormsg" name="errormsg" th:value="${session.errormsg}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
 
     <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/public.js}"></script>
     <script>
         layui.use(['layer', 'form', 'element', 'laypage', 'jquery'], function () {
             var layer = layui.layer
@@ -125,6 +129,13 @@
             var categoryId = $('#categoryId').val()
             var keyword = $('#keyword').val()
             var orderby = $('#orderby').val()
+            var errormsg = $('#errormsg').val()
+
+            console.log(errormsg)
+            if(!isNull(errormsg)){
+                layer.msg(errormsg)
+            }
+
             laypage.render({
                 elem: 'Claypage',
                 limit: 7,

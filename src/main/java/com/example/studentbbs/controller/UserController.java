@@ -1,10 +1,19 @@
 package com.example.studentbbs.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.example.studentbbs.common.ServiceResultEnum;
+import com.example.studentbbs.entity.Article;
+import com.example.studentbbs.entity.Comment;
 import com.example.studentbbs.entity.User;
+import com.example.studentbbs.service.ArticleService;
+import com.example.studentbbs.service.CommentService;
 import com.example.studentbbs.service.UserService;
 import com.example.studentbbs.util.PatternUtil;
 import com.example.studentbbs.util.Result;
@@ -22,6 +31,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/user")
 public class UserController {
     @Resource
+    private ArticleService articleService;
+
+    @Resource
+    private CommentService commentService;
+
+    @Resource
     private UserService userService;
 
     @GetMapping("/userSetting")
@@ -30,7 +45,28 @@ public class UserController {
     }
 
     @GetMapping("/userCenter")
-    public String userCenter() {
+    public String userCenter(HttpServletRequest request, HttpSession session, 
+                            @RequestParam(value = "Apage", required = false , defaultValue = "1") Integer Apage,
+                            @RequestParam(value = "Cpage", required = false , defaultValue = "1") Integer Cpage) {
+        ArrayList<Article> articlesList = new ArrayList<>();
+        ArrayList<Comment> commentsList = new ArrayList<>();
+        Map<Integer, Article> articlesMap = new HashMap<>();
+
+        User user = (User) session.getAttribute("user");
+
+        articlesList = articleService.getArticleByUserId(user.getId());
+        articlesMap = articleService.getAllArticle();
+        commentsList = commentService.getCommentsByUserId(user.getId());
+
+        request.setAttribute("articlesList", articlesList);
+        request.setAttribute("articlesMap", articlesMap);
+        request.setAttribute("commentsList", commentsList);
+        request.setAttribute("Asize", articlesList.size());
+        request.setAttribute("Csize", commentsList.size());
+
+        request.setAttribute("Apage", Apage);
+        request.setAttribute("Cpage", Cpage);
+
         return "user/userCenter";
     }
 
@@ -68,6 +104,7 @@ public class UserController {
             return ResultGenerator.genFailResult(ServiceResultEnum.NO_USER.getResult());
         } else {
             session.setAttribute("user", user);
+            session.removeAttribute("errormsg");
             return ResultGenerator.genSuccessResult();
         }
     }

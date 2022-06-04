@@ -1,6 +1,7 @@
 package com.example.studentbbs.service.imp;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -39,4 +40,14 @@ public class AricleServiceimp implements ArticleService {
     public ArrayList<Article> getAllArticleByParams(String orderby, String categoryId, String keyword) {
 		return articleDao.getAllArticleByParams(orderby, categoryId, keyword);
 	}
+
+    @Override
+    public ArrayList<Article> getArticleByUserId(Integer userId) {
+        return articleDao.getArticleByUserId(userId);
+    }
+
+    @Override
+    public Map<Integer, Article> getAllArticle() {
+        return articleDao.getAllArticle();
+    }
 }

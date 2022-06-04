@@ -6,13 +6,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
-public class AdminLoginInterceptor implements HandlerInterceptor {
+public class UserInterceptor implements HandlerInterceptor {
     
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String url = request.getRequestURI();
-        if (url.startsWith("/admin") && request.getSession().getAttribute("loginUser") == null) {
-            request.getSession().setAttribute("errormsg", "请重新登录");
+        if (url.startsWith("/user") && request.getSession().getAttribute("user") == null) {
+            request.getSession().setAttribute("errormsg", "请登录！");
+            response.sendRedirect("/index");
+            return false;
+        }
+        if (url.startsWith("/article") && request.getSession().getAttribute("user") == null) {
+            request.getSession().setAttribute("errormsg", "请登录！");
             response.sendRedirect("/index");
             return false;
         }

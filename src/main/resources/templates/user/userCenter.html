@@ -11,32 +11,40 @@
         <div class="layui-col-space15 layui-row">
             <div class="layui-col-md6">
                 <div class="layui-card">
-                    <div class="layui-card-header">我的文章</div>
+                    <div class="layui-card-header">我的帖子</div>
 
-                    <th:block th:if="${session.articlesList == null}">
+                    <th:block th:if="${#lists.isEmpty(articlesList)}">
                         <div class="layui-card-body">
                             <div class="layui-none layui-word-aux" style="text-align: center; 
                                     height: 624px;">
-                                您目前还没有任何评论
+                                您目前还没有发布过任何帖子
                             </div>
                         </div>
                     </th:block>
 
-                    <th:block th:unless="${session.articlesList == null}">
+                    <th:block th:unless="${#lists.isEmpty(articlesList)}">
                         <div class="layui-card-body">
-                            <div class="" style="height: 624px;">
-                                <div style="font-size: 10px;">
-                                    <a href="">我是标题</a>
-                                    <span class="layui-word-aux">2022-05-26 15:34:56</span>
-                                    <span class="layui-word-aux"
-                                        style="position: absolute; right: 0; margin-right: 15px;">
-                                        <button type="button" class="layui-btn layui-btn-xs">编辑</button>
-                                        <button type="button" class="layui-btn layui-btn-xs layui-bg-red">删除</button>
-                                        阅 <span th:text="${session.article.read}">1</span>
-                                        / 评 <span th:text="${session.article.comments}">0</span>
-                                        / 赞 <span th:text="${session.article.like}">0</span> </span>
-                                </div>
-                                <hr>
+                            <div class="" style="height: 644px;">
+                                <th:block th:each=" a, aStat : ${articlesList}">
+                                    <th:block th:if="${aStat.index} ge ((${Apage} - 1) * 15) and ${aStat.index} lt (${Apage} * 15)">
+                                        <div style="font-size: 10px;">
+                                            <a th:href="@{'/article/detail/' + ${a.id}}" th:text="${#strings.abbreviate(a.title, 10)}" th:title="${a.title}" >我是标题</a>
+                                            <span th:text="${a.lastUpdateTime}" class="layui-word-aux">2022-05-26
+                                                15:34:56</span>
+                                            <span class="layui-word-aux"
+                                                style="position: absolute; right: 0; margin-right: 15px;">
+                                                <a th:href="@{/article/edit}"><button type="button"
+                                                        class="layui-btn layui-btn-xs">编辑</button></a>
+                                                <button onclick="article_delete()" type="button"
+                                                    class="layui-btn layui-btn-xs layui-bg-red">删除</button>
+                                                阅 <span th:text="${a.views}">1</span>
+                                                / 评 <span th:text="${a.comments}">0</span>
+                                                / 赞 <span th:text="${a.likes}">0</span>
+                                            </span>
+                                        </div>
+                                        <hr>
+                                    </th:block>
+                                </th:block>
                             </div>
                         </div>
                         <hr>
@@ -48,9 +56,9 @@
             </div>
             <div class="layui-col-md6">
                 <div class="layui-card">
-                    <div class="layui-card-header">我的文章</div>
+                    <div class="layui-card-header">我的评论</div>
 
-                    <th:block th:if="${session.commentsList == null}">
+                    <th:block th:if="${#lists.isEmpty(commentsList)}">
                         <div class="layui-card-body">
                             <div class="layui-none layui-word-aux" style="text-align: center; 
                                     height: 624px;">
@@ -58,22 +66,25 @@
                             </div>
                         </div>
                     </th:block>
-                    
-                    <th:block th:unless="${session.commentsList == null}">
+
+                    <th:block th:unless="${#lists.isEmpty(commentsList)}">
                         <div class="layui-card-body">
-                            <div class="" style="height: 624px;">
-                                <div style="font-size: 10px;">
-                                    <a href="">我是标题</a>
-                                    <span class="layui-word-aux">2022-05-26 15:34:56</span>
-                                    <span class="layui-word-aux"
-                                        style="position: absolute; right: 0; margin-right: 15px;">
-                                        <button type="button" class="layui-btn layui-btn-xs">编辑</button>
-                                        <button type="button" class="layui-btn layui-btn-xs layui-bg-red">删除</button>
-                                        阅 <span th:text="${session.article.read}">1</span>
-                                        / 评 <span th:text="${session.article.comments}">0</span>
-                                        / 赞 <span th:text="${session.article.like}">0</span> </span>
-                                </div>
-                                <hr>
+                            <div class="" style="height: 644px;">
+                                <th:block th:each=" c, cStat : ${commentsList}">
+                                    <th:block th:if="${cStat.index} ge ((${Cpage} - 1) * 15) and ${cStat.index} lt (${Cpage} * 15)">
+                                        <div style="font-size: 10px;">
+                                            于 <span th:text="${c.createTime}" class="layui-word-aux">2022-05-26
+                                                15:34:56</span>
+                                            在 <a th:href="@{'/article/detail/' + ${c.postId}}"
+                                                th:text="${articlesMap[c.postId].title}"></a> 留下了评论
+                                            <span class="layui-word-aux"
+                                                style="position: absolute; right: 0; margin-right: 15px;">
+                                                <button onclick="comment_delete()" type="button"
+                                                    class="layui-btn layui-btn-xs layui-bg-red">删除</button>
+                                        </div>
+                                        <hr>
+                                    </th:block>
+                                </th:block>
                             </div>
                         </div>
                         <hr>
@@ -86,14 +97,57 @@
         </div>
     </div>
 
+    <input id="Asize" name="Asize" th:value="${Asize}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+    <input id="Csize" name="Csize" th:value="${Csize}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+    <input id="Apage" name="Apage" th:value="${Apage}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+    <input id="Cpage" name="Cpage" th:value="${Cpage}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+
     <script th:src="@{/layui/layui.js}"></script>
     <script th:src="@{/js/public.js}"></script>
     <script>
-        layui.use(['layer', 'form', 'element', 'jquery'], function () {
-            var layer = layui.layer,
-                form = layui.form,
-                element = layui.element
+        layui.use(['layer', 'form', 'element', 'jquery', 'laypage'], function () {
+            var layer = layui.layer
+            var form = layui.form
+            var element = layui.element
             var $ = layui.$
+            var laypage = layui.laypage
+
+            var Asize = $('#Asize').val()
+            var Csize = $('#Csize').val()
+            var Apage = $('#Apage').val()
+            var Cpage = $('#Cpage').val()
+
+            laypage.render({
+                elem: 'Alaypage',
+                count: Asize,
+                limit: 15,
+                curr: Apage,
+                jump: function(obj, first){
+                    if(!first){
+                        window.location.href = 'userCenter?Apage=' + obj.curr + '&Cpage=' + Cpage
+                    }
+                }
+            })
+
+            laypage.render({
+                elem: 'Claypage',
+                count: Csize,
+                limit: 15,
+                curr: Cpage,
+                jump: function(obj, first){
+                    if(!first){
+                        window.location.href = 'userCenter?Apage=' + Apage + '&Cpage=' + obj.curr
+                    }
+                }
+            })
+
+            window.article_delete = function () {
+
+            }
         });
     </script>
 </body>

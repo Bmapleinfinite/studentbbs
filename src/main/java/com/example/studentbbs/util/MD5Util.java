@@ -4,7 +4,8 @@ import java.security.MessageDigest;
 
 public class MD5Util {
     public static void main(String[] args) {
-        System.out.println(MD5Encode("rgbugegjcmu@163.comadmin123", "UTF-8"));
+        String str = "我是标题我是标题我是";
+        System.out.println(str.length());
     }
 
     private static String byteArrayToHexString(byte[] b) {

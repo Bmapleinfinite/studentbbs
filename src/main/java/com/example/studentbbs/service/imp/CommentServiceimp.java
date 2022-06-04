@@ -25,5 +25,10 @@ public class CommentServiceimp implements CommentService {
     public ArrayList<Comment> getAllComments(Integer id) {
         return commentDao.getAllComments(id);
     }
+
+    @Override
+    public ArrayList<Comment> getCommentsByUserId(Integer userId) {
+        return commentDao.getCommentsByUserId(userId);
+    }
     
 }

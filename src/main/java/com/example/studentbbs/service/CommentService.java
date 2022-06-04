@@ -8,4 +8,6 @@ public interface CommentService {
     Integer commentPub(Comment comment);
 
     ArrayList<Comment> getAllComments(Integer id);
+
+    ArrayList<Comment> getCommentsByUserId(Integer userId);
 }

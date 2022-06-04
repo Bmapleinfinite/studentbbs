@@ -45,9 +45,9 @@ public class HomeController {
         users = userService.getAllUser();
 
         session.setAttribute("categorys", categorys);
-        session.setAttribute("articlesList", articlesList);
         session.setAttribute("users", users);
         
+        request.setAttribute("articlesList", articlesList);
         request.setAttribute("page", page);
         request.setAttribute("orderby", orderby);
         request.setAttribute("size", articlesList.size());

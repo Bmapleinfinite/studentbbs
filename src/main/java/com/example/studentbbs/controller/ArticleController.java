@@ -1,6 +1,5 @@
 package com.example.studentbbs.controller;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
@@ -36,11 +35,6 @@ public class ArticleController {
 
     @GetMapping("/detail/{id}")
     public String detailById(@PathVariable Integer id, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "user/login";
-        }
-
         Article article = new Article();
         ArrayList<Comment> comments = new ArrayList<>();
         article = articleService.getArticleById(id);
@@ -52,11 +46,7 @@ public class ArticleController {
 
     @GetMapping("/articlePub")
     public String articlePub(HttpSession session) {
-        if (session.getAttribute("user") == null) {
-            return "user/login";
-        } else {
-            return "article/articlePub";
-        }
+        return "article/articlePub";
     }
 
     @PostMapping("/articlePub")
