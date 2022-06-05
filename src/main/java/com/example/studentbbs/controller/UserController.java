@@ -15,10 +15,12 @@ import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.ArticleService;
 import com.example.studentbbs.service.CommentService;
 import com.example.studentbbs.service.UserService;
+import com.example.studentbbs.util.MD5Util;
 import com.example.studentbbs.util.PatternUtil;
 import com.example.studentbbs.util.Result;
 import com.example.studentbbs.util.ResultGenerator;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    private HomeController homController;
+
     @Resource
     private ArticleService articleService;
 
@@ -44,10 +49,95 @@ public class UserController {
         return "user/userSetting";
     }
 
+    @PostMapping("/userInfoUpdate")
+    @ResponseBody
+    public Result userInfoUpdate(
+            @RequestParam("userId") Integer userId,
+            @RequestParam("nickName") String nickName,
+            @RequestParam("gender") String gender,
+            @RequestParam("location") String location,
+            @RequestParam("introduce") String introduce, HttpSession session) {
+
+        if (!StringUtils.hasLength(nickName)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_NICKNAME.getResult());
+        }
+        if (!StringUtils.hasLength(gender)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_GENDER.getResult());
+        }
+        if (!StringUtils.hasLength(location)) {
+            location = ServiceResultEnum.DEFAULT_UNKNOW.getResult();
+        }
+        if (!StringUtils.hasLength(introduce)) {
+            introduce = ServiceResultEnum.DEFAULT_INTRODUCE.getResult();
+        }
+        int result = userService.updateUserInfoById(userId, nickName, gender, location, introduce);
+        if (result > 0) {
+            User user = userService.getUserById(userId);
+            session.setAttribute("user", user);
+            return ResultGenerator.genSuccessResult();
+        } else {
+            return ResultGenerator.genFailResult();
+        }
+    }
+
+    @PostMapping("/headImgUpdate")
+    @ResponseBody
+    public Result headImgUpdate(
+        @RequestParam("userId") Integer userId,
+        @RequestParam("headImg") String headImg, HttpSession session) {
+
+        if (!StringUtils.hasLength(headImg)) {
+            return ResultGenerator.genFailResult("userHeadImg参数错误");
+        }
+
+        int result = userService.headImgUpdateById(headImg, userId);
+        if (result > 0) {
+            User user = userService.getUserById(userId);
+            session.setAttribute("user", user);
+            return ResultGenerator.genSuccessResult();
+        } else {
+            return ResultGenerator.genFailResult();
+        }
+    }
+    
+    @PostMapping("/updateUserPass")
+    @ResponseBody
+    public Result updateUserPass(
+            @RequestParam("userId") Integer userId,
+            @RequestParam("nowPass") String nowPass,
+            @RequestParam("newPass") String newPass,
+            @RequestParam("verifyCode") String verifyCode, HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        
+        if (nowPass.equals(newPass)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.SAME_PASS.getResult());
+        }
+
+        String passwordMD5 = MD5Util.MD5Encode(user.getLoginName() + nowPass, "UTF-8");
+        if (!user.getPassword().equals(passwordMD5)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.WRONG_NOW_PASSWORD.getResult());
+        }
+
+        String captcha = (String) session.getAttribute("VerifyCode");
+        if (!verifyCode.equals(captcha)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.WRONG_VERIFYCODE.getResult());
+        }
+
+        passwordMD5 = MD5Util.MD5Encode(user.getLoginName() + newPass, "UTF-8");
+        int result = userService.updateUserPass(userId, passwordMD5);
+        if (result > 0) {
+            session.removeAttribute("user");
+            return ResultGenerator.genSuccessResult();
+        } else {
+            return ResultGenerator.genFailResult();
+        }
+    }
+
     @GetMapping("/userCenter")
-    public String userCenter(HttpServletRequest request, HttpSession session, 
-                            @RequestParam(value = "Apage", required = false , defaultValue = "1") Integer Apage,
-                            @RequestParam(value = "Cpage", required = false , defaultValue = "1") Integer Cpage) {
+    public String userCenter(HttpServletRequest request, HttpSession session,
+            @RequestParam(value = "Apage", required = false, defaultValue = "1") Integer Apage,
+            @RequestParam(value = "Cpage", required = false, defaultValue = "1") Integer Cpage) {
         ArrayList<Article> articlesList = new ArrayList<>();
         ArrayList<Comment> commentsList = new ArrayList<>();
         Map<Integer, Article> articlesMap = new HashMap<>();
@@ -157,8 +247,8 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, HttpServletRequest request) {
         session.removeAttribute("user");
-        return "index";
+        return homController.index(session, request, 1, "time", "", "");
     }
 }

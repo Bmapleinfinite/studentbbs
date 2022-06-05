@@ -17,36 +17,40 @@
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
                         <div class="layui-form-pane">
-                            <form class="layui-form" type="POST" id="infoUpdateForm" onsubmit="return false" action="##">
+                            <form class="layui-form" type="POST" id="infoUpdateForm" onsubmit="return false"
+                                action="##">
                                 <div class="layui-form-item">
                                     <label for="loginName" class="layui-form-label">邮箱</label>
                                     <div class="layui-input-inline">
-                                        <input th:value="${session.user.loginName}" name="loginName" id="loginName" class="layui-input"
-                                            type="text">
+                                        <input th:value="${session.user.loginName}" name="loginName" id="loginName"
+                                            class="layui-input" type="text" readonly>
                                     </div>
                                     <div class="layui-form-mid layui-word-aux">用户名不可更改</div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label for="nickName" class="layui-form-label">昵称</label>
                                     <div class="layui-input-inline">
-                                        <input th:value="${session.user.nickName}" name="nickName" id="nickName" class="layui-input"
-                                            type="text">
+                                        <input th:value="${session.user.nickName}" name="nickName" id="nickName"
+                                            class="layui-input" type="text">
                                     </div>
                                     <div class="layui-form-mid layui-word-aux">2-8个字符</div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label for="gender" class="layui-form-label">性别</label>
                                     <div class="layui-input-inline">
-                                        <select name="userGender" id="userGender">
-                                            <option value="1" th:selected="${session.user.gender=='男'} ?true:false">男</option>
-                                            <option value="2" th:selected="${session.user.gender=='女'} ?true:false">女</option>
+                                        <select name="gender" id="gender">
+                                            <option value="1" th:selected="${session.user.gender=='男'} ?true:false">男
+                                            </option>
+                                            <option value="2" th:selected="${session.user.gender=='女'} ?true:false">女
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label for="location" class="layui-form-label">地区</label>
                                     <div class="layui-input-inline">
-                                        <input th:value="${session.user.location}" name="location" id="location" class="layui-input" type="text">
+                                        <input th:value="${session.user.location}" name="location" id="location"
+                                            class="layui-input" type="text">
                                     </div>
                                 </div>
                                 <div class="layui-form-item layui-form-text">
@@ -66,7 +70,7 @@
                         <div class="layui-from layui-form-pane">
                             <form type="POST" id="headImgUpdateForm" onsubmit="return false" action="##">
                                 <div class="layui-form-item">
-                                    <div><img style="width: 168px; height: 168px;" src="" alt=""></div>
+                                    <div><img style="width: 168px; height: 168px;" id="headImg" th:src="@{${session.user.headImgUrl}}" alt=""></div>
                                     <button type="button" class="layui-btn" id="fileUpload"
                                         style="margin-left: 38px; margin-top: 10px;">上传图片</button>
                                     <input class="layui-upload-file" type="file" accept name="file">
@@ -86,19 +90,19 @@
                                 <div class="layui-form-item">
                                     <label for="nowPass" class="layui-form-label">原密码</label>
                                     <div class="layui-input-inline">
-                                        <input name="nowPass" id="nowPass" class="layui-input" type="text">
+                                        <input name="nowPass" id="nowPass" class="layui-input" type="password">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label for="newPass" class="layui-form-label">新密码</label>
                                     <div class="layui-input-inline">
-                                        <input name="newPass" id="newPass" class="layui-input" type="text">
+                                        <input name="newPass" id="newPass" class="layui-input" type="password">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label for="reNewPass" class="layui-form-label">确认新密码</label>
                                     <div class="layui-input-inline">
-                                        <input name="reNewPass" id="reNewPass" class="layui-input" type="text">
+                                        <input name="reNewPass" id="reNewPass" class="layui-input" type="password">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
@@ -120,6 +124,9 @@
         </div>
     </div>
 
+    <input id="userId" name="userId" th:value="${session.user.id}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+
     <script th:src="@{/layui/layui.js}"></script>
     <script th:src="@{/js/public.js}"></script>
     <script>
@@ -128,6 +135,138 @@
                 form = layui.form,
                 element = layui.element
             var $ = layui.$
+            var upload = layui.upload
+
+            var userId = $('#userId').val()
+
+            var uploadInit = upload.render({
+                elem: '#fileUpload',
+                url: '/uploadFile',
+                before: function(obj){
+                    obj.preview(function(index, file, result){
+                        $('#headImg').attr('src', result);
+                    });
+                },
+                done: function(res){
+                    console.log(res)
+                    if(res.resultCode != 200){
+                        return layer.msg('上传失败')
+                    }
+                    layer.msg('上传成功')
+                    $('#headImg').attr('src', res.fileDirectory);
+                }
+            })
+
+            window.infoUpdate = function () {
+                var nickName = $('#nickName').val()
+                var gender = $('#gender').val()
+                var location = $('#location').val()
+                var introduce = $('#introduce').val()
+                if(!validUserName(nickName)){
+                    layer.alert('请输入正确的用户名!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var url = '/user/userInfoUpdate'
+                var params = {
+                    "userId": userId,
+                    "nickName": nickName,
+                    "gender": gender,
+                    "location": location,
+                    "introduce": introduce
+                }
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    data: params,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        }
+                    },
+                    error: function () {
+                        layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    }
+                });
+            }
+
+            window.headImgUpdate = function(){
+                var headImg = $('#headImg')[0].src
+                if(isNull(headImg)){
+                    layer.alert('上传的字符串不能为空!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var url = '/user/headImgUpdate'
+                var params = {
+                    "userId": userId,
+                    "headImg": headImg
+                }
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    data: params,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location = '/user/userSetting'
+                        } else {
+                            layer.msg(result.message)
+                        }
+                    },
+                    error: function () {
+                        layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    }
+                });
+            }
+
+            window.changePass = function(){
+                var nowPass = $('#nowPass').val()
+                if(!validPassword(nowPass)){
+                    layer.alert('请输入正确的密码格式!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var newPass = $('#newPass').val()
+                if(!validPassword(newPass)){
+                    layer.alert('请输入正确的密码格式!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var reNewPass = $('#reNewPass').val()
+                if(!validPassword(reNewPass)){
+                    layer.alert('请输入正确的密码格式!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                if(newPass != reNewPass){
+                    layer.alert('两次输入的密码不一致!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var verifyCode = $('#verifyCode').val()
+                if(!validLength(verifyCode, 5)){
+                    layer.alert('请输入正确的验证码!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                var url = '/user/updateUserPass'
+                var params = {
+                    "userId": userId,
+                    "nowPass": nowPass,
+                    "newPass": newPass,
+                    "verifyCode": verifyCode
+                }
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    data: params,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.href = '/user/login'
+                        } else {
+                            layer.msg(result.message)
+                        }
+                    },
+                    error: function () {
+                        layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    }
+                });
+            }
         });
     </script>
 </body>

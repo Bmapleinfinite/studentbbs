@@ -32,6 +32,13 @@
         where login_name = #{loginName} and user_status = 0
     </select>
 
+    <select id="getUserById" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList" />
+        from tb_bbs_user
+        where user_id = #{userId} and user_status = 0
+    </select>
+
     <select id="getAllUser" resultMap="BaseResultMap">
         select
         <include refid="BaseColumnList" />
@@ -50,5 +57,29 @@
         tb_bbs_user 
         set last_login_time = CURRENT_TIMESTAMP
         where user_id = #{id}
+    </update>
+
+    <update id="updateUserInfoById">
+        update
+        tb_bbs_user 
+        set nick_name = #{nickName}, 
+        gender = #{gender}, 
+        location = #{location}, 
+        introduce = #{introduce}
+        where user_id = #{userId}
+    </update>
+
+    <update id="headImgUpdateById">
+        update
+        tb_bbs_user 
+        set head_img_url = #{headImg}
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateUserPass">
+        update
+        tb_bbs_user 
+        set password_md5 = #{passwordMD5}
+        where user_id = #{userId}
     </update>
 </mapper>

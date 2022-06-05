@@ -45,4 +45,24 @@ public class UserServiceimp implements UserService {
     public HashMap<Integer, User> getAllUser() {
         return userDao.getAllUser();
     }
+
+    @Override
+    public Integer updateUserInfoById(Integer userId, String nickName, String gender, String location, String introduce) {
+        return userDao.updateUserInfoById(userId, nickName, gender, location, introduce);
+    }
+
+    @Override
+    public Integer updateUserPass(Integer userId, String passwordMD5) {
+        return userDao.updateUserPass(userId, passwordMD5);
+    }
+
+    @Override
+    public User getUserById(Integer userId) {
+        return userDao.getUserById(userId);
+    }
+
+    @Override
+    public Integer headImgUpdateById(String headImg, Integer userId) {
+        return userDao.headImgUpdateById(headImg, userId);
+    }
 }

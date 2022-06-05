@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="header::head-fragment('发布新帖')"></head>
+<head th:replace="header::head-fragment(${session.article.title})"></head>
 
 <body>
     <div th:replace="header::header-fragment"></div>

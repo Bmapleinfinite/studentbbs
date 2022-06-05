@@ -7,13 +7,21 @@ public enum ServiceResultEnum {
 
     NO_LOGIN_NAME("请输入用户名！"),
 
+    NO_NICKNAME("请输入昵称！"),
+
     NOT_EMAIL("请输入正确的用户名！"),
+
+    NO_GENDER("请选择性别！"),
 
     NO_PASSWORD("请输入密码！"),
 
     NO_VERIFYCODE("请输入验证码"),
 
     WRONG_VERIFYCODE("错误的验证码！"),
+
+    WRONG_NOW_PASSWORD("原密码不正确！"),
+
+    SAME_PASS("新密码不能与原密码相同！"),
 
     DEFAULT_UNKNOW("未知"),
 

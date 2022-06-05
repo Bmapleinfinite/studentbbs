@@ -7,12 +7,16 @@ public class Result implements Serializable {
 
     private String message;
 
+    private String fileDirectory;
+
+
     public Result() {
     }
 
-    public Result(int resultCode, String message) {
+    public Result(int resultCode, String message, String fileDirectory) {
         this.resultCode = resultCode;
         this.message = message;
+        this.fileDirectory = fileDirectory;
     }
 
     public int getResultCode() {
@@ -31,6 +35,14 @@ public class Result implements Serializable {
         this.message = message;
     }
 
+    public String getFileDirectory() {
+        return this.fileDirectory;
+    }
+
+    public void setFileDirectory(String fileDirectory) {
+        this.fileDirectory = fileDirectory;
+    }
+
     public Result resultCode(int resultCode) {
         setResultCode(resultCode);
         return this;
@@ -41,10 +53,18 @@ public class Result implements Serializable {
         return this;
     }
 
-    public String toString() {
-        return "{ resultCode='" +
-                getResultCode() + "'" +
-                ", message='" + getMessage() + "'" +
-                "}";
+    public Result fileDirectory(String fileDirectory) {
+        setFileDirectory(fileDirectory);
+        return this;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " resultCode='" + getResultCode() + "'" +
+            ", message='" + getMessage() + "'" +
+            ", fileDirectory='" + getFileDirectory() + "'" +
+            "}";
+    }
+    
 }

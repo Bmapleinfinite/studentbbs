@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebSiteConfigurer implements WebMvcConfigurer {
+    private final static String FILE_UPLOAD_DIC = "D:\\upload\\";
+
     @Autowired
     private AdminLoginInterceptor adminLoginInterceptor;
 
@@ -26,5 +29,9 @@ public class WebSiteConfigurer implements WebMvcConfigurer {
 
         registry.addInterceptor((HandlerInterceptor) userInterceptor)
                 .addPathPatterns("/article/**");
+    }
+
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/upload/**").addResourceLocations("file:" + FILE_UPLOAD_DIC);
     }
 }
