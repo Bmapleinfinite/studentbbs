@@ -15,7 +15,7 @@ public class AdminServiceimp implements AdminService {
     private AdminDao adminDao;
 
     public Admin login(String username, String password) {
-        String passwordMd5 = MD5Util.MD5Encode(String.valueOf(password) + username, "UTF-8");
-        return this.adminDao.login(username, passwordMd5);
+        String passwordMd5 = MD5Util.MD5Encode(password + username, "UTF-8");
+        return adminDao.login(username, passwordMd5);
     }
 }

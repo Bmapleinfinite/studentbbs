@@ -1,5 +1,6 @@
 package com.example.studentbbs.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.studentbbs.entity.User;
@@ -13,7 +14,7 @@ public interface UserService {
 
     Integer updateLastLoginTimeById(Integer id);
 
-    HashMap<Integer, User> getAllUser();
+    HashMap<Integer, User> getAllNormalUser();
 
     Integer updateUserInfoById(Integer userId, String nickName, String gender, String location, String introduce);
 
@@ -22,4 +23,10 @@ public interface UserService {
     User getUserById(Integer userId);
 
     Integer headImgUpdateById(String headImg, Integer userId);
+
+    ArrayList<User> getAllUser();
+
+    Integer updateUserStatusToNormal(Integer userId);
+
+    Integer updateUserStatusToFreeze(Integer userId);
 }

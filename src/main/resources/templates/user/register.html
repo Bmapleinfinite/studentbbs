@@ -11,8 +11,9 @@
         <div class="layui-panel">
             <div class="layui-tab layui-tab-brief" style="margin: 20px;">
                 <ul class="layui-tab-title">
-                    <li><a th:href="@{/user/login}">登录</a></li>
-                    <li class="layui-this">注册</li>
+                    <li><a th:href="@{/user/login}">用户登录</a></li>
+                    <li class="layui-this">用户注册</li>
+                    <li><a th:href="@{/admin/login}">管理员登录</a></li>
                 </ul>
                 <div class="layui-tab-content" style="margin: 10px;">
                     <div class="layui-tab-item"></div>
@@ -70,6 +71,7 @@
                             </form>
                         </div>
                     </div>
+                    <div class="layui-tab-item"></div>
                 </div>
             </div>
         </div>

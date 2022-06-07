@@ -38,11 +38,11 @@ public class HomeController {
                         @RequestParam(value = "keyword", required = false) String keyword) {
         ArrayList<Category> categorys = new ArrayList<>();
         ArrayList<Article> articlesList = new ArrayList<>();
-        HashMap<Integer, User> users = userService.getAllUser();
+        HashMap<Integer, User> users = userService.getAllNormalUser();
 
         categorys = categoryService.getAllCategory();
         articlesList = articleService.getAllArticleByParams(orderby, categoryId, keyword);
-        users = userService.getAllUser();
+        users = userService.getAllNormalUser();
 
         session.setAttribute("categorys", categorys);
         session.setAttribute("users", users);

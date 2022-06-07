@@ -2,7 +2,6 @@ package com.example.studentbbs.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -19,7 +18,7 @@ import com.example.studentbbs.util.Result;
 import com.example.studentbbs.util.ResultGenerator;
 
 @Controller
-public class uploadController {
+public class UploadController {
     private final static String FILE_UPLOAD_DIC = "D:\\upload\\";
     
     @PostMapping("/uploadFile")

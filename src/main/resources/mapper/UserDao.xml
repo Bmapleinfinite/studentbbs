@@ -39,11 +39,16 @@
         where user_id = #{userId} and user_status = 0
     </select>
 
+    <select id="getAllNormalUser" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList" />
+        from tb_bbs_user
+    </select>
+
     <select id="getAllUser" resultMap="BaseResultMap">
         select
         <include refid="BaseColumnList" />
         from tb_bbs_user
-        where user_status = 0
     </select>
 
     <insert id="register" keyProperty="id" useGeneratedKeys="true">
@@ -80,6 +85,20 @@
         update
         tb_bbs_user 
         set password_md5 = #{passwordMD5}
+        where user_id = #{userId}
+    </update>
+    
+    <update id="updateUserStatusToNormal">
+        update
+        tb_bbs_user 
+        set user_status = 0
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateUserStatusToFreeze">
+        update
+        tb_bbs_user 
+        set user_status = 1
         where user_id = #{userId}
     </update>
 </mapper>

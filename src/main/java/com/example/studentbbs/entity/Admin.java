@@ -9,7 +9,21 @@ public class Admin {
 
     private String adminNickName;
 
+    private String adminLevel;
+
     private Byte locked;
+
+    public Admin() {
+    }
+
+    public Admin(Long adminId, String loginName, String loginPassword, String adminNickName, String adminLevel, Byte locked) {
+        this.adminId = adminId;
+        this.loginName = loginName;
+        this.loginPassword = loginPassword;
+        this.adminNickName = adminNickName;
+        this.adminLevel = adminLevel;
+        this.locked = locked;
+    }
 
     public Long getAdminId() {
         return this.adminId;
@@ -24,7 +38,7 @@ public class Admin {
     }
 
     public void setLoginName(String loginName) {
-        this.loginName = (loginName == null) ? null : loginName.trim();
+        this.loginName = loginName;
     }
 
     public String getLoginPassword() {
@@ -32,7 +46,7 @@ public class Admin {
     }
 
     public void setLoginPassword(String loginPassword) {
-        this.loginPassword = (loginPassword == null) ? null : loginPassword.trim();
+        this.loginPassword = loginPassword;
     }
 
     public String getAdminNickName() {
@@ -40,7 +54,15 @@ public class Admin {
     }
 
     public void setAdminNickName(String adminNickName) {
-        this.adminNickName = (adminNickName == null) ? null : adminNickName.trim();
+        this.adminNickName = adminNickName;
+    }
+
+    public String getAdminLevel() {
+        return this.adminLevel;
+    }
+
+    public void setAdminLevel(String adminLevel) {
+        this.adminLevel = adminLevel;
     }
 
     public Byte getLocked() {
@@ -51,17 +73,46 @@ public class Admin {
         this.locked = locked;
     }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", adminId=").append(this.adminId);
-        sb.append(", loginName=").append(this.loginName);
-        sb.append(", loginPassword=").append(this.loginPassword);
-        sb.append(", adminNickName=").append(this.adminNickName);
-        sb.append(", locked=").append(this.locked);
-        sb.append("]");
-        return sb.toString();
+    public Admin adminId(Long adminId) {
+        setAdminId(adminId);
+        return this;
     }
+
+    public Admin loginName(String loginName) {
+        setLoginName(loginName);
+        return this;
+    }
+
+    public Admin loginPassword(String loginPassword) {
+        setLoginPassword(loginPassword);
+        return this;
+    }
+
+    public Admin adminNickName(String adminNickName) {
+        setAdminNickName(adminNickName);
+        return this;
+    }
+
+    public Admin adminLevel(String adminLevel) {
+        setAdminLevel(adminLevel);
+        return this;
+    }
+
+    public Admin locked(Byte locked) {
+        setLocked(locked);
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " adminId='" + getAdminId() + "'" +
+            ", loginName='" + getLoginName() + "'" +
+            ", loginPassword='" + getLoginPassword() + "'" +
+            ", adminNickName='" + getAdminNickName() + "'" +
+            ", adminLevel='" + getAdminLevel() + "'" +
+            ", locked='" + getLocked() + "'" +
+            "}";
+    }
+    
 }

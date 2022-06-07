@@ -21,7 +21,7 @@
         </ul>
         <ul class="layui-nav layui-layout-right">
 
-            <th:block th:if="${session.user == null}">
+            <th:block th:if="${session.user == null and session.admin == null}">
                 <li class="layui-nav-item">
                     <a th:href="@{/user/login}">
                         <i class="layui-icon layui-icon-user"></i>登录</a>
@@ -47,6 +47,23 @@
                                     style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
                         <hr style="margin: 5px 0;">
                         <dd><a th:href="@{/user/logout}" style="text-align: center;">退出</a></dd>
+                    </dl>
+                </li>
+            </th:block>
+
+            <th:block th:unless="${session.admin == null}">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <cite th:text="${session.admin.adminNickName}">程序员十三</cite>
+                        <cite><em>(管理员)</em></cite>
+                        <span class="layui-nav-more"></span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a th:href="@{/admin/index}"><i class="layui-icon"
+                                    style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>管理后台</a>
+                        </dd>
+                        <hr style="margin: 5px 0;">
+                        <dd><a th:href="@{admin/logout}" style="text-align: center;">退出</a></dd>
                     </dl>
                 </li>
             </th:block>

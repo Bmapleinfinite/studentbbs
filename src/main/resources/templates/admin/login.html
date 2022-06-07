@@ -11,11 +11,13 @@
         <div class="layui-panel">
             <div class="layui-tab layui-tab-brief" style="margin: 20px;">
                 <ul class="layui-tab-title">
-                    <li class="layui-this">用户登录</li>
+                    <li><a th:href="@{/user/login}">用户登录</a></li>
                     <li><a th:href="@{/user/register}">用户注册</a></li>
-                    <li><a th:href="@{/admin/login}">管理员登录</a></li>
+                    <li class="layui-this">管理员登录</li>
                 </ul>
                 <div class="layui-tab-content" >
+                    <div class="layui-tab-item"></div>
+                    <div class="layui-tab-item"></div>
                     <div class="layui-tab-item layui-show">
                         <div class="layui-form layui-form-pane">
                             <form method="post" id="loginForm" onsubmit="return false;" action="##">
@@ -47,15 +49,10 @@
                                 </div>
                                 <div class="layui-form-item">
                                     <button class="layui-btn" lay-filter="*" lay-submit onclick="login()">立即登录</button>
-                                    <span style="padding-left:20px;">
-                                        <a href="forget.html">忘记密码？</a>
-                                    </span>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <div class="layui-tab-item"></div>
-                    <div class="layui-tab-item"></div>
                 </div>
             </div>
         </div>
@@ -90,7 +87,7 @@
                     return false;
                 }
                 var params = $("#loginForm").serialize()
-                var url = "/user/login"
+                var url = "/admin/login"
                 $.ajax({
                     type: 'POST',//方法类型
                     url: url,

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="header::head-fragment('用户中心')">
+</head>
+
+<body>
+    <div th:replace="admin/header::header-fragment-adminHead"></div>
+    <div th:replace="admin/header::header-fragment-adminSide"></div>
+
+    <div class="layui-tab-brief">
+        <div style="height: 40px;"></div>
+        <div style="left: 200px; padding: 10px; height: 900px;" class="layui-panel">
+            <div class="layui-tab layui-tab-brief" style="margin: 20px;">
+                <ul class="layui-tab-title" >
+                    <li class="layui-this">用户信息</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <form onsubmit="return false" action="##">
+                            <table class="layui-table" style="width: 1650px;" lay-even lay-skin="nob">
+                                <colgroup>
+                                  <col width="50">
+                                  <col width="100">
+                                  <col width="100">
+                                  <col width="100">
+                                  <col width="100">
+                                  <col width="100">
+                                  <col width="100">
+                                  <col width="100">
+                                  <col width="100">
+                                  <col width="100">
+                                </colgroup>
+                                <thead>
+                                  <tr>
+                                    <th style="text-align: center;"><button id="selectButton" onclick="selectAll()" class="layui-btn layui-btn-sm">全选</button></th>
+                                    <th>ID</th>
+                                    <th>登录名</th>
+                                    <th>昵称</th>
+                                    <th>性别</th>
+                                    <th>地区</th>
+                                    <th>签名</th>
+                                    <th>用户状态</th>
+                                    <th>上次登录时间</th>
+                                    <th>注册时间</th>
+                                  </tr> 
+                                </thead>
+                                <tbody>
+                                  <th:block th:unless="${#lists.isEmpty(users)}">
+                                    <th:block th:each=" u : ${users}">
+                                        <tr>
+                                            <td style="text-align: center;"><input th:value="${u.id}" name="userId" type="checkbox"></td>
+                                            <td th:text="${u.id}">4</td>
+                                            <td th:text="${u.loginName}">rgbugegjcmu@163.com</td>
+                                            <td th:text="${u.nickName}">棠槿牵樱</td>
+                                            <td th:text="${u.gender}">未知</td>
+                                            <td th:text="${u.location}">未知</td>
+                                            <td th:text="${u.introduce}">这个人很懒，什么都没留下~</td>
+                                            <th:block th:if="${u.userStatus == 0}">
+                                                <td><span class="layui-bg-green" style="padding: 5px;">正常</span></td>
+                                            </th:block>
+                                            <th:block th:if="${u.userStatus == 1}">
+                                                <td><span class="layui-bg-red" style="padding: 5px;">冻结</span></td>
+                                            </th:block>
+                                            <td th:text="${u.lastLoginTime}">2022-06-05 19:45:11</td>
+                                            <td th:text="${u.createTime}">2022-05-19 08:59:15</td>
+                                          </tr>
+                                      </th:block>
+                                  </th:block>
+                                </tbody>
+                            </table>
+                            <button onclick="freezeUser()" class="layui-btn">冻结用户</button>
+                            <button onclick="unFreezeUser()" class="layui-btn">解冻用户</button>
+                            <button onclick="deleteUser()" class="layui-btn layui-bg-red">删除用户</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/public.js}"></script>
+    <script>
+        layui.use(['layer', 'form', 'element', 'laypage', 'jquery'], function () {
+            var layer = layui.layer;
+            var element = layui.element;
+            var laypage = layui.laypage;
+            var form = layui.form;
+
+            var $ = layui.$
+
+            window.selectAll = function(){
+                $("[name = 'userId']").prop("checked", 'checked')
+                $('#selectButton').attr('onclick', 'selectAllCancle()')
+                $('#selectButton').attr('class', 'layui-btn layui-btn-sm layui-bg-red')
+                $('#selectButton').html("取消")
+            }
+
+            window.selectAllCancle = function(){
+                $("[name = 'userId']").removeAttr('checked')
+                $('#selectButton').attr('onclick', 'selectAll()')
+                $('#selectButton').attr('class', 'layui-btn layui-btn-sm')
+                $('#selectButton').html("全选")
+            }
+
+            window.getChecked = function(){
+                var chk_value =[];
+                $('input[name = "userId"]:checked').each(function(){
+                    chk_value.push($(this).val());
+                });
+                var is_checked = chk_value.join(',');
+                return is_checked
+            }
+
+            window.unFreezeUser = function(){
+                var arr_id = getChecked()
+                console.log(arr_id)
+                if(arr_id == null){
+                    layer.alert('请选择要解冻的用户!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+
+                var url = '/admin/unFreezeUser'
+                var params = {
+                    "arr_id": arr_id
+                }
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    data: params,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        };
+                    },
+                    error: function () {
+                        layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    }
+                });
+            }
+
+            window.freezeUser = function(){
+                var arr_id = getChecked()
+                console.log(arr_id)
+                if(arr_id == null){
+                    layer.alert('请选择要冻结的用户!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+
+                var url = '/admin/freezeUser'
+                var params = {
+                    "arr_id": arr_id
+                }
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    data: params,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        };
+                    },
+                    error: function () {
+                        layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    }
+                });
+            }
+
+            window.deleteUser = function(){
+                var arr_id = getChecked()
+                console.log(arr_id)
+                if(arr_id == null){
+                    layer.alert('请选择要删除的用户!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    return false;
+                }
+                layer.confirm('真的要删除所选数据吗', {btn: ['确定', '取消'], title:"提示"}, function(){
+                    var url = '/admin/deleteUser'
+                    var params = {
+                        "arr_id": arr_id
+                    }
+                    $.ajax({
+                        type: 'POST',//方法类型
+                        url: url,
+                        data: params,
+                        success: function (result) {
+                            if (result.resultCode == 200) {
+                                window.location.reload()
+                            } else {
+                                layer.msg(result.message)
+                            };
+                        },
+                        error: function () {
+                            layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                        }
+                    });
+                });
+            }
+
+            laypage.render({
+                elem: 'Claypage',
+                count: '50'
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

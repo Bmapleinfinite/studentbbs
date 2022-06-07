@@ -3,11 +3,6 @@ package com.example.studentbbs.util;
 import java.security.MessageDigest;
 
 public class MD5Util {
-    public static void main(String[] args) {
-        String str = "我是标题我是标题我是";
-        System.out.println(str.length());
-    }
-
     private static String byteArrayToHexString(byte[] b) {
         StringBuffer resultSb = new StringBuffer();
         for (int i = 0; i < b.length; i++)

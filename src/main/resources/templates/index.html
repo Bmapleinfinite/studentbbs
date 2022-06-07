@@ -38,12 +38,12 @@
                                 th:href="@{index(page=1, orderby=time, categoryId=${categoryId}, keyword=${keyword})}">按时间</a>
                         </div>
                     </div>
-                    <th:block th:if="${#lists.isEmpty(articlesList)}">
+                    <th:block th:if="${#lists.isEmpty(articlesList) or #lists.isEmpty(session.users)}">
                         <div class="layui-card-body" style="height: 624px; text-align: center;">
                             <span class="layui-font-gray">没有相关数据</span>
                         </div>
                     </th:block>
-                    <th:block th:unless="${#lists.isEmpty(articlesList)}">
+                    <th:block th:unless="${#lists.isEmpty(articlesList) and #lists.isEmpty(session.users)}">
                         <th:block th:each=" a, aStat : ${articlesList}">
                             <th:block th:if="${aStat.index} ge ((${page} - 1) * 7) and ${aStat.index} lt (${page} * 7)">
                                 <div class="layui-card-body">

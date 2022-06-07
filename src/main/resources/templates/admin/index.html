@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+
+<head th:replace="header::head-fragment('管理后台')"></head>
+
 <body>
-    欢迎来到管理后台
+    <div th:replace="admin/header::header-fragment-adminHead"></div>
+    <div th:replace="admin/header::header-fragment-adminSide"></div>
+
+    <div class="layui-tab-brief">
+        <div style="height: 60px;"></div>
+        <div style="left: 200px; padding: 10px; height: 900px;" class="layui-panel">
+            <h1>欢迎您，<span th:text="${session.admin.adminNickName}">棠槿牵樱</span></h1>
+            <br>
+            学生网上交流论坛管理后台
+        </div>
+    </div>
+
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/public.js}"></script>
+    <script>
+        layui.use(['layer', 'form', 'element', 'laypage'], function () {
+            var layer = layui.layer
+            var element = layui.element;
+            var laypage = layui.laypage
+            form = layui.form;
+
+            laypage.render({
+                elem: 'Claypage',
+                count: '50'
+            });
+        });
+    </script>
+
 </body>
+
 </html>

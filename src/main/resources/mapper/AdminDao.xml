@@ -4,17 +4,18 @@
     <resultMap id="BaseResultMap" type="com.example.studentbbs.entity.Admin">
         <id column="admin_id" jdbcType="BIGINT" property="adminId" />
         <result column="login_name" jdbcType="VARCHAR" property="loginName" />
-        <result column="login_password" jdbcType="VARCHAR" property="loginPassword" />
+        <result column="password_md5" jdbcType="VARCHAR" property="loginPassword" />
         <result column="admin_nick_name" jdbcType="VARCHAR" property="adminNickName" />
+        <result column="admin_level" jdbcType="VARCHAR" property="adminLevel" />
         <result column="locked" jdbcType="TINYINT" property="locked" />
     </resultMap>
     <sql id="Base_Column_List">
-        admin_id, login_name, login_password, admin_nick_name, locked
+        admin_id, login_name, password_md5, admin_nick_name, admin_level, locked
     </sql>
     <select id="login" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
-        from tb_admin_user
-        where login_name = #{username,jdbcType=VARCHAR} AND login_password=#{password,jdbcType=VARCHAR} AND locked = 0
+        from tb_bbs_admin
+        where login_name = #{username} AND password_md5 = #{password} AND locked = 0
     </select>
 </mapper>

@@ -1,5 +1,6 @@
 package com.example.studentbbs.service.imp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
@@ -42,8 +43,8 @@ public class UserServiceimp implements UserService {
     }
 
     @Override
-    public HashMap<Integer, User> getAllUser() {
-        return userDao.getAllUser();
+    public HashMap<Integer, User> getAllNormalUser() {
+        return userDao.getAllNormalUser();
     }
 
     @Override
@@ -64,5 +65,20 @@ public class UserServiceimp implements UserService {
     @Override
     public Integer headImgUpdateById(String headImg, Integer userId) {
         return userDao.headImgUpdateById(headImg, userId);
+    }
+
+    @Override
+    public ArrayList<User> getAllUser() {
+        return userDao.getAllUser();
+    }
+
+    @Override
+    public Integer updateUserStatusToNormal(Integer userId) {
+        return userDao.updateUserStatusToNormal(userId);
+    }
+
+    @Override
+    public Integer updateUserStatusToFreeze(Integer userId) {
+        return userDao.updateUserStatusToFreeze(userId);
     }
 }

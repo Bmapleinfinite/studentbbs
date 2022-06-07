@@ -62,8 +62,8 @@
 
     <script th:src="@{/layui/layui.js}"></script>
     <script th:src="@{/js/public.js}"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
-    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+    <script th:src="@{/js/wangEditor.min.js}"></script>
+    <script th:src="@{/js/highlight.min.js}"></script>
     <script type="text/javascript">
         layui.use(['layer', 'form', 'element', 'jquery'], function () {
             var layer = layui.layer;
