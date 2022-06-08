@@ -137,7 +137,7 @@
                     return false;
                 }
 
-                var url = '/user/unFreezeUser'
+                var url = '/admin/unFreezeUser'
                 var params = {
                     "arr_id": arr_id
                 }
@@ -166,7 +166,7 @@
                     return false;
                 }
 
-                var url = '/user/freezeUser'
+                var url = '/admin/freezeUser'
                 var params = {
                     "arr_id": arr_id
                 }
@@ -195,7 +195,7 @@
                     return false;
                 }
                 layer.confirm('真的要删除所选数据吗', { btn: ['确定', '取消'], title: "提示" }, function () {
-                    var url = '/user/deleteUser'
+                    var url = '/admin/deleteUser'
                     var params = {
                         "arr_id": arr_id
                     }

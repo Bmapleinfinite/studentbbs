@@ -20,7 +20,7 @@ public interface UserDao {
     Integer updateLastLoginTimeById(Integer id);
 
     @MapKey("id")
-    HashMap<Integer, User> getAllNormalUser();
+    HashMap<Integer, User> getAllUserByMap();
 
     Integer updateUserInfoById(Integer userId, String nickName, String gender, String location, String introduce);
 

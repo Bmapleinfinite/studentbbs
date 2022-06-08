@@ -43,8 +43,8 @@ public class UserServiceimp implements UserService {
     }
 
     @Override
-    public HashMap<Integer, User> getAllNormalUser() {
-        return userDao.getAllNormalUser();
+    public HashMap<Integer, User> getAllUserByMap() {
+        return userDao.getAllUserByMap();
     }
 
     @Override

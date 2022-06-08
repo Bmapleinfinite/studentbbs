@@ -31,6 +31,12 @@
                                             <a th:href="@{'/article/detail/' + ${a.id}}" th:text="${#strings.abbreviate(a.title, 10)}" th:title="${a.title}" >我是标题</a>
                                             <span th:text="${a.lastUpdateTime}" class="layui-word-aux">2022-05-26
                                                 15:34:56</span>
+                                            <th:block th:if="${a.articleStatus == 0}">
+                                                <span class="layui-word-aux"><em class="layui-font-red">未审核</em></span>
+                                            </th:block>
+                                            <th:block th:if="${a.articleStatus == 2}">
+                                                <span class="layui-word-aux"><em class="layui-font-red">审核失败</em></span>
+                                            </th:block>
                                             <span class="layui-word-aux"
                                                 style="position: absolute; right: 0; margin-right: 15px;">
                                                 <a th:href="@{/article/edit}"><button type="button"
@@ -77,6 +83,9 @@
                                                 15:34:56</span>
                                             在 <a th:href="@{'/article/detail/' + ${c.postId}}"
                                                 th:text="${articlesMap[c.postId].title}"></a> 留下了评论
+                                            <th:block th:if="${c.isDeleted == 1}">
+                                                <span class="layui-word-aux"><em class="layui-font-red">未审核</em></span>
+                                            </th:block>
                                             <span class="layui-word-aux"
                                                 style="position: absolute; right: 0; margin-right: 15px;">
                                                 <button onclick="comment_delete()" type="button"

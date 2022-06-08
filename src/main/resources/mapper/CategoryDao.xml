@@ -11,9 +11,44 @@
     <sql id="Base_Column_List">
         category_id, category_name, category_rank, is_deleted, create_time
     </sql>
+
+    <insert id="addCate" keyProperty="id" useGeneratedKeys="true">
+        insert into
+        tb_post_category (category_name, category_rank)
+        values(#{category_name}, #{category_rank})
+    </insert>
+
     <select id="getAllCategory" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from tb_post_category ORDER BY category_rank DESC
     </select>
+
+    <update id="updateCateStatusToFreeze">
+        update 
+        tb_post_category
+        set is_deleted = 1
+        where category_id = #{cateId}
+    </update>
+    
+    <update id="updateCateStatusToNormal">
+        update 
+        tb_post_category
+        set is_deleted = 0
+        where category_id = #{cateId}
+    </update>
+    
+    <update id="updateCateInfo">
+        update 
+        tb_post_category
+        set category_name = #{cateName}, 
+        category_rank = #{cateRank}
+        where category_id = #{cateId}
+    </update>
+
+    <delete id="deleteCateById">
+        delete
+        from tb_post_category
+        where category_id = #{cateId}
+    </delete>
 </mapper>

@@ -29,7 +29,7 @@
         select
         <include refid="BaseColumnList" />
         from tb_bbs_user
-        where login_name = #{loginName} and user_status = 0
+        where login_name = #{loginName}
     </select>
 
     <select id="getUserById" resultMap="BaseResultMap">
@@ -39,7 +39,7 @@
         where user_id = #{userId} and user_status = 0
     </select>
 
-    <select id="getAllNormalUser" resultMap="BaseResultMap">
+    <select id="getAllUserByMap" resultMap="BaseResultMap">
         select
         <include refid="BaseColumnList" />
         from tb_bbs_user

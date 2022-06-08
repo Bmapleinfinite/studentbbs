@@ -70,7 +70,7 @@
         select 
         <include refid="Base_Column_List" /> 
         from tb_bbs_post 
-        WHERE post_status = 1 and publish_user_id = #{userId}
+        WHERE publish_user_id = #{userId}
     </select>
 
     <select id="getAllArticle" resultMap="BaseResultMap">

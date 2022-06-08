@@ -7,7 +7,7 @@ public class Article {
     private String content;
     private int categoryID;
     private String categoryName;
-    private String articleStatus;
+    private int articleStatus;
     private int views;
     private int comments;
     private int collects;
@@ -19,7 +19,7 @@ public class Article {
     public Article() {
     }
 
-    public Article(int id, int userId, String title, String content, int categoryID, String categoryName, String articleStatus, int views, int comments, int collects, int likes, String lastUpdateTime, String createTime) {
+    public Article(int id, int userId, String title, String content, int categoryID, String categoryName, int articleStatus, int views, int comments, int collects, int likes, String lastUpdateTime, String createTime) {
         this.id = id;
         this.userId = userId;
         this.title = title;
@@ -83,11 +83,11 @@ public class Article {
         this.categoryName = categoryName;
     }
 
-    public String getArticleStatus() {
+    public int getArticleStatus() {
         return this.articleStatus;
     }
 
-    public void setArticleStatus(String articleStatus) {
+    public void setArticleStatus(int articleStatus) {
         this.articleStatus = articleStatus;
     }
 
@@ -169,7 +169,7 @@ public class Article {
         return this;
     }
 
-    public Article articleStatus(String articleStatus) {
+    public Article articleStatus(int articleStatus) {
         setArticleStatus(articleStatus);
         return this;
     }

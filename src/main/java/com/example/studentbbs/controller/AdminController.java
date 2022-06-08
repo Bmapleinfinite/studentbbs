@@ -8,8 +8,10 @@ import javax.servlet.http.HttpSession;
 
 import com.example.studentbbs.common.ServiceResultEnum;
 import com.example.studentbbs.entity.Admin;
+import com.example.studentbbs.entity.Category;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.AdminService;
+import com.example.studentbbs.service.CategoryService;
 import com.example.studentbbs.service.UserService;
 import com.example.studentbbs.util.PatternUtil;
 import com.example.studentbbs.util.Result;
@@ -32,6 +34,9 @@ public class AdminController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private CategoryService categoryService;
 
     @Resource
     private HomeController homeController;
@@ -80,43 +85,27 @@ public class AdminController {
     }
 
     @GetMapping("/userManage")
-    public String userManage(HttpServletRequest request) {
+    public String userManage(HttpSession session, HttpServletRequest request,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         ArrayList<User> users = new ArrayList<>();
         users = userService.getAllUser();
+
         request.setAttribute("users", users);
+        request.setAttribute("size", users.size());
+        request.setAttribute("page", page);
         return "admin/userManage";
     }
+    
+    @GetMapping("/categoryManage")
+    public String categoryManage(HttpSession session, HttpServletRequest request,
+                            @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        ArrayList<Category> categories = new ArrayList<>();
+        categories = categoryService.getAllCategory();
 
-    @PostMapping("/unFreezeUser")
-    @ResponseBody
-    public Result unFreezeUser(@RequestParam("arr_id") String arr_id) {
-        String[] userId_arr = arr_id.split(",");
-        for(String elem : userId_arr){
-            Integer result = userService.updateUserStatusToNormal(Integer.valueOf(elem));
-            if(result < 0){
-                return ResultGenerator.genFailResult("部分用户解冻失败");
-            }
-        }
-        return ResultGenerator.genSuccessResult();
-    }
-
-    @PostMapping("/freezeUser")
-    @ResponseBody
-    public Result usersDelete(@RequestParam("arr_id") String arr_id) {
-        String[] userId_arr = arr_id.split(",");
-        for(String elem : userId_arr){
-            Integer result = userService.updateUserStatusToFreeze(Integer.valueOf(elem));
-            if(result < 0){
-                return ResultGenerator.genFailResult("部分用户解冻失败");
-            }
-        }
-        return ResultGenerator.genSuccessResult();
-    }
-
-    @PostMapping("/deleteUser")
-    @ResponseBody
-    public Result deleteUser() {
-        return ResultGenerator.genSuccessResult();
+        request.setAttribute("categories", categories);
+        request.setAttribute("size", categories.size());
+        request.setAttribute("page", page);
+        return "admin/categoryManage";
     }
 
     @GetMapping("/logout")
