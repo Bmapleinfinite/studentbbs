@@ -50,4 +50,19 @@ public class AricleServiceimp implements ArticleService {
     public Map<Integer, Article> getAllArticle() {
         return articleDao.getAllArticle();
     }
+
+    @Override
+    public Integer updateArticleStatusToNormal(Integer id) {
+        return articleDao.updateArticleStatusToNormal(id);
+    }
+
+    @Override
+    public Integer updateArticleStatusToFreeze(Integer id) {
+        return articleDao.updateArticleStatusToFreeze(id);
+    }
+
+    @Override
+    public Integer deleteArticleById(Integer id) {
+        return articleDao.deleteArticleById(id);
+    }
 }

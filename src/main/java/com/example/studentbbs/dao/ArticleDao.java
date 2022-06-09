@@ -24,4 +24,10 @@ public interface ArticleDao {
 
     @MapKey("id")
     Map<Integer, Article> getAllArticle();
+
+    Integer updateArticleStatusToNormal(Integer id);
+
+    Integer updateArticleStatusToFreeze(Integer id);
+
+    Integer deleteArticleById(Integer id);
 }

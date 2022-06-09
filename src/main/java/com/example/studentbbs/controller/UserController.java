@@ -274,7 +274,14 @@ public class UserController {
 
     @PostMapping("/deleteUser")
     @ResponseBody
-    public Result deleteUser() {
+    public Result deleteUser(@RequestParam("arr_id") String arr_id) {
+        String[] userId_arr = arr_id.split(",");
+        for(String elem : userId_arr){
+            Integer result = userService.deleteUserById(Integer.valueOf(elem));
+            if(result < 0){
+                return ResultGenerator.genFailResult("部分用户删除失败");
+            }
+        }
         return ResultGenerator.genSuccessResult();
     }
 

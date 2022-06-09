@@ -1,6 +1,8 @@
 package com.example.studentbbs.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -8,9 +10,11 @@ import javax.servlet.http.HttpSession;
 
 import com.example.studentbbs.common.ServiceResultEnum;
 import com.example.studentbbs.entity.Admin;
+import com.example.studentbbs.entity.Article;
 import com.example.studentbbs.entity.Category;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.AdminService;
+import com.example.studentbbs.service.ArticleService;
 import com.example.studentbbs.service.CategoryService;
 import com.example.studentbbs.service.UserService;
 import com.example.studentbbs.util.PatternUtil;
@@ -37,6 +41,9 @@ public class AdminController {
 
     @Resource
     private CategoryService categoryService;
+
+    @Resource
+    private ArticleService articleService;
 
     @Resource
     private HomeController homeController;
@@ -98,7 +105,7 @@ public class AdminController {
     
     @GetMapping("/categoryManage")
     public String categoryManage(HttpSession session, HttpServletRequest request,
-                            @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         ArrayList<Category> categories = new ArrayList<>();
         categories = categoryService.getAllCategory();
 
@@ -108,6 +115,20 @@ public class AdminController {
         return "admin/categoryManage";
     }
 
+    @GetMapping("/articleManage")
+    public String articleManage(HttpSession session, HttpServletRequest request,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        ArrayList<Article> articles = new ArrayList<>();
+        Map<Integer, User> users = new HashMap<>();
+        articles = articleService.getAllArticleByTime();
+        users = userService.getAllUserByMap();
+
+        request.setAttribute("articles", articles);
+        request.setAttribute("users", users);
+        request.setAttribute("size", articles.size());
+        request.setAttribute("page", page);
+        return "admin/articleManage";
+    }
     @GetMapping("/logout")
     public String logout(HttpSession session, HttpServletRequest request) {
         session.removeAttribute("admin");

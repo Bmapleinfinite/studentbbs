@@ -29,4 +29,6 @@ public interface UserService {
     Integer updateUserStatusToNormal(Integer userId);
 
     Integer updateUserStatusToFreeze(Integer userId);
+
+    Integer deleteUserById(Integer userId);
 }

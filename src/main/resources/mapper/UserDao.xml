@@ -101,4 +101,10 @@
         set user_status = 1
         where user_id = #{userId}
     </update>
+
+    <delete id="deleteUserById">
+        delete
+        from tb_bbs_user
+        where user_id = #{userId}
+    </delete>
 </mapper>

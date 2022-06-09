@@ -35,4 +35,6 @@ public interface UserDao {
     Integer updateUserStatusToNormal(Integer userId);
 
     Integer updateUserStatusToFreeze(Integer userId);
+
+    Integer deleteUserById(Integer userId);
 }

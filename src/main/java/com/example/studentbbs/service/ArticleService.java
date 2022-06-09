@@ -19,4 +19,10 @@ public interface ArticleService {
     ArrayList<Article> getArticleByUserId(Integer userId);
 
     Map<Integer, Article> getAllArticle();
+
+    Integer updateArticleStatusToNormal(Integer valueOf);
+
+    Integer updateArticleStatusToFreeze(Integer valueOf);
+
+    Integer deleteArticleById(Integer valueOf);
 }

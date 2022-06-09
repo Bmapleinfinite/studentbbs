@@ -55,7 +55,6 @@
         select 
         <include refid="Base_Column_List" /> 
         from tb_bbs_post 
-        WHERE post_status = 1 
         ORDER BY last_update_time DESC;
     </select>
 
@@ -85,4 +84,24 @@
         tb_bbs_post (publish_user_id, post_title, post_content, post_category_id, post_category_name)
         values(#{userId}, #{title}, #{content}, #{categoryID}, #{categoryName})
     </insert>
+
+    <update id="updateArticleStatusToNormal">
+        update
+        tb_bbs_post
+        set post_status = 1
+        where post_id = #{id}
+    </update>
+
+    <update id="updateArticleStatusToFreeze">
+        update
+        tb_bbs_post
+        set post_status = 2
+        where post_id = #{id}
+    </update>
+
+    <delete id="deleteArticleById">
+        delete
+        from tb_bbs_post
+        where post_id = #{id}
+    </delete>
 </mapper>

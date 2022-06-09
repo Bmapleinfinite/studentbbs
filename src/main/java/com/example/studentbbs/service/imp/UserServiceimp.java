@@ -81,4 +81,9 @@ public class UserServiceimp implements UserService {
     public Integer updateUserStatusToFreeze(Integer userId) {
         return userDao.updateUserStatusToFreeze(userId);
     }
+
+    @Override
+    public Integer deleteUserById(Integer userId) {
+        return userDao.deleteUserById(userId);
+    }
 }

@@ -56,7 +56,6 @@ public class ArticleController {
             @RequestParam("categoryID") String categoryID, @RequestParam("verifyCode") String verifyCode,
             @RequestParam("categoryName") String categoryName, HttpSession session) {
 
-
         if (!StringUtils.hasLength(title)) {
             return ResultGenerator.genFailResult(ServiceResultEnum.NO_TITLE.getResult());
         }
@@ -73,7 +72,7 @@ public class ArticleController {
         if (!verifyCode.equals(captcha)) {
             return ResultGenerator.genFailResult(ServiceResultEnum.WRONG_VERIFYCODE.getResult());
         }
-        
+
         Article article = new Article();
         User user = (User) session.getAttribute("user");
         article.setUserId(user.getId());
@@ -85,8 +84,47 @@ public class ArticleController {
         int result = articleService.articlePub(article);
         if (result > 0) {
             return ResultGenerator.genSuccessResult();
-        }else{
+        } else {
             return ResultGenerator.genFailResult();
         }
+    }
+    
+    @PostMapping("/unFreezeArticle")
+    @ResponseBody
+    public Result unFreezeArticle(@RequestParam("arr_id") String arr_id) {
+        String[] userId_arr = arr_id.split(",");
+        for (String elem : userId_arr) {
+            Integer result = articleService.updateArticleStatusToNormal(Integer.valueOf(elem));
+            if (result < 0) {
+                return ResultGenerator.genFailResult("部分帖子审核失败");
+            }
+        }
+        return ResultGenerator.genSuccessResult();
+    }
+    
+    @PostMapping("/freezeArticle")
+    @ResponseBody
+    public Result freezeArticle(@RequestParam("arr_id") String arr_id) {
+        String[] userId_arr = arr_id.split(",");
+        for (String elem : userId_arr) {
+            Integer result = articleService.updateArticleStatusToFreeze(Integer.valueOf(elem));
+            if (result < 0) {
+                return ResultGenerator.genFailResult("部分帖子取消审核失败");
+            }
+        }
+        return ResultGenerator.genSuccessResult();
+    }
+
+    @PostMapping("/deleteArticle")
+    @ResponseBody
+    public Result deleteArticle(@RequestParam("arr_id") String arr_id) {
+        String[] userId_arr = arr_id.split(",");
+        for(String elem : userId_arr){
+            Integer result = articleService.deleteArticleById(Integer.valueOf(elem));
+            if(result < 0){
+                return ResultGenerator.genFailResult("部分帖子删除失败");
+            }
+        }
+        return ResultGenerator.genSuccessResult();
     }
 }
