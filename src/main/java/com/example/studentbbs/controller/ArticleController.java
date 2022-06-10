@@ -3,6 +3,7 @@ package com.example.studentbbs.controller;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.example.studentbbs.common.ServiceResultEnum;
@@ -38,7 +39,7 @@ public class ArticleController {
         Article article = new Article();
         ArrayList<Comment> comments = new ArrayList<>();
         article = articleService.getArticleById(id);
-        comments = commentService.getAllComments(id);
+        comments = commentService.getCommentsByArticleId(id);
         session.setAttribute("article", article);
         session.setAttribute("comments", comments);
         return "article/detail";
@@ -82,6 +83,48 @@ public class ArticleController {
         article.setCategoryName(categoryName);
 
         int result = articleService.articlePub(article);
+        if (result > 0) {
+            return ResultGenerator.genSuccessResult();
+        } else {
+            return ResultGenerator.genFailResult();
+        }
+    }
+
+    @GetMapping("/articleEdit/{id}")
+    public String articleEdit(@PathVariable Integer id, HttpServletRequest request) {
+        Article article = new Article();
+        article = articleService.getArticleById(id);
+
+        request.setAttribute("article", article);
+        return "article/articleEdit";
+    }
+
+    @PostMapping("/articleEdit")
+    @ResponseBody
+    public Result articleEdit(
+            @RequestParam("articleId") String articleId,
+            @RequestParam("title") String title, @RequestParam("content") String content,
+            @RequestParam("categoryID") String categoryID, @RequestParam("verifyCode") String verifyCode,
+            @RequestParam("categoryName") String categoryName, HttpSession session) {
+        
+        if (!StringUtils.hasLength(title)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_TITLE.getResult());
+        }
+        if (!StringUtils.hasLength(content)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_CONTENT.getResult());
+        }
+        if (!StringUtils.hasLength(categoryName)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_CATEGORY.getResult());
+        }
+        if (!StringUtils.hasLength(verifyCode)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_VERIFYCODE.getResult());
+        }
+        String captcha = (String) session.getAttribute("VerifyCode");
+        if (!verifyCode.equals(captcha)) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.WRONG_VERIFYCODE.getResult());
+        }
+
+        int result = articleService.updateArticleById(articleId, title, content, categoryID, categoryName);
         if (result > 0) {
             return ResultGenerator.genSuccessResult();
         } else {

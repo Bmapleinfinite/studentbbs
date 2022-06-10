@@ -145,7 +145,7 @@ public class UserController {
         User user = (User) session.getAttribute("user");
 
         articlesList = articleService.getArticleByUserId(user.getId());
-        articlesMap = articleService.getAllArticle();
+        articlesMap = articleService.getAllArticleByMap();
         commentsList = commentService.getCommentsByUserId(user.getId());
 
         request.setAttribute("articlesList", articlesList);

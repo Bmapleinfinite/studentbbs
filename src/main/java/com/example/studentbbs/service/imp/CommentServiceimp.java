@@ -22,13 +22,33 @@ public class CommentServiceimp implements CommentService {
     }
 
     @Override
-    public ArrayList<Comment> getAllComments(Integer id) {
-        return commentDao.getAllComments(id);
+    public ArrayList<Comment> getCommentsByArticleId(Integer id) {
+        return commentDao.getCommentsByArticleId(id);
     }
 
     @Override
     public ArrayList<Comment> getCommentsByUserId(Integer userId) {
         return commentDao.getCommentsByUserId(userId);
+    }
+
+    @Override
+    public ArrayList<Comment> getAllComments() {
+        return commentDao.getAllComments();
+    }
+
+    @Override
+    public Integer updateCommentStatusToNormal(Integer id) {
+        return commentDao.updateCommentStatusToNormal(id);
+    }
+
+    @Override
+    public Integer updateCommentStatusToFreeze(Integer id) {
+        return commentDao.updateCommentStatusToFreeze(id);
+    }
+
+    @Override
+    public Integer deleteCommentById(Integer id) {
+        return commentDao.deleteCommentById(id);
     }
     
 }

@@ -12,10 +12,12 @@ import com.example.studentbbs.common.ServiceResultEnum;
 import com.example.studentbbs.entity.Admin;
 import com.example.studentbbs.entity.Article;
 import com.example.studentbbs.entity.Category;
+import com.example.studentbbs.entity.Comment;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.AdminService;
 import com.example.studentbbs.service.ArticleService;
 import com.example.studentbbs.service.CategoryService;
+import com.example.studentbbs.service.CommentService;
 import com.example.studentbbs.service.UserService;
 import com.example.studentbbs.util.PatternUtil;
 import com.example.studentbbs.util.Result;
@@ -44,6 +46,9 @@ public class AdminController {
 
     @Resource
     private ArticleService articleService;
+
+    @Resource
+    private CommentService commentService;
 
     @Resource
     private HomeController homeController;
@@ -129,6 +134,26 @@ public class AdminController {
         request.setAttribute("page", page);
         return "admin/articleManage";
     }
+
+    @GetMapping("/commentManage")
+    public String commentManage(HttpSession session, HttpServletRequest request,
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        ArrayList<Comment> comments = new ArrayList<>();
+        Map<Integer, Article> articles = new HashMap<>();
+        Map<Integer, User> users = new HashMap<>();
+
+        articles = articleService.getAllArticleByMap();
+        users = userService.getAllUserByMap();
+        comments = commentService.getAllComments();
+
+        request.setAttribute("articles", articles);
+        request.setAttribute("users", users);
+        request.setAttribute("comments", comments);
+        request.setAttribute("size", comments.size());
+        request.setAttribute("page", page);
+        return "admin/commentManage";
+    }
+
     @GetMapping("/logout")
     public String logout(HttpSession session, HttpServletRequest request) {
         session.removeAttribute("admin");

@@ -72,7 +72,7 @@
         WHERE publish_user_id = #{userId}
     </select>
 
-    <select id="getAllArticle" resultMap="BaseResultMap">
+    <select id="getAllArticleByMap" resultMap="BaseResultMap">
         select 
         <include refid="Base_Column_List" /> 
         from tb_bbs_post 
@@ -97,6 +97,14 @@
         tb_bbs_post
         set post_status = 2
         where post_id = #{id}
+    </update>
+
+    <update id="updateArticleById">
+        update
+        tb_bbs_post
+        set post_title = #{title}, post_content = #{content}, post_category_id = #{categoryID},
+        post_category_name = #{categoryName}, last_update_time = CURRENT_TIMESTAMP
+        where post_id = #{articleId}
     </update>
 
     <delete id="deleteArticleById">

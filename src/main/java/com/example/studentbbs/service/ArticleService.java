@@ -18,11 +18,14 @@ public interface ArticleService {
 
     ArrayList<Article> getArticleByUserId(Integer userId);
 
-    Map<Integer, Article> getAllArticle();
+    Map<Integer, Article> getAllArticleByMap();
 
     Integer updateArticleStatusToNormal(Integer valueOf);
 
     Integer updateArticleStatusToFreeze(Integer valueOf);
 
     Integer deleteArticleById(Integer valueOf);
+
+    Integer updateArticleById(String articleId, String title, String content, String categoryID,
+            String categoryName);
 }

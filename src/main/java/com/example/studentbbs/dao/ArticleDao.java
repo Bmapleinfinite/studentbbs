@@ -23,11 +23,13 @@ public interface ArticleDao {
     ArrayList<Article> getArticleByUserId(Integer userId);
 
     @MapKey("id")
-    Map<Integer, Article> getAllArticle();
+    Map<Integer, Article> getAllArticleByMap();
 
     Integer updateArticleStatusToNormal(Integer id);
 
     Integer updateArticleStatusToFreeze(Integer id);
 
     Integer deleteArticleById(Integer id);
+
+    Integer updateArticleById(String articleId, String title, String content, String categoryID, String categoryName);
 }

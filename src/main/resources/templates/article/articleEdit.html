@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="header::head-fragment('发布新帖')"></head>
+<head th:replace="header::head-fragment('编辑帖子')"></head>
 
 <body>
     <div th:replace="header::header-fragment"></div>
@@ -16,7 +16,7 @@
                                 <label for="title" class="layui-form-label">文章标题</label>
                                 <div class="layui-input-block">
                                     <input id="title" name="title" class="layui-input" type="text" required
-                                        lay-verify="required">
+                                        lay-verify="required" th:value="${article.title}">
                                 </div>
                             </div>
 
@@ -26,7 +26,9 @@
                                     <select name="category" id="category">
                                         <option value="0"></option>
                                         <th:block th:each=" c : ${session.categorys}">
-                                            <option th:value="${c.id}" th:text="${c.categoryName}">提问</option>
+                                            <option th:value="${c.id}" th:text="${c.categoryName}"
+                                                th:selected="${null != c.id and article.categoryID == c.id} ? true : false">
+                                                提问</option>
                                         </th:block>
                                     </select>
                                 </div>
@@ -37,7 +39,7 @@
 
                     <div class="layui-form-item layui-form-text">
                         <div class="layui-input-block">
-                            <div id="wangEditor"></div>
+                            <div id="wangEditor" th:utext="${article.content}"></div>
                         </div>
                     </div>
 
@@ -57,6 +59,8 @@
             </div>
         </div>
         <input th:value="${session.user.id}" id="userId" name="userId" style="visibility: hidden;" readonly
+            class="layui-input" type="text">
+        <input th:value="${article.id}" id="articleId" name="articleId" style="visibility: hidden;" readonly
             class="layui-input" type="text">
     </div>
 
@@ -79,44 +83,46 @@
             editor.config.uploadFileName = 'file'
             editor.config.showLinkImg = false
             editor.highlight = hljs
-            
+
             editor.create()
 
             window.articlePub = function () {
                 var title = $('#title').val()
-                if(isNull(title)){
+                if (isNull(title)) {
                     layer.alert('请输入标题!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
                     return false;
                 }
 
                 var categoryID = $('#category').find('option:selected').val()
                 var category = $('#category').find('option:selected').text()
-                if(categoryID == 0){
+                if (categoryID == 0) {
                     layer.alert('请选择文章分类!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
                     return false;
                 }
 
                 var content = editor.txt.html()
 
-                if(isNull(content)){
+                if (isNull(content)) {
                     layer.alert('请输入正文内容!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
                     return false;
                 }
 
                 var verifyCode = $('#verifyCode').val()
-                if(!validLength(verifyCode, 5)){
+                if (!validLength(verifyCode, 5)) {
                     layer.alert('请输入正确的验证码!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
                     return false;
                 }
-                
+
+                var articleId = $('#articleId').val()
                 var params = {
-                    "title": title, 
+                    "articleId": articleId,
+                    "title": title,
                     "categoryID": categoryID,
-                    "categoryName": category, 
+                    "categoryName": category,
                     "content": content,
                     "verifyCode": verifyCode
                 }
-                var url = '/article/articlePub'
+                var url = '/article/articleEdit'
                 $.ajax({
                     type: 'POST',//方法类型
                     url: url,

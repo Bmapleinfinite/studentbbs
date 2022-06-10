@@ -39,9 +39,9 @@
                                             </th:block>
                                             <span class="layui-word-aux"
                                                 style="position: absolute; right: 0; margin-right: 15px;">
-                                                <a th:href="@{/article/edit}"><button type="button"
+                                                <a th:href="@{'/article/articleEdit/' + ${a.id}}"><button type="button"
                                                         class="layui-btn layui-btn-xs">编辑</button></a>
-                                                <button onclick="article_delete()" type="button"
+                                                <button th:onclick="'deleteArticle' + '(' + ${a.id} + ')'" type="button"
                                                     class="layui-btn layui-btn-xs layui-bg-red">删除</button>
                                                 阅 <span th:text="${a.views}">1</span>
                                                 / 评 <span th:text="${a.comments}">0</span>
@@ -88,7 +88,7 @@
                                             </th:block>
                                             <span class="layui-word-aux"
                                                 style="position: absolute; right: 0; margin-right: 15px;">
-                                                <button onclick="comment_delete()" type="button"
+                                                <button th:onclick="'deleteComment' + '(' + ${c.id} + ')'" type="button"
                                                     class="layui-btn layui-btn-xs layui-bg-red">删除</button>
                                         </div>
                                         <hr>
@@ -154,8 +154,52 @@
                 }
             })
 
-            window.article_delete = function () {
+            window.deleteArticle = function (arr_id) {
+                layer.confirm('真的要删除该帖子吗', { btn: ['确定', '取消'], title: "提示" }, function () {
+                    var url = '/article/deleteArticle'
+                    var params = {
+                        "arr_id": arr_id
+                    }
+                    $.ajax({
+                        type: 'POST',//方法类型
+                        url: url,
+                        data: params,
+                        success: function (result) {
+                            if (result.resultCode == 200) {
+                                window.location.reload()
+                            } else {
+                                layer.msg(result.message)
+                            };
+                        },
+                        error: function () {
+                            layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                        }
+                    });
+                });
+            }
 
+            window.deleteComment = function (arr_id) {
+                layer.confirm('真的要删除所选数据吗', { btn: ['确定', '取消'], title: "提示" }, function () {
+                    var url = '/comment/deleteComment'
+                    var params = {
+                        "arr_id": arr_id
+                    }
+                    $.ajax({
+                        type: 'POST',//方法类型
+                        url: url,
+                        data: params,
+                        success: function (result) {
+                            if (result.resultCode == 200) {
+                                window.location.reload()
+                            } else {
+                                layer.msg(result.message)
+                            };
+                        },
+                        error: function () {
+                            layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                        }
+                    });
+                });
             }
         });
     </script>

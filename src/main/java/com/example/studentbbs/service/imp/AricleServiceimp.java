@@ -47,8 +47,8 @@ public class AricleServiceimp implements ArticleService {
     }
 
     @Override
-    public Map<Integer, Article> getAllArticle() {
-        return articleDao.getAllArticle();
+    public Map<Integer, Article> getAllArticleByMap() {
+        return articleDao.getAllArticleByMap();
     }
 
     @Override
@@ -64,5 +64,11 @@ public class AricleServiceimp implements ArticleService {
     @Override
     public Integer deleteArticleById(Integer id) {
         return articleDao.deleteArticleById(id);
+    }
+
+    @Override
+    public Integer updateArticleById(String articleId, String title, String content, String categoryID,
+            String categoryName) {
+        return articleDao.updateArticleById(articleId, title, content, categoryID, categoryName);
     }
 }

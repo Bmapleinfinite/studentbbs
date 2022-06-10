@@ -43,4 +43,43 @@ public class CommentController {
             return ResultGenerator.genFailResult();
         }
     }
+
+    @PostMapping("/unFreezeComment")
+    @ResponseBody
+    public Result unFreezeComment(@RequestParam("arr_id") String arr_id) {
+        String[] userId_arr = arr_id.split(",");
+        for(String elem : userId_arr){
+            Integer result = commentService.updateCommentStatusToNormal(Integer.valueOf(elem));
+            if(result < 0){
+                return ResultGenerator.genFailResult("部分评论审核失败");
+            }
+        }
+        return ResultGenerator.genSuccessResult();
+    }
+
+    @PostMapping("/freezeComment")
+    @ResponseBody
+    public Result freezeComment(@RequestParam("arr_id") String arr_id) {
+        String[] userId_arr = arr_id.split(",");
+        for(String elem : userId_arr){
+            Integer result = commentService.updateCommentStatusToFreeze(Integer.valueOf(elem));
+            if(result < 0){
+                return ResultGenerator.genFailResult("部分评论取消审核失败");
+            }
+        }
+        return ResultGenerator.genSuccessResult();
+    }
+
+    @PostMapping("/deleteComment")
+    @ResponseBody
+    public Result deleteComment(@RequestParam("arr_id") String arr_id) {
+        String[] userId_arr = arr_id.split(",");
+        for(String elem : userId_arr){
+            Integer result = commentService.deleteCommentById(Integer.valueOf(elem));
+            if(result < 0){
+                return ResultGenerator.genFailResult("部分评论删除失败");
+            }
+        }
+        return ResultGenerator.genSuccessResult();
+    }
 }
