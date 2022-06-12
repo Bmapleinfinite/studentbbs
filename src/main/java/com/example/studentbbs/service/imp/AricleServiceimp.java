@@ -71,4 +71,9 @@ public class AricleServiceimp implements ArticleService {
             String categoryName) {
         return articleDao.updateArticleById(articleId, title, content, categoryID, categoryName);
     }
+
+    @Override
+    public Integer updateArticleViewById(Integer id, Integer size, Integer likes, Integer collects) {
+        return articleDao.updateArticleViewById(id, size, likes, collects);
+    }
 }

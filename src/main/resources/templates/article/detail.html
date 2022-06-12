@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="header::head-fragment(${session.article.title})"></head>
+<head th:replace="header::head-fragment(${article.title})"></head>
 
 <body>
     <div th:replace="header::header-fragment"></div>
@@ -12,47 +12,65 @@
                 <div class="layui-panel">
                     <div class="layui-card">
                         <div class="layui-card-body font">
-                            <img class="headImg" th:src="@{${session.users[session.article.userId].headImgUrl}}" alt="">
+                            <img class="headImg" th:src="@{${users[article.userId].headImgUrl}}" alt="">
                             <div style="margin-left: 54px;">
                                 <span class="layui-border-green layui-btn-xs"
-                                    th:text="${session.article.categoryName}">分享</span></a>
-                                <a th:text="${session.article.title}" href="">默认</a><br>
-                                <span th:text="${session.users[session.article.userId].nickName}"
+                                    th:text="${article.categoryName}">分享</span></a>
+                                <a th:text="${article.title}" href="">默认</a><br>
+                                <span th:text="${users[article.userId].nickName}"
                                     class="layui-font-12">嗨嗨嗨 </span>
-                                <span th:text="'发布日期: ' + ${session.article.createTime}"
-                                    class="layui-font-red layui-font-12">发布日期: 2021-08-01 13:01:22</span>
-                                <span th:text="'最近更新日期: ' + ${session.article.lastUpdateTime}"
+                                <span th:text="'发布日期: ' + ${article.createTime}"
+                                    class="layui-font-12">发布日期: 2021-08-01 13:01:22</span>
+                                <span th:text="'最近更新日期: ' + ${article.lastUpdateTime}"
                                     class="layui-font-red layui-font-12">最近更新日期: 2022-08-01 13:01:22</span>
+                                    <span th:text="'阅读数 ' + ${article.views}"
+                                    class="layui-font-12">最近更新日期: 2022-08-01 13:01:22</span>
                             </div>
                         </div>
                         <hr>
-                        <div class="layui-card-body" th:utext="${session.article.content}">
+                        <div class="layui-card-body" th:utext="${article.content}">
                         </div>
                         <div class="layui-card-body">
                             <div style="position: absolute; right: 10px; bottom: 5px;">
                                 <i class="layui-icon layui-icon-praise layui-font-red"></i> <span
-                                    th:text="${session.article.likes}"></span>
+                                    th:text="${article.likes}"></span>
                                 <i class="layui-icon layui-icon-star-fill layui-font-orange"></i> <span
-                                    th:text="${session.article.collects}"></span>
+                                    th:text="${article.collects}"></span>
                                 <i class="layui-icon layui-icon-reply-fill"></i> <span
-                                    th:text="${session.article.comments}"></span>
+                                    th:text="${article.comments}"></span>
+                            </div>
+                        </div>
+                        <div class="layui-card-body">
+                            <div style="text-align: center;">
+                                <th:block th:unless="${userLikeFlag}">
+                                    <a href="##" th:onclick="'like' + '(' + ${article.id} + ')'" class="layui-font-red">点赞</a>
+                                </th:block>
+                                <th:block th:if="${userLikeFlag}">
+                                    <a href="##" th:onclick="'unlike' + '(' + ${article.id} + ')'">取消点赞</a>
+                                </th:block>
+                                <th:block th:unless="${userCollectFlag}">
+                                    <a href="##" th:onclick="'collect' + '(' + ${article.id} + ')'" class="layui-font-red">收藏</a>
+                                </th:block>
+                                <th:block th:if="${userCollectFlag}">
+                                    <a href="##" th:onclick="'uncollect' + '(' + ${article.id} + ')'">取消收藏</a>
+                                </th:block>
                             </div>
                         </div>
                     </div>
                 </div>
-                <th:block th:if="${#lists.isEmpty(session.comments)}">
+                <th:block th:if="${#lists.isEmpty(comments)}">
                     <div style="margin-top: 10px; padding-top: 10px; height: 324px; text-align: center;">
                         <span>还没有人评论哦</span>
                     </div>
                 </th:block>
-                <th:block th:unless="${#lists.isEmpty(session.comments)}">
+                <th:block th:unless="${#lists.isEmpty(comments)}">
                     <div class="layui-panel" style="margin-top: 10px; margin-bottom: 10px;">
                         <div class="layui-card">
-                            <th:block th:each=" c, iterStat : ${session.comments}">
+                            <th:block th:each=" c, iterStat : ${comments}">
                                 <div class="layui-card-body">
-                                    <img class="headImg" th:src="@{${session.users[c.userId].headImgUrl}}" alt="">
+                                    <img class="headImg" th:src="@{${users[c.userId].headImgUrl}}" alt="">
                                     <div style="margin-left: 54px;">
-                                        <a th:text="${session.users[c.userId].nickName}" href="">嗨嗨嗨</a><br>
+                                        <a th:text="${users[c.userId].nickName}" href="">嗨嗨嗨</a><br>
                                         <span th:text="${c.createTime}" class="layui-font-12">发布日期: 2021-08-01 13:01:22
                                         </span>
                                     </div>
@@ -91,6 +109,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="layui-panel">
             <div class="layui-form-pane" style="margin: 10px;">
                 留下你的评论
@@ -108,7 +127,7 @@
                             onclick="this.src='/common/captcha?d='+new Date()*1" alt="单击图片刷新！"></span>
                     </div>
                     <div class="layui-form-item">
-                        <button class="layui-btn" onclick="comment()">提交评论</button>
+                        <button class="layui-btn" th:onclick="'comment' + '(' + ${article.id} + ')'">提交评论</button>
                     </div>
                 </form>
             </div>
@@ -137,7 +156,83 @@
             editor.highlight = hljs
             editor.create()
 
-            window.comment = function () {
+            window.like = function(id){
+                var url = '/addLike/' + id
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        }
+                        ;
+                    },
+                    error: function () {
+                        layer.alert('操作失败!', {title: '提醒', skin: 'layui-layer-molv', icon: 2});
+                    }
+                });
+            }
+
+            window.unlike = function(id){
+                var url = '/removeLike/' + id
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        }
+                        ;
+                    },
+                    error: function () {
+                        layer.alert('操作失败!', {title: '提醒', skin: 'layui-layer-molv', icon: 2});
+                    }
+                });
+            }
+
+            window.collect = function(id){
+                var url = '/addCollect/' + id
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        }
+                        ;
+                    },
+                    error: function () {
+                        layer.alert('操作失败!', {title: '提醒', skin: 'layui-layer-molv', icon: 2});
+                    }
+                });
+            }
+
+            window.uncollect = function(id){
+                var url = '/removeCollect/' + id
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        }
+                        ;
+                    },
+                    error: function () {
+                        layer.alert('操作失败!', {title: '提醒', skin: 'layui-layer-molv', icon: 2});
+                    }
+                });
+            }
+
+            window.comment = function (id) {
                 var commentBody = editor.txt.html()
                 if (isNull(commentBody)) {
                     layer.alert('请输入评论内容!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
@@ -154,7 +249,7 @@
                     "commentBody": commentBody,
                     "verifyCode": verifyCode
                 }
-                var url = '/comment/commentPub'
+                var url = '/comment/commentPub/' + id
                 $.ajax({
                     type: 'POST',//方法类型
                     url: url,

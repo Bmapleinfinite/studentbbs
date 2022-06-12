@@ -20,7 +20,7 @@
         post_id, publish_user_id, post_title, 
         post_content, post_category_id, 
         post_category_name, post_status, 
-        post_views, post_comments, post_collects
+        post_views, post_comments, post_collects,
         post_likes, last_update_time, create_time
     </sql>
 
@@ -105,6 +105,16 @@
         set post_title = #{title}, post_content = #{content}, post_category_id = #{categoryID},
         post_category_name = #{categoryName}, last_update_time = CURRENT_TIMESTAMP
         where post_id = #{articleId}
+    </update>
+
+    <update id="updateArticleViewById">
+        update
+        tb_bbs_post
+        set post_views = post_views + 1, 
+        post_comments = #{size},
+        post_likes = #{likes},
+        post_collects = #{collects}
+        where post_id = #{id}
     </update>
 
     <delete id="deleteArticleById">

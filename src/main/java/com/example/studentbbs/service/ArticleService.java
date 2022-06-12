@@ -28,4 +28,6 @@ public interface ArticleService {
 
     Integer updateArticleById(String articleId, String title, String content, String categoryID,
             String categoryName);
+
+    Integer updateArticleViewById(Integer id, Integer size, Integer likes, Integer collects);
 }

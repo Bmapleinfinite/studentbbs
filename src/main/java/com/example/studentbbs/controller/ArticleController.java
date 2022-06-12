@@ -1,6 +1,7 @@
 package com.example.studentbbs.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +12,10 @@ import com.example.studentbbs.entity.Article;
 import com.example.studentbbs.entity.Comment;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.ArticleService;
+import com.example.studentbbs.service.CollectService;
 import com.example.studentbbs.service.CommentService;
+import com.example.studentbbs.service.LikeService;
+import com.example.studentbbs.service.UserService;
 import com.example.studentbbs.util.Result;
 import com.example.studentbbs.util.ResultGenerator;
 
@@ -34,19 +38,40 @@ public class ArticleController {
     @Resource
     private CommentService commentService;
 
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private CollectService collectService;
+
+    @Resource
+    private LikeService likeService;
+
     @GetMapping("/detail/{id}")
-    public String detailById(@PathVariable Integer id, HttpSession session) {
+    public String detailById(@PathVariable Integer id, HttpServletRequest request) {
         Article article = new Article();
+        User user = (User) request.getSession().getAttribute("user"); 
         ArrayList<Comment> comments = new ArrayList<>();
-        article = articleService.getArticleById(id);
+        HashMap<Integer, User> users = userService.getAllUserByMap();
+        Integer likes = likeService.getLikeRecordByArticleId(id);
+        Integer collects = collectService.getCollectRecordByArticleId(id);
+
         comments = commentService.getCommentsByArticleId(id);
-        session.setAttribute("article", article);
-        session.setAttribute("comments", comments);
+        articleService.updateArticleViewById(id, comments.size(), likes, collects);
+
+        article = articleService.getArticleById(id);
+        users = userService.getAllUserByMap();
+        
+        request.setAttribute("userLikeFlag", likeService.vaildUserLikeRecord(article.getId(), user.getId()));
+        request.setAttribute("userCollectFlag", collectService.vaildUserCollectRecord(article.getId(), user.getId()));
+        request.setAttribute("users", users);
+        request.setAttribute("article", article);
+        request.setAttribute("comments", comments);
         return "article/detail";
     }
 
     @GetMapping("/articlePub")
-    public String articlePub(HttpSession session) {
+    public String articlePub() {
         return "article/articlePub";
     }
 
@@ -94,7 +119,6 @@ public class ArticleController {
     public String articleEdit(@PathVariable Integer id, HttpServletRequest request) {
         Article article = new Article();
         article = articleService.getArticleById(id);
-
         request.setAttribute("article", article);
         return "article/articleEdit";
     }

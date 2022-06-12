@@ -8,6 +8,19 @@
     <div th:replace="header::header-fragment"></div>
 
     <div class="layui-container" style="margin-bottom: 10px;">
+        <div class="layui-panel" style="text-align: center;">
+            <img th:src="@{${session.user.headImgUrl}}" width="168px" height="168px" class="layui-btn-radius" alt="">
+            <br>
+            <div>
+                <div style="margin-bottom: 5px;" th:text="'用户ID：' + ${session.user.id}">用户ID：4</div>
+                <div style="margin-bottom: 5px;" th:text="'用户名：' + ${session.user.loginName}">用户名：rgbugegjcmu@163.com </div>
+                <div style="margin-bottom: 5px;" th:text="'昵称：' + ${session.user.nickName} + ' 性别：' + ${session.user.gender}">昵称：棠槿牵樱 性别：男</div>
+                <div style="margin-bottom: 5px;" th:text="'个人介绍：' + ${session.user.introduce}">个人介绍：这个人很懒，什么都没有留下</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-container" style="margin-bottom: 10px;">
         <div class="layui-col-space15 layui-row">
             <div class="layui-col-md6">
                 <div class="layui-card">
@@ -16,7 +29,7 @@
                     <th:block th:if="${#lists.isEmpty(articlesList)}">
                         <div class="layui-card-body">
                             <div class="layui-none layui-word-aux" style="text-align: center; 
-                                    height: 624px;">
+                                    height: 644px;">
                                 您目前还没有发布过任何帖子
                             </div>
                         </div>
@@ -67,7 +80,7 @@
                     <th:block th:if="${#lists.isEmpty(commentsList)}">
                         <div class="layui-card-body">
                             <div class="layui-none layui-word-aux" style="text-align: center; 
-                                    height: 624px;">
+                                    height: 644px;">
                                 您目前还没有任何评论
                             </div>
                         </div>
@@ -82,14 +95,15 @@
                                             于 <span th:text="${c.createTime}" class="layui-word-aux">2022-05-26
                                                 15:34:56</span>
                                             在 <a th:href="@{'/article/detail/' + ${c.postId}}"
-                                                th:text="${articlesMap[c.postId].title}"></a> 留下了评论
+                                                th:text="${#strings.abbreviate(articlesMap[c.postId].title, 10)}"
+                                                th:title="${articlesMap[c.postId].title}"></a> 留下了评论
                                             <th:block th:if="${c.isDeleted == 1}">
                                                 <span class="layui-word-aux"><em class="layui-font-red">未审核</em></span>
                                             </th:block>
                                             <span class="layui-word-aux"
                                                 style="position: absolute; right: 0; margin-right: 15px;">
                                                 <button th:onclick="'deleteComment' + '(' + ${c.id} + ')'" type="button"
-                                                    class="layui-btn layui-btn-xs layui-bg-red">删除</button>
+                                                    class="layui-btn layui-btn-xs layui-bg-red">删除</button></span>
                                         </div>
                                         <hr>
                                     </th:block>
@@ -106,13 +120,109 @@
         </div>
     </div>
 
+    <div class="layui-container" style="margin-bottom: 10px;">
+        <div class="layui-col-space15 layui-row">
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">我点赞的</div>
+
+                    <th:block th:if="${#lists.isEmpty(likeRecords)}">
+                        <div class="layui-card-body">
+                            <div class="layui-none layui-word-aux" style="text-align: center; 
+                                    height: 644px;">
+                                您目前没有给任何帖子点赞
+                            </div>
+                        </div>
+                    </th:block>
+
+                    <th:block th:unless="${#lists.isEmpty(likeRecords)}">
+                        <div class="layui-card-body">
+                            <div class="" style="height: 644px;">
+                                <th:block th:each=" l, lStat : ${likeRecords}">
+                                    <th:block th:if="${lStat.index} ge ((${Lpage} - 1) * 15) and ${lStat.index} lt (${Lpage} * 15)">
+                                        <div style="font-size: 10px;">
+                                            <a th:href="@{'/article/detail/' + ${l.postId}}"
+                                                th:text="${#strings.abbreviate(articlesMap[l.postId].title, 10)}"
+                                                th:title="${articlesMap[l.postId].title}"></a>
+                                            <span th:text="${l.createTime}" class="layui-word-aux">2022-05-26
+                                                15:34:56</span>
+                                            <span class="layui-word-aux"
+                                            style="position: absolute; right: 0; margin-right: 15px;">
+                                            <button th:onclick="'unlike' + '(' + ${l.postId} + ')'" type="button"
+                                                class="layui-btn layui-btn-xs layui-bg-red">取消点赞</button></span>
+                                        </div>
+                                        <hr>
+                                    </th:block>
+                                </th:block>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="layui-card-body" style="text-align: center;">
+                            <div id="Colaypage"></div>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">我的收藏</div>
+
+                    <th:block th:if="${#lists.isEmpty(collectRecords)}">
+                        <div class="layui-card-body">
+                            <div class="layui-none layui-word-aux" style="text-align: center; 
+                                    height: 644px;">
+                                您目前还没有收藏过任何帖子
+                            </div>
+                        </div>
+                    </th:block>
+
+                    <th:block th:unless="${#lists.isEmpty(collectRecords)}">
+                        <div class="layui-card-body">
+                            <div class="" style="height: 644px;">
+                                <th:block th:each=" co, coStat : ${collectRecords}">
+                                    <th:block th:if="${coStat.index} ge ((${Copage} - 1) * 15) and ${coStat.index} lt (${Copage} * 15)">
+                                        <div style="font-size: 10px;">
+                                            <a th:href="@{'/article/detail/' + ${co.postId}}"
+                                                th:text="${#strings.abbreviate(articlesMap[co.postId].title, 10)}"
+                                                th:title="${articlesMap[co.postId].title}"></a>
+                                            <span th:text="${co.createTime}" class="layui-word-aux">2022-05-26
+                                                15:34:56</span>
+                                            <span class="layui-word-aux"
+                                            style="position: absolute; right: 0; margin-right: 15px;">
+                                            <button th:onclick="'uncollect' + '(' + ${co.postId} + ')'" type="button"
+                                                class="layui-btn layui-btn-xs layui-bg-red">取消收藏</button></span>
+                                        </div>
+                                        <hr>
+                                    </th:block>
+                                </th:block>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="layui-card-body" style="text-align: center;">
+                            <div id="Llaypage"></div>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <input id="Asize" name="Asize" th:value="${Asize}" style="position: absolute; visibility: hidden;" type="text"
         readonly>
     <input id="Csize" name="Csize" th:value="${Csize}" style="position: absolute; visibility: hidden;" type="text"
         readonly>
+    <input id="Lsize" name="Lsize" th:value="${Lsize}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+    <input id="Cosize" name="Cosize" th:value="${Cosize}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+
     <input id="Apage" name="Apage" th:value="${Apage}" style="position: absolute; visibility: hidden;" type="text"
         readonly>
     <input id="Cpage" name="Cpage" th:value="${Cpage}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+    <input id="Lpage" name="Cpage" th:value="${Lpage}" style="position: absolute; visibility: hidden;" type="text"
+        readonly>
+    <input id="Copage" name="Cpage" th:value="${Copage}" style="position: absolute; visibility: hidden;" type="text"
         readonly>
 
     <script th:src="@{/layui/layui.js}"></script>
@@ -137,7 +247,7 @@
                 curr: Apage,
                 jump: function(obj, first){
                     if(!first){
-                        window.location.href = 'userCenter?Apage=' + obj.curr + '&Cpage=' + Cpage
+                        window.location.href = 'userCenter?Apage=' + obj.curr + '&Cpage=' + Cpage + '&Lpage=' + Lpage + '&Copage=' + Copage
                     }
                 }
             })
@@ -149,7 +259,31 @@
                 curr: Cpage,
                 jump: function(obj, first){
                     if(!first){
-                        window.location.href = 'userCenter?Apage=' + Apage + '&Cpage=' + obj.curr
+                        window.location.href = 'userCenter?Apage=' + Apage + '&Cpage=' + obj.curr + '&Lpage=' + Lpage + '&Copage=' + Copage
+                    }
+                }
+            })
+
+            laypage.render({
+                elem: 'Llaypage',
+                count: Lsize,
+                limit: 15,
+                curr: Lpage,
+                jump: function(obj, first){
+                    if(!first){
+                        window.location.href = 'userCenter?Apage=' + Apage + '&Cpage=' + Cpage + '&Lpage=' + obj.curr + '&Copage=' + Copage
+                    }
+                }
+            })
+
+            laypage.render({
+                elem: 'Colaypage',
+                count: Cosize,
+                limit: 15,
+                curr: Copage,
+                jump: function(obj, first){
+                    if(!first){
+                        window.location.href = 'userCenter?Apage=' + Apage + '&Cpage=' + Cpage + '&Lpage=' + Lpage + '&Copage=' + obj.curr
                     }
                 }
             })
@@ -199,6 +333,44 @@
                             layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
                         }
                     });
+                });
+            }
+
+            window.unlike = function(id){
+                var url = '/removeLike/' + id
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        }
+                        ;
+                    },
+                    error: function () {
+                        layer.alert('操作失败!', {title: '提醒', skin: 'layui-layer-molv', icon: 2});
+                    }
+                });
+            }
+            
+            window.uncollect = function(id){
+                var url = '/removeCollect/' + id
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        }
+                        ;
+                    },
+                    error: function () {
+                        layer.alert('操作失败!', {title: '提醒', skin: 'layui-layer-molv', icon: 2});
+                    }
                 });
             }
         });

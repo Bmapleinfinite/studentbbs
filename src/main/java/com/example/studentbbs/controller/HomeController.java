@@ -44,9 +44,8 @@ public class HomeController {
         articlesList = articleService.getAllArticleByParams(orderby, categoryId, keyword);
         users = userService.getAllUserByMap();
 
-        session.setAttribute("categorys", categorys);
-        session.setAttribute("users", users);
-        
+        request.setAttribute("categorys", categorys);
+        request.setAttribute("users", users);
         request.setAttribute("articlesList", articlesList);
         request.setAttribute("page", page);
         request.setAttribute("orderby", orderby);

@@ -11,9 +11,12 @@ import javax.servlet.http.HttpSession;
 import com.example.studentbbs.common.ServiceResultEnum;
 import com.example.studentbbs.entity.Article;
 import com.example.studentbbs.entity.Comment;
+import com.example.studentbbs.entity.Record;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.ArticleService;
+import com.example.studentbbs.service.CollectService;
 import com.example.studentbbs.service.CommentService;
+import com.example.studentbbs.service.LikeService;
 import com.example.studentbbs.service.UserService;
 import com.example.studentbbs.util.MD5Util;
 import com.example.studentbbs.util.PatternUtil;
@@ -43,6 +46,12 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private LikeService likeService;
+
+    @Resource
+    private CollectService collectService;
 
     @GetMapping("/userSetting")
     public String userSetting() {
@@ -137,9 +146,13 @@ public class UserController {
     @GetMapping("/userCenter")
     public String userCenter(HttpServletRequest request, HttpSession session,
             @RequestParam(value = "Apage", required = false, defaultValue = "1") Integer Apage,
-            @RequestParam(value = "Cpage", required = false, defaultValue = "1") Integer Cpage) {
+            @RequestParam(value = "Cpage", required = false, defaultValue = "1") Integer Cpage,
+            @RequestParam(value = "Lpage", required = false, defaultValue = "1") Integer Lpage,
+            @RequestParam(value = "Copage", required = false, defaultValue = "1") Integer Copage) {
         ArrayList<Article> articlesList = new ArrayList<>();
         ArrayList<Comment> commentsList = new ArrayList<>();
+        ArrayList<Record> likeRecords = new ArrayList<>();
+        ArrayList<Record> collectRecords = new ArrayList<>();
         Map<Integer, Article> articlesMap = new HashMap<>();
 
         User user = (User) session.getAttribute("user");
@@ -147,15 +160,23 @@ public class UserController {
         articlesList = articleService.getArticleByUserId(user.getId());
         articlesMap = articleService.getAllArticleByMap();
         commentsList = commentService.getCommentsByUserId(user.getId());
+        likeRecords = likeService.getAllLikeRecordByUserId(user.getId());
+        collectRecords = collectService.getAllCollectRecordByUserId(user.getId());
 
         request.setAttribute("articlesList", articlesList);
         request.setAttribute("articlesMap", articlesMap);
         request.setAttribute("commentsList", commentsList);
+        request.setAttribute("likeRecords", likeRecords);
+        request.setAttribute("collectRecords", collectRecords);
         request.setAttribute("Asize", articlesList.size());
         request.setAttribute("Csize", commentsList.size());
+        request.setAttribute("Lsize", likeRecords.size());
+        request.setAttribute("Cosize", collectRecords.size());
 
         request.setAttribute("Apage", Apage);
         request.setAttribute("Cpage", Cpage);
+        request.setAttribute("Lpage", Lpage);
+        request.setAttribute("Copage", Copage);
 
         return "user/userCenter";
     }

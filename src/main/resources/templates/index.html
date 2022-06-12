@@ -12,7 +12,7 @@
                 <span class="layui-breadcrumb" lay-separator="|">
                     <a class="layui-this"
                         th:href="@{index(page=1, orderby=${orderby}, categoryId=null, keyword=${keyword})}">首页</a>
-                    <th:block th:each=" c : ${session.categorys}">
+                    <th:block th:each=" c : ${categorys}">
                         <a th:href="@{index(page=1, orderby=${orderby}, categoryId=${c.id}, keyword=${keyword})}"
                             th:text="${c.categoryName}">首页</a>
                     </th:block>
@@ -38,21 +38,21 @@
                                 th:href="@{index(page=1, orderby=time, categoryId=${categoryId}, keyword=${keyword})}">按时间</a>
                         </div>
                     </div>
-                    <th:block th:if="${#lists.isEmpty(articlesList) or #lists.isEmpty(session.users)}">
+                    <th:block th:if="${#lists.isEmpty(articlesList) or #lists.isEmpty(users)}">
                         <div class="layui-card-body" style="height: 624px; text-align: center;">
                             <span class="layui-font-gray">没有相关数据</span>
                         </div>
                     </th:block>
-                    <th:block th:unless="${#lists.isEmpty(articlesList) and #lists.isEmpty(session.users)}">
+                    <th:block th:unless="${#lists.isEmpty(articlesList) and #lists.isEmpty(users)}">
                         <th:block th:each=" a, aStat : ${articlesList}">
                             <th:block th:if="${aStat.index} ge ((${page} - 1) * 7) and ${aStat.index} lt (${page} * 7)">
                                 <div class="layui-card-body">
-                                    <img class="headImg" th:src="@{${session.users[a.userId].headImgUrl}}" alt="">
+                                    <img class="headImg" th:src="@{${users[a.userId].headImgUrl}}" alt="">
                                     <div style="margin-left: 54px;">
                                         <span th:text="${a.categoryName}"
                                             class="layui-border-green layui-btn-xs">分享</span></a>
                                         <a th:href="@{'article/detail/' + ${a.id}}" th:text="${a.title}">默认</a><br>
-                                        <span th:text="${session.users[a.userId].nickName}">棠槿牵樱</span>
+                                        <span th:text="${users[a.userId].nickName}">棠槿牵樱</span>
                                         <span class="layui-font-red" th:text="'最近更新时间：' + ${a.lastUpdateTime}">2021-08-13 13:01:11</span>
                                         <span th:text="'阅读数' + ${a.views}">111</span>
                                         <div style="position: absolute; right: 10px; bottom: 5px;">

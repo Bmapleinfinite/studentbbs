@@ -159,7 +159,7 @@
 
             window.infoUpdate = function () {
                 var nickName = $('#nickName').val()
-                var gender = $('#gender').val()
+                var gender = $('#gender').find('option:selected').text()
                 var location = $('#location').val()
                 var introduce = $('#introduce').val()
                 if(!validUserName(nickName)){
