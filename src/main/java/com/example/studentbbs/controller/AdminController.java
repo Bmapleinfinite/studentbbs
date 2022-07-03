@@ -139,14 +139,14 @@ public class AdminController {
     public String commentManage(HttpSession session, HttpServletRequest request,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
         ArrayList<Comment> comments = new ArrayList<>();
-        Map<Integer, Article> articles = new HashMap<>();
+        Map<Integer, Article> articlesMap = new HashMap<>();
         Map<Integer, User> users = new HashMap<>();
 
-        articles = articleService.getAllArticleByMap();
+        articlesMap = articleService.getAllArticleByMap();
         users = userService.getAllUserByMap();
         comments = commentService.getAllComments();
 
-        request.setAttribute("articles", articles);
+        request.setAttribute("articlesMap", articlesMap);
         request.setAttribute("users", users);
         request.setAttribute("comments", comments);
         request.setAttribute("size", comments.size());

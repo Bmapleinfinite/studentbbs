@@ -9,9 +9,11 @@ import javax.servlet.http.HttpSession;
 
 import com.example.studentbbs.common.ServiceResultEnum;
 import com.example.studentbbs.entity.Article;
+import com.example.studentbbs.entity.Category;
 import com.example.studentbbs.entity.Comment;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.ArticleService;
+import com.example.studentbbs.service.CategoryService;
 import com.example.studentbbs.service.CollectService;
 import com.example.studentbbs.service.CommentService;
 import com.example.studentbbs.service.LikeService;
@@ -33,6 +35,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ArticleController {
 
     @Resource
+    private CategoryService categoryService;
+
+    @Resource
     private ArticleService articleService;
 
     @Resource
@@ -50,7 +55,11 @@ public class ArticleController {
     @GetMapping("/detail/{id}")
     public String detailById(@PathVariable Integer id, HttpServletRequest request) {
         Article article = new Article();
-        User user = (User) request.getSession().getAttribute("user"); 
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setId(0);
+        }
         ArrayList<Comment> comments = new ArrayList<>();
         HashMap<Integer, User> users = userService.getAllUserByMap();
         Integer likes = likeService.getLikeRecordByArticleId(id);
@@ -71,7 +80,10 @@ public class ArticleController {
     }
 
     @GetMapping("/articlePub")
-    public String articlePub() {
+    public String articlePub(HttpServletRequest request) {
+        ArrayList<Category> categorys = new ArrayList<>();
+        categorys = categoryService.getAllCategory();
+        request.setAttribute("categorys", categorys);
         return "article/articlePub";
     }
 

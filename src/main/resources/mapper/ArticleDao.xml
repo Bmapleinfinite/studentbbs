@@ -122,4 +122,10 @@
         from tb_bbs_post
         where post_id = #{id}
     </delete>
+
+    <delete id="deleteCommentByPostId">
+        delete
+        from tb_post_comment
+        where post_id = #{id}
+    </delete>
 </mapper>

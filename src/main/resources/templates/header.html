@@ -14,11 +14,11 @@
 <div th:fragment="header-fragment" class="layui-header header">
     <div class="layui-container">
         <a class="logo" href="/"><img th:src="@{/images/my-bbs-logo.png}" alt=""></a>
-        <ul class="layui-nav layui-layout-left">
+        <!-- <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"><a href=""><i class="layui-icon layui-icon-about"></i> 关于</a></li>
             <li class="layui-nav-item"><a href=""><i class="layui-icon layui-icon-help"></i> 帮助</a></li>
             <li class="layui-nav-item"><a href=""><i class="layui-icon layui-icon-chat"></i> 联系我们</a></li>
-        </ul>
+        </ul> -->
         <ul class="layui-nav layui-layout-right">
 
             <th:block th:if="${session.user == null and session.admin == null}">

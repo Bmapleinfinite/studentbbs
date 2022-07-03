@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="layui-card-body" th:utext="${article.content}">
+                        <div class="content-body" th:utext="${article.content}">
                         </div>
                         <div class="layui-card-body">
                             <div style="position: absolute; right: 10px; bottom: 5px;">
@@ -79,12 +79,14 @@
                                         1L
                                     </div>
                                 </div>
-                                <hr>
                                 <div class="layui-card-body" th:utext="${c.commentBody}">
                                     <p><strike>我的</strike><br /></p>
                                     <p><strike>嗨嗨嗨</strike></p>
                                     <p><b>实际上，变大了！</b><strike><br /></strike></p>
                                 </div>
+                                <th:block th:unless="${iterStat.size eq iterStat.count}">
+                                    <hr>
+                                </th:block>
                             </th:block>
                         </div>
                     </div>

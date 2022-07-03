@@ -25,7 +25,7 @@
                                 <div class="layui-input-block">
                                     <select name="category" id="category">
                                         <option value="0"></option>
-                                        <th:block th:each=" c : ${session.categorys}">
+                                        <th:block th:each=" c : ${categorys}">
                                             <option th:value="${c.id}" th:text="${c.categoryName}">提问</option>
                                         </th:block>
                                     </select>

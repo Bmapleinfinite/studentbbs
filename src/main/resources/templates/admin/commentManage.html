@@ -45,7 +45,7 @@
                                                 <tr>
                                                     <td style="text-align: center;"><input th:value="${c.id}" name="commentId" type="checkbox"></td>
                                                     <td th:text="${c.id}">4</td>
-                                                    <td th:text="${#strings.abbreviate(articles[c.postId].title, 15)}" th:title="${articles[c.postId].title}">rgbugegjcmu@163.com</td>
+                                                    <td th:text="${articlesMap[c.postId].title}" th:title="${articlesMap[c.postId].title}">保密</td>
                                                     <td th:text="${users[c.userId].nickName} + ' id:' + ${c.userId}">棠槿牵樱</td>
                                                     <th:block th:if="${c.isDeleted == 0}">
                                                         <td><span class="layui-bg-green" style="padding: 5px;">已审核</span></td>

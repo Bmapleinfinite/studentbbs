@@ -63,7 +63,11 @@ public class AricleServiceimp implements ArticleService {
 
     @Override
     public Integer deleteArticleById(Integer id) {
-        return articleDao.deleteArticleById(id);
+        if (articleDao.deleteArticleById(id) > 0) {
+            return articleDao.deleteCommentByPostId(id);
+        } else {
+            return 0;
+        }
     }
 
     @Override
