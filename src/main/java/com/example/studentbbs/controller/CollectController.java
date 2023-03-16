@@ -20,6 +20,12 @@ public class CollectController {
     @Resource
     private CollectService collectService;
 
+    /**
+     * 添加收藏操作
+     * @param id
+     * @param session
+     * @return
+     */
     @PostMapping("/addCollect/{id}")
     @ResponseBody
     public Result addCollect(@PathVariable Integer id, HttpSession session) {
@@ -35,6 +41,12 @@ public class CollectController {
         }
     }
 
+    /**
+     * 删除收藏操作
+     * @param id
+     * @param session
+     * @return
+     */
     @PostMapping("/removeCollect/{id}")
     @ResponseBody
     public Result removeCollect(@PathVariable Integer id, HttpSession session) {

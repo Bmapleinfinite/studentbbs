@@ -5,6 +5,8 @@ public enum ServiceResultEnum {
 
     USER_EXCIT("用户已存在！"),
 
+    NO_LOGINED_USER("请登录！"),
+
     NO_LOGIN_NAME("请输入用户名！"),
 
     NO_NICKNAME("请输入昵称！"),

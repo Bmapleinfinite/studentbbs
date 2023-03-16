@@ -20,6 +20,12 @@ public class LikeController {
     @Resource
     private LikeService likeService;
 
+    /**
+     * 添加点赞操作
+     * @param id
+     * @param session
+     * @return
+     */
     @PostMapping("/addLike/{id}")
     @ResponseBody
     public Result addLike(@PathVariable Integer id, HttpSession session) {
@@ -35,6 +41,12 @@ public class LikeController {
         }
     }
 
+    /**
+     * 移除点赞操作
+     * @param id
+     * @param session
+     * @return
+     */
     @PostMapping("/removeLike/{id}")
     @ResponseBody
     public Result removeLike(@PathVariable Integer id, HttpSession session) {

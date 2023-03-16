@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class CaptchaController {
+    /**
+     * 生成验证码图片
+     * @param request
+     * @param response
+     * @throws Exception
+     */
     @GetMapping("/common/captcha")
     public void defaultCaptcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setHeader("Cache-Control", "no-store");

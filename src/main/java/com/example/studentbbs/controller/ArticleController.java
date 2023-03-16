@@ -41,10 +41,10 @@ public class ArticleController {
     private ArticleService articleService;
 
     @Resource
-    private CommentService commentService;
+    private UserService userService;
 
     @Resource
-    private UserService userService;
+    private CommentService commentService;
 
     @Resource
     private CollectService collectService;
@@ -52,14 +52,23 @@ public class ArticleController {
     @Resource
     private LikeService likeService;
 
+    /**
+     * 通过id访问某个文章
+     * 
+     * @param id
+     * @param request
+     * @return
+     */
     @GetMapping("/detail/{id}")
     public String detailById(@PathVariable Integer id, HttpServletRequest request) {
         Article article = new Article();
+        // 判断用户是否登录 若未登录 则设置为游客模式
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             user = new User();
             user.setId(0);
         }
+        // 定义变量
         ArrayList<Comment> comments = new ArrayList<>();
         HashMap<Integer, User> users = userService.getAllUserByMap();
         Integer likes = likeService.getLikeRecordByArticleId(id);
@@ -69,6 +78,9 @@ public class ArticleController {
         articleService.updateArticleViewById(id, comments.size(), likes, collects);
 
         article = articleService.getArticleById(id);
+        if (article == null) {
+            return "error/error_404";
+        }
         users = userService.getAllUserByMap();
         
         request.setAttribute("userLikeFlag", likeService.vaildUserLikeRecord(article.getId(), user.getId()));
@@ -79,6 +91,11 @@ public class ArticleController {
         return "article/detail";
     }
 
+    /**
+     * 发布文章页面
+     * @param request
+     * @return
+     */
     @GetMapping("/articlePub")
     public String articlePub(HttpServletRequest request) {
         ArrayList<Category> categorys = new ArrayList<>();
@@ -87,6 +104,16 @@ public class ArticleController {
         return "article/articlePub";
     }
 
+    /**
+     * 发布文章操作
+     * @param title
+     * @param content
+     * @param categoryID
+     * @param verifyCode
+     * @param categoryName
+     * @param session
+     * @return
+     */
     @PostMapping("/articlePub")
     @ResponseBody
     public Result articlePub(
@@ -127,6 +154,12 @@ public class ArticleController {
         }
     }
 
+    /**
+     * 文章编辑页面
+     * @param id
+     * @param request
+     * @return
+     */
     @GetMapping("/articleEdit/{id}")
     public String articleEdit(@PathVariable Integer id, HttpServletRequest request) {
         Article article = new Article();
@@ -135,6 +168,17 @@ public class ArticleController {
         return "article/articleEdit";
     }
 
+    /**
+     * 文章编辑操作
+     * @param articleId
+     * @param title
+     * @param content
+     * @param categoryID
+     * @param verifyCode
+     * @param categoryName
+     * @param session
+     * @return
+     */
     @PostMapping("/articleEdit")
     @ResponseBody
     public Result articleEdit(
@@ -168,6 +212,11 @@ public class ArticleController {
         }
     }
     
+    /**
+     * 解冻文章操作
+     * @param arr_id
+     * @return
+     */
     @PostMapping("/unFreezeArticle")
     @ResponseBody
     public Result unFreezeArticle(@RequestParam("arr_id") String arr_id) {
@@ -181,6 +230,11 @@ public class ArticleController {
         return ResultGenerator.genSuccessResult();
     }
     
+    /**
+     * 冻结文章操作
+     * @param arr_id
+     * @return
+     */
     @PostMapping("/freezeArticle")
     @ResponseBody
     public Result freezeArticle(@RequestParam("arr_id") String arr_id) {
@@ -194,6 +248,11 @@ public class ArticleController {
         return ResultGenerator.genSuccessResult();
     }
 
+    /**
+     * 删除文章操作
+     * @param arr_id
+     * @return
+     */
     @PostMapping("/deleteArticle")
     @ResponseBody
     public Result deleteArticle(@RequestParam("arr_id") String arr_id) {

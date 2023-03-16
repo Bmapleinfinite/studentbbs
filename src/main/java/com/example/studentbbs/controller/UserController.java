@@ -53,11 +53,25 @@ public class UserController {
     @Resource
     private CollectService collectService;
 
+    /**
+     * 用户设定页面
+     * @return
+     */
     @GetMapping("/userSetting")
     public String userSetting() {
         return "user/userSetting";
     }
 
+    /**
+     * 更新用户信息操作
+     * @param userId
+     * @param nickName
+     * @param gender
+     * @param location
+     * @param introduce
+     * @param session
+     * @return
+     */
     @PostMapping("/userInfoUpdate")
     @ResponseBody
     public Result userInfoUpdate(
@@ -89,6 +103,13 @@ public class UserController {
         }
     }
 
+    /**
+     * 更新用户头像操作
+     * @param userId
+     * @param headImg
+     * @param session
+     * @return
+     */
     @PostMapping("/headImgUpdate")
     @ResponseBody
     public Result headImgUpdate(
@@ -109,6 +130,15 @@ public class UserController {
         }
     }
     
+    /**
+     * 更新用户密码
+     * @param userId
+     * @param nowPass
+     * @param newPass
+     * @param verifyCode
+     * @param session
+     * @return
+     */
     @PostMapping("/updateUserPass")
     @ResponseBody
     public Result updateUserPass(
@@ -143,6 +173,16 @@ public class UserController {
         }
     }
 
+    /**
+     * 用户中心页面
+     * @param request
+     * @param session
+     * @param Apage
+     * @param Cpage
+     * @param Lpage
+     * @param Copage
+     * @return
+     */
     @GetMapping("/userCenter")
     public String userCenter(HttpServletRequest request, HttpSession session,
             @RequestParam(value = "Apage", required = false, defaultValue = "1") Integer Apage,
@@ -181,11 +221,23 @@ public class UserController {
         return "user/userCenter";
     }
 
+    /**
+     * 用户登录页面
+     * @return
+     */
     @GetMapping("/login")
     public String login() {
         return "user/login";
     }
 
+    /**
+     * 用户登录操作
+     * @param loginName
+     * @param password
+     * @param verifyCode
+     * @param session
+     * @return
+     */
     @PostMapping("/login")
     @ResponseBody
     public Result login(
@@ -210,8 +262,11 @@ public class UserController {
             return ResultGenerator.genFailResult(ServiceResultEnum.WRONG_VERIFYCODE.getResult());
         }
         User user = userService.login(loginName, password);
+        if (user == null) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_USER.getResult());
+        }
         Integer result = userService.updateLastLoginTimeById(user.getId());
-        if (user == null || result != 1) {
+        if (result != 1) {
             return ResultGenerator.genFailResult(ServiceResultEnum.NO_USER.getResult());
         } else {
             session.setAttribute("user", user);
@@ -220,11 +275,24 @@ public class UserController {
         }
     }
 
+    /**
+     * 用户注册页面
+     * @return
+     */
     @GetMapping("/register")
     public String register() {
         return "user/register";
     }
 
+    /**
+     * 用户注册操作
+     * @param loginName
+     * @param password
+     * @param nickName
+     * @param verifyCode
+     * @param session
+     * @return
+     */
     @PostMapping("/register")
     @ResponseBody
     public Result register(
@@ -267,6 +335,11 @@ public class UserController {
         }
     }
 
+    /**
+     * 解冻用户操作
+     * @param arr_id
+     * @return
+     */
     @PostMapping("/unFreezeUser")
     @ResponseBody
     public Result unFreezeUser(@RequestParam("arr_id") String arr_id) {
@@ -280,6 +353,11 @@ public class UserController {
         return ResultGenerator.genSuccessResult();
     }
 
+    /**
+     * 冻结用户操作
+     * @param arr_id
+     * @return
+     */
     @PostMapping("/freezeUser")
     @ResponseBody
     public Result usersDelete(@RequestParam("arr_id") String arr_id) {
@@ -293,6 +371,11 @@ public class UserController {
         return ResultGenerator.genSuccessResult();
     }
 
+    /**
+     * 删除用户操作
+     * @param arr_id
+     * @return
+     */
     @PostMapping("/deleteUser")
     @ResponseBody
     public Result deleteUser(@RequestParam("arr_id") String arr_id) {
@@ -306,6 +389,12 @@ public class UserController {
         return ResultGenerator.genSuccessResult();
     }
 
+    /**
+     * 用户注销
+     * @param session
+     * @param request
+     * @return
+     */
     @GetMapping("/logout")
     public String logout(HttpSession session, HttpServletRequest request) {
         session.removeAttribute("user");

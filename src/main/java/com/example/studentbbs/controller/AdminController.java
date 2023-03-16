@@ -53,16 +53,34 @@ public class AdminController {
     @Resource
     private HomeController homeController;
 
+    /**
+     * 进入管理员主页面
+     * @param session
+     * @return
+     */
     @GetMapping({ "", "/", "/index", "/index.html" })
     public String index(HttpSession session) {
         return "admin/index";
     }
 
+    /**
+     * 跳转到管理员登录页面
+     * @return
+     */
     @GetMapping({ "/login" })
     public String login() {
         return "admin/login";
     }
 
+    /**
+     * 管理员登录操作
+     * 
+     * @param loginName 管理员登录名
+     * @param password 密码
+     * @param verifyCode 验证码
+     * @param session 
+     * @return
+     */
     @PostMapping("/login")
     @ResponseBody
     public Result login(
@@ -96,6 +114,13 @@ public class AdminController {
         }
     }
 
+    /**
+     * 用户管理页面
+     * @param session
+     * @param request
+     * @param page 当前页 默认为 1
+     * @return
+     */
     @GetMapping("/userManage")
     public String userManage(HttpSession session, HttpServletRequest request,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
@@ -108,6 +133,13 @@ public class AdminController {
         return "admin/userManage";
     }
     
+    /**
+     * 分类管理页面
+     * @param session
+     * @param request
+     * @param page 当前页 默认为 1
+     * @return
+     */
     @GetMapping("/categoryManage")
     public String categoryManage(HttpSession session, HttpServletRequest request,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
@@ -120,6 +152,13 @@ public class AdminController {
         return "admin/categoryManage";
     }
 
+    /**
+     * 文章管理页面
+     * @param session
+     * @param request
+     * @param page 当前页 默认为 1
+     * @return
+     */
     @GetMapping("/articleManage")
     public String articleManage(HttpSession session, HttpServletRequest request,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
@@ -135,6 +174,13 @@ public class AdminController {
         return "admin/articleManage";
     }
 
+    /**
+     * 评论管理页面
+     * @param session
+     * @param request
+     * @param page 当前页 默认为 1
+     * @return
+     */
     @GetMapping("/commentManage")
     public String commentManage(HttpSession session, HttpServletRequest request,
             @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
@@ -154,6 +200,12 @@ public class AdminController {
         return "admin/commentManage";
     }
 
+    /**
+     * 管理员注销
+     * @param session
+     * @param request
+     * @return
+     */
     @GetMapping("/logout")
     public String logout(HttpSession session, HttpServletRequest request) {
         session.removeAttribute("admin");

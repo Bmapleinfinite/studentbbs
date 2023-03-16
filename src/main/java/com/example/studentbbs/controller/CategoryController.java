@@ -21,6 +21,11 @@ public class CategoryController {
     @Resource
     private CategoryService categoryService;
 
+    /**
+     * 冻结分类操作
+     * @param arr_id
+     * @return
+     */
     @PostMapping("/freezeCate")
     @ResponseBody
     public Result freezeCate(@RequestParam("arr_id") String arr_id) {
@@ -34,6 +39,11 @@ public class CategoryController {
         return ResultGenerator.genSuccessResult();
     }
 
+    /**
+     * 解冻分类操作
+     * @param arr_id
+     * @return
+     */
     @PostMapping("/unFreezeCate")
     @ResponseBody
     public Result unFreezeCate(@RequestParam("arr_id") String arr_id) {
@@ -47,6 +57,13 @@ public class CategoryController {
         return ResultGenerator.genSuccessResult();
     }
 
+    /**
+     * 更新分类信息
+     * @param idList
+     * @param cateName
+     * @param cateRank
+     * @return
+     */
     @PostMapping("/updateCate")
     @ResponseBody
     public Result updateCate(@RequestParam("idList") Integer idList,
@@ -69,6 +86,12 @@ public class CategoryController {
         }
     }
 
+    /**
+     * 添加分类操作
+     * @param cateName
+     * @param cateRank
+     * @return
+     */
     @PostMapping("/addCate")
     @ResponseBody
     public Result addCate(@RequestParam("cateName") String cateName,
@@ -90,6 +113,11 @@ public class CategoryController {
         }
     }
 
+    /**
+     * 删除分类操作
+     * @param arr_id
+     * @return
+     */
     @PostMapping("/deleteCate")
     @ResponseBody
     public Result deleteCate(@RequestParam("arr_id") String arr_id) {

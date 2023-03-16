@@ -10,7 +10,7 @@ public class PatternUtil {
         Matcher matcher = pattern.matcher(emailStr);
         return matcher.find();
     }
-    public static void main(String[] args) {
-        System.out.println(isEmail("rgbugegjcmu@163.com"));
-    }
+    // public static void main(String[] args) {
+    //     System.out.println(isEmail("rgbugegjcmu@163.com"));
+    // }
 }

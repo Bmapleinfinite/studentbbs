@@ -3,6 +3,7 @@ package com.example.studentbbs.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import com.example.studentbbs.common.ServiceResultEnum;
 import com.example.studentbbs.entity.Article;
 import com.example.studentbbs.entity.Comment;
 import com.example.studentbbs.entity.User;
@@ -35,10 +36,14 @@ public class CommentController {
             @PathVariable Integer id,
             HttpSession session) {
                 
-        Article article = new Article();
         User user = new User();
-        article = articleService.getArticleById(id);
         user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResultGenerator.genFailResult(ServiceResultEnum.NO_LOGINED_USER.getResult());
+        }
+
+        Article article = new Article();
+        article = articleService.getArticleById(id);
 
         Comment comment = new Comment();
         comment.setCommentBody(commentBody);
