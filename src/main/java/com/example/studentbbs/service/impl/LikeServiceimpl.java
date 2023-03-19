@@ -1,4 +1,4 @@
-package com.example.studentbbs.service.imp;
+package com.example.studentbbs.service.impl;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ import com.example.studentbbs.entity.Record;
 import com.example.studentbbs.service.LikeService;
 
 @Service
-public class LikeServiceimp implements LikeService {
+public class LikeServiceimpl implements LikeService {
 
     @Resource
     private LikeDao likeDao;

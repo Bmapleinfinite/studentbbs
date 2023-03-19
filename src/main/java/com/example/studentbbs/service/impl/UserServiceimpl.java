@@ -1,4 +1,4 @@
-package com.example.studentbbs.service.imp;
+package com.example.studentbbs.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import com.example.studentbbs.util.MD5Util;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceimp implements UserService {
+public class UserServiceimpl implements UserService {
     @Resource
     private UserDao userDao;
 

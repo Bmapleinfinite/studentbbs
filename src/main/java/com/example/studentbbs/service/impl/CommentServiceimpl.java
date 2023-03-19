@@ -1,4 +1,4 @@
-package com.example.studentbbs.service.imp;
+package com.example.studentbbs.service.impl;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ import com.example.studentbbs.service.CommentService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CommentServiceimp implements CommentService {
+public class CommentServiceimpl implements CommentService {
 
     @Resource
     private CommentDao commentDao;

@@ -1,4 +1,4 @@
-package com.example.studentbbs.service.imp;
+package com.example.studentbbs.service.impl;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -12,7 +12,7 @@ import com.example.studentbbs.service.ArticleService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AricleServiceimp implements ArticleService {
+public class AricleServiceimpl implements ArticleService {
     @Resource
     private ArticleDao articleDao;
 

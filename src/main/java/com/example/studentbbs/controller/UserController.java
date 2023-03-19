@@ -11,13 +11,10 @@ import javax.servlet.http.HttpSession;
 import com.example.studentbbs.common.ServiceResultEnum;
 import com.example.studentbbs.entity.Article;
 import com.example.studentbbs.entity.Comment;
+import com.example.studentbbs.entity.Notice;
 import com.example.studentbbs.entity.Record;
 import com.example.studentbbs.entity.User;
-import com.example.studentbbs.service.ArticleService;
-import com.example.studentbbs.service.CollectService;
-import com.example.studentbbs.service.CommentService;
-import com.example.studentbbs.service.LikeService;
-import com.example.studentbbs.service.UserService;
+import com.example.studentbbs.service.*;
 import com.example.studentbbs.util.MD5Util;
 import com.example.studentbbs.util.PatternUtil;
 import com.example.studentbbs.util.Result;
@@ -53,8 +50,37 @@ public class UserController {
     @Resource
     private CollectService collectService;
 
+    @Resource
+    private NoticeService noticeService;
+
+    /**
+     * 用户通知页面
+     *
+     * @return
+     */
+    @GetMapping("/userNotice")
+    public String userNotice(HttpServletRequest request, HttpSession session,
+                             @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
+                             @RequestParam(name = "msgType", required = false, defaultValue = "0") Integer msgType) {
+        User user = (User) session.getAttribute("user");
+
+        ArrayList<Notice> noticesList = noticeService.getAllnoticeByUserId(user.getId(), msgType);
+        HashMap<Integer, User> users = userService.getAllUserByMap();
+
+        request.setAttribute("users", users);
+        request.setAttribute("noticesList", noticesList);
+
+        noticeService.updateAllNoticeByUserId(user.getId(), msgType);
+
+        request.setAttribute("page", page);
+        request.setAttribute("size", noticesList.size());
+        request.setAttribute("msgType", msgType);
+        return "user/userNotice";
+    }
+
     /**
      * 用户设定页面
+     *
      * @return
      */
     @GetMapping("/userSetting")
@@ -64,6 +90,7 @@ public class UserController {
 
     /**
      * 更新用户信息操作
+     *
      * @param userId
      * @param nickName
      * @param gender
@@ -105,6 +132,7 @@ public class UserController {
 
     /**
      * 更新用户头像操作
+     *
      * @param userId
      * @param headImg
      * @param session
@@ -113,8 +141,8 @@ public class UserController {
     @PostMapping("/headImgUpdate")
     @ResponseBody
     public Result headImgUpdate(
-        @RequestParam("userId") Integer userId,
-        @RequestParam("headImg") String headImg, HttpSession session) {
+            @RequestParam("userId") Integer userId,
+            @RequestParam("headImg") String headImg, HttpSession session) {
 
         if (!StringUtils.hasLength(headImg)) {
             return ResultGenerator.genFailResult("userHeadImg参数错误");
@@ -129,9 +157,10 @@ public class UserController {
             return ResultGenerator.genFailResult();
         }
     }
-    
+
     /**
      * 更新用户密码
+     *
      * @param userId
      * @param nowPass
      * @param newPass
@@ -148,7 +177,7 @@ public class UserController {
             @RequestParam("verifyCode") String verifyCode, HttpSession session) {
 
         User user = (User) session.getAttribute("user");
-        
+
         if (nowPass.equals(newPass)) {
             return ResultGenerator.genFailResult(ServiceResultEnum.SAME_PASS.getResult());
         }
@@ -175,6 +204,7 @@ public class UserController {
 
     /**
      * 用户中心页面
+     *
      * @param request
      * @param session
      * @param Apage
@@ -185,10 +215,10 @@ public class UserController {
      */
     @GetMapping("/userCenter")
     public String userCenter(HttpServletRequest request, HttpSession session,
-            @RequestParam(value = "Apage", required = false, defaultValue = "1") Integer Apage,
-            @RequestParam(value = "Cpage", required = false, defaultValue = "1") Integer Cpage,
-            @RequestParam(value = "Lpage", required = false, defaultValue = "1") Integer Lpage,
-            @RequestParam(value = "Copage", required = false, defaultValue = "1") Integer Copage) {
+                             @RequestParam(value = "Apage", required = false, defaultValue = "1") Integer Apage,
+                             @RequestParam(value = "Cpage", required = false, defaultValue = "1") Integer Cpage,
+                             @RequestParam(value = "Lpage", required = false, defaultValue = "1") Integer Lpage,
+                             @RequestParam(value = "Copage", required = false, defaultValue = "1") Integer Copage) {
         ArrayList<Article> articlesList = new ArrayList<>();
         ArrayList<Comment> commentsList = new ArrayList<>();
         ArrayList<Record> likeRecords = new ArrayList<>();
@@ -208,6 +238,7 @@ public class UserController {
         request.setAttribute("commentsList", commentsList);
         request.setAttribute("likeRecords", likeRecords);
         request.setAttribute("collectRecords", collectRecords);
+
         request.setAttribute("Asize", articlesList.size());
         request.setAttribute("Csize", commentsList.size());
         request.setAttribute("Lsize", likeRecords.size());
@@ -223,6 +254,7 @@ public class UserController {
 
     /**
      * 用户登录页面
+     *
      * @return
      */
     @GetMapping("/login")
@@ -232,6 +264,7 @@ public class UserController {
 
     /**
      * 用户登录操作
+     *
      * @param loginName
      * @param password
      * @param verifyCode
@@ -269,7 +302,9 @@ public class UserController {
         if (result != 1) {
             return ResultGenerator.genFailResult(ServiceResultEnum.NO_USER.getResult());
         } else {
+            Boolean isNewNotice = noticeService.isNewNoticeForUserByUserId(user.getId());
             session.setAttribute("user", user);
+            session.setAttribute("isNewNotice", isNewNotice);
             session.removeAttribute("errormsg");
             return ResultGenerator.genSuccessResult();
         }
@@ -277,6 +312,7 @@ public class UserController {
 
     /**
      * 用户注册页面
+     *
      * @return
      */
     @GetMapping("/register")
@@ -286,6 +322,7 @@ public class UserController {
 
     /**
      * 用户注册操作
+     *
      * @param loginName
      * @param password
      * @param nickName
@@ -337,6 +374,7 @@ public class UserController {
 
     /**
      * 解冻用户操作
+     *
      * @param arr_id
      * @return
      */
@@ -344,9 +382,9 @@ public class UserController {
     @ResponseBody
     public Result unFreezeUser(@RequestParam("arr_id") String arr_id) {
         String[] userId_arr = arr_id.split(",");
-        for(String elem : userId_arr){
+        for (String elem : userId_arr) {
             Integer result = userService.updateUserStatusToNormal(Integer.valueOf(elem));
-            if(result < 0){
+            if (result < 0) {
                 return ResultGenerator.genFailResult("部分用户解冻失败");
             }
         }
@@ -355,6 +393,7 @@ public class UserController {
 
     /**
      * 冻结用户操作
+     *
      * @param arr_id
      * @return
      */
@@ -362,9 +401,9 @@ public class UserController {
     @ResponseBody
     public Result usersDelete(@RequestParam("arr_id") String arr_id) {
         String[] userId_arr = arr_id.split(",");
-        for(String elem : userId_arr){
+        for (String elem : userId_arr) {
             Integer result = userService.updateUserStatusToFreeze(Integer.valueOf(elem));
-            if(result < 0){
+            if (result < 0) {
                 return ResultGenerator.genFailResult("部分用户解冻失败");
             }
         }
@@ -373,6 +412,7 @@ public class UserController {
 
     /**
      * 删除用户操作
+     *
      * @param arr_id
      * @return
      */
@@ -380,9 +420,9 @@ public class UserController {
     @ResponseBody
     public Result deleteUser(@RequestParam("arr_id") String arr_id) {
         String[] userId_arr = arr_id.split(",");
-        for(String elem : userId_arr){
+        for (String elem : userId_arr) {
             Integer result = userService.deleteUserById(Integer.valueOf(elem));
-            if(result < 0){
+            if (result < 0) {
                 return ResultGenerator.genFailResult("部分用户删除失败");
             }
         }
@@ -391,6 +431,7 @@ public class UserController {
 
     /**
      * 用户注销
+     *
      * @param session
      * @param request
      * @return

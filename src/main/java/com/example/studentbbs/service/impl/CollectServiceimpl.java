@@ -1,4 +1,4 @@
-package com.example.studentbbs.service.imp;
+package com.example.studentbbs.service.impl;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ import com.example.studentbbs.service.CollectService;
 
 
 @Service
-public class CollectServiceimp implements CollectService {
+public class CollectServiceimpl implements CollectService {
 
     @Resource
     private CollectDao collectDao;

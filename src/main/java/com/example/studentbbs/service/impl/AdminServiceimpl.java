@@ -1,4 +1,4 @@
-package com.example.studentbbs.service.imp;
+package com.example.studentbbs.service.impl;
 
 import javax.annotation.Resource;
 
@@ -10,7 +10,7 @@ import com.example.studentbbs.util.MD5Util;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdminServiceimp implements AdminService {
+public class AdminServiceimpl implements AdminService {
     @Resource
     private AdminDao adminDao;
 

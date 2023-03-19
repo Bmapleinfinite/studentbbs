@@ -33,15 +33,25 @@
             </th:block>
 
             <th:block th:unless="${session.user == null}">
+                <li class="layui-nav-item" id="notice">
+                    <a th:href="@{/user/userNotice}">
+                        <i class="layui-icon layui-icon-notice"> 通知
+                            <th:block th:if="${session.isNewNotice == true}">
+                                <span class="layui-badge-dot"></span>
+                            </th:block>
+                        </i>
+                    </a>
+                </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">
                         <cite th:text="${session.user.nickName}">棠槿牵樱</cite>
                         <i class="layui-icon layui-icon-user"></i>
-                        <img class="layui-circle" style="width: 36px; height: 36px;" th:src="@{${session.user.headImgUrl}}">
+                        <img class="layui-circle" style="width: 36px; height: 36px;"
+                            th:src="@{${session.user.headImgUrl}}">
                         <span class="layui-nav-more"></span>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a th:href="@{/user/userSetting}"><i class="layui-icon" 
+                        <dd><a th:href="@{/user/userSetting}"><i class="layui-icon"
                                     style="margin-left: 2px; font-size: 22px;">&#xe620;</i>基本设置</a></dd>
                         <dd><a th:href="@{/user/userCenter}"><i class="layui-icon"
                                     style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>

@@ -1,4 +1,4 @@
-package com.example.studentbbs.service.imp;
+package com.example.studentbbs.service.impl;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ import com.example.studentbbs.service.CategoryService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CategoryServiceimp implements CategoryService {
+public class CategoryServiceimpl implements CategoryService {
 
     @Resource
     private CategoryDao categoryDao;
