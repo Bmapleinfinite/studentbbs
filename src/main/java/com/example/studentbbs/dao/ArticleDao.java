@@ -3,6 +3,7 @@ package com.example.studentbbs.dao;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.example.studentbbs.dto.CommonDataDto;
 import com.example.studentbbs.entity.Article;
 
 import org.apache.ibatis.annotations.MapKey;
@@ -36,4 +37,6 @@ public interface ArticleDao {
     Integer updateArticleViewById(Integer id, Integer size, Integer likes, Integer collects);
 
     Integer deleteCommentByPostId(Integer id);
+
+    ArrayList<CommonDataDto> getReadRankData();
 }

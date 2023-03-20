@@ -128,4 +128,11 @@
         from tb_post_comment
         where post_id = #{id}
     </delete>
+
+    <select id="getReadRankData" resultType="com.example.studentbbs.dto.CommonDataDto">
+        SELECT post_title as name, post_views as value
+        from tb_bbs_post
+        ORDER BY post_views DESC
+        LIMIT 5
+    </select>
 </mapper>

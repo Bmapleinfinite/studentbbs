@@ -3,6 +3,7 @@ package com.example.studentbbs.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.example.studentbbs.dto.CommonDataDto;
 import com.example.studentbbs.entity.User;
 
 import org.apache.ibatis.annotations.MapKey;
@@ -37,4 +38,8 @@ public interface UserDao {
     Integer updateUserStatusToFreeze(Integer userId);
 
     Integer deleteUserById(Integer userId);
+
+    Integer getLoginNum(Integer count, String strDate);
+
+    ArrayList<CommonDataDto> getSexualFBData();
 }

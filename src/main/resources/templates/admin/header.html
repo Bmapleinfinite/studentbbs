@@ -12,7 +12,7 @@
     <div th:fragment="header-fragment-adminHead" class="layui-layout layui-layout-admin">
         <div class="layui-header header layui-bg-black">
             <div class="layui-fluid">
-                <a class="layui-logo" href=""><img th:src="@{/images/my-bbs-logo.png}" alt=""></a>
+                <a class="layui-logo" href="/"><img th:src="@{/images/my-bbs-logo.png}" alt=""></a>
                 <ul class="layui-nav layui-layout-right">
                     <li class="layui-nav-item">
                         <a href="javascript:;">
@@ -31,6 +31,9 @@
     <div th:fragment="header-fragment-adminSide" class="layui-side layui-bg-black" style="top:60px;">
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree">
+                <li class="layui-nav-item">
+                    <a th:href="@{/admin/dashboard}">仪表盘</a>
+                </li>
                 <li class="layui-nav-item">
                     <a th:href="@{/admin/userManage}">用户管理</a>
                 </li>

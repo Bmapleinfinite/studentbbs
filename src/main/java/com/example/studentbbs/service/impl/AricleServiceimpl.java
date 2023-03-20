@@ -6,13 +6,15 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.example.studentbbs.dao.ArticleDao;
+import com.example.studentbbs.dto.CommonDataDto;
 import com.example.studentbbs.entity.Article;
 import com.example.studentbbs.service.ArticleService;
 
 import org.springframework.stereotype.Service;
 
 @Service
-public class AricleServiceimpl implements ArticleService {
+public
+class AricleServiceimpl implements ArticleService {
     @Resource
     private ArticleDao articleDao;
 
@@ -79,5 +81,10 @@ public class AricleServiceimpl implements ArticleService {
     @Override
     public Integer updateArticleViewById(Integer id, Integer size, Integer likes, Integer collects) {
         return articleDao.updateArticleViewById(id, size, likes, collects);
+    }
+
+    @Override
+    public ArrayList<CommonDataDto> getReadRankData() {
+        return articleDao.getReadRankData();
     }
 }

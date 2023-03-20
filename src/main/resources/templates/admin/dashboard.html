@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="header::head-fragment('管理后台')"></head>
+
+<body>
+    <div th:replace="admin/header::header-fragment-adminHead"></div>
+    <div th:replace="admin/header::header-fragment-adminSide"></div>
+
+    <div class="layui-tab-brief">
+        <div style="height: 60px;"></div>
+        <div style="left: 200px; padding: 10px; height: 100%; min-height: 900px;" class="layui-panel">
+            <div class="layui-row">
+                <div class="layui-col-xs5">
+                    <div class="layui-card">
+                        <div class="layui-card-header">阅读排行</div>
+                        <div class="layui-card-body">
+                            <div id="third" style="width: 600px;height:400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs5">
+                    <div class="layui-card">
+                        <div class="layui-card-header">性别分布</div>
+                        <div class="layui-card-body">
+                            <div id="four" style="width: 600px;height:400px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-xs5">
+                    <div class="layui-card">
+                        <div class="layui-card-header">活跃人数</div>
+                        <div class="layui-card-body">
+                            <div id="main" style="width: 600px;height:400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs5">
+                    <div class="layui-card">
+                        <div class="layui-card-header">文章分类</div>
+                        <div class="layui-card-body">
+                            <div id="second" style="width: 600px;height:400px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/public.js}"></script>
+    <script>
+        layui.config({
+            base: '/js/'
+        }).use(['layer', 'form', 'element', 'laypage', 'echarts', 'jquery'], function () {
+            var layer = layui.layer
+            var element = layui.element;
+            var laypage = layui.laypage
+            var echarts = layui.echarts;
+            var $ = layui.$;
+
+            var myChart = echarts.init(document.getElementById('main'));
+
+            // 使用刚指定的配置项和数据显示图表。
+            $.post('/admin/loginNumGragh').done(function (data) {
+                var option = {
+                    tooltip: {},
+                    legend: {
+                        data: ['登录人数']
+                    },
+                    xAxis: {
+                        data: ['过去一年', '过去半年', '过去一月', '过去一周', '今天']
+                    },
+                    yAxis: {},
+                    series: [
+                        {
+                            name: '登录人数',
+                            type: 'bar',
+                            data: data.data,
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 14
+                                }
+                            }
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            })
+
+
+            var myChart2 = echarts.init(document.getElementById('second'));
+            $.post('/admin/cateFBGragh').done(function (data) {
+                var option2 = {
+                    series: [
+                        {
+                            type: 'pie',
+                            data: data.data
+                        }
+                    ]
+                };
+                myChart2.setOption(option2)
+            })
+
+
+            var myChart3 = echarts.init(document.getElementById('third'));
+            $.post('/admin/getReadRankGragh').done(function (data) {
+                var option3 = {
+                    tooltip: {},
+                    legend: {
+                        data: ['阅读量']
+                    },
+                    xAxis: {},
+                    yAxis: { data: [data.data[0].name, data.data[1].name, data.data[2].name, data.data[3].name, data.data[4].name] },
+                    series: [
+                        {
+                            name: '阅读量',
+                            type: 'bar',
+                            data: [data.data[0].value, data.data[1].value, data.data[2].value, data.data[3].value, data.data[4].value],
+                            label: {
+                                show: true,
+                                position: 'right',
+                                textStyle: {
+                                    fontSize: 14
+                                }
+                            }
+                        }
+                    ]
+                };
+                myChart3.setOption(option3)
+            })
+
+            var myChart4 = echarts.init(document.getElementById('four'));
+            $.post('/admin/getSexualFBGragh').done(function (data) {
+                option4 = {
+                    xAxis: {
+                        data: [data.data[0].name, data.data[1].name, data.data[2].name]
+                    },
+                    yAxis: {},
+                    series: [
+                        {
+                            data: [data.data[0].value, data.data[1].value, data.data[2].value],
+                            type: 'line',
+                            label: {
+                                show: true,
+                                position: 'bottom',
+                                textStyle: {
+                                    fontSize: 14
+                                }
+                            }
+                        }
+                    ]
+                };
+                myChart4.setOption(option4)
+            })
+
+        });
+    </script>
+
+</body>
+
+</html>

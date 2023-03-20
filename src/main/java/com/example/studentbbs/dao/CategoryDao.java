@@ -2,6 +2,7 @@ package com.example.studentbbs.dao;
 
 import java.util.ArrayList;
 
+import com.example.studentbbs.dto.CommonDataDto;
 import com.example.studentbbs.entity.Category;
 
 import org.springframework.stereotype.Component;
@@ -19,4 +20,6 @@ public interface CategoryDao {
     Integer addCate(Category category);
 
     Integer deleteCateById(Integer cateId);
+
+    ArrayList<CommonDataDto> getCateFBData();
 }

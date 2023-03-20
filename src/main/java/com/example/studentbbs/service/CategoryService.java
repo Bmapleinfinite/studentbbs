@@ -2,6 +2,7 @@ package com.example.studentbbs.service;
 
 import java.util.ArrayList;
 
+import com.example.studentbbs.dto.CommonDataDto;
 import com.example.studentbbs.entity.Category;
 
 public interface CategoryService {
@@ -48,4 +49,6 @@ public interface CategoryService {
      * @return
      */
     Integer deleteCateById(Integer valueOf);
+
+    ArrayList<CommonDataDto> getCateFBData();
 }

@@ -23,6 +23,14 @@ public class ResultGenerator {
         return result;
     }
 
+    public static Result genSuccessResult(Object Data) {
+        Result result = new Result();
+        result.setMessage(DEFAULT_SUCCESS_MESSAGE);
+        result.setResultCode(RESULT_CODE_SUCCESS);
+        result.setData(Data);
+        return result;
+    }
+
     public static Result genSuccessResultWithFileDirectory(String fileDirectory) {
         Result result = new Result();
         result.setMessage(DEFAULT_SUCCESS_MESSAGE);

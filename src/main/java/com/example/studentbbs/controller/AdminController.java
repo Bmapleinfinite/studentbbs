@@ -1,6 +1,7 @@
 package com.example.studentbbs.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.example.studentbbs.common.ServiceResultEnum;
+import com.example.studentbbs.dto.CommonDataDto;
 import com.example.studentbbs.entity.Admin;
 import com.example.studentbbs.entity.Article;
 import com.example.studentbbs.entity.Category;
@@ -53,6 +55,43 @@ public class AdminController {
     @Resource
     private HomeController homeController;
 
+
+    @GetMapping("/dashboard")
+    public String dashboard(){
+        return "admin/dashboard";
+    }
+
+    @PostMapping("/getSexualFBGragh")
+    @ResponseBody
+    public Result getSexualFBGragh(){
+        ArrayList<CommonDataDto> result = userService.getSexualFBData();
+        return ResultGenerator.genSuccessResult(result);
+    }
+
+    @PostMapping("/getReadRankGragh")
+    @ResponseBody
+    public Result getReadRankGragh(){
+        ArrayList<CommonDataDto> result = articleService.getReadRankData();
+        Collections.reverse(result);
+        return ResultGenerator.genSuccessResult(result);
+    }
+
+    @PostMapping("/cateFBGragh")
+    @ResponseBody
+    public Result getCateFBGragh(){
+        ArrayList<CommonDataDto> result = categoryService.getCateFBData();
+        result.forEach((x)->{
+            x.setName(x.getName() + " : " + x.getValue());
+        });
+        return ResultGenerator.genSuccessResult(result);
+    }
+
+    @PostMapping("/loginNumGragh")
+    @ResponseBody
+    public Result getLoginNumDto(){
+        ArrayList<Integer> loginNums = userService.getLoginNum();
+        return ResultGenerator.genSuccessResult(loginNums);
+    }
     /**
      * 进入管理员主页面
      * @param session

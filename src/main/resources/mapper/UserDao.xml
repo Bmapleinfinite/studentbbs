@@ -2,102 +2,102 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.studentbbs.dao.UserDao">
     <resultMap id="BaseResultMap" type="com.example.studentbbs.entity.User">
-        <id column="user_id" jdbcType="BIGINT" property="id" />
-        <result column="login_name" jdbcType="VARCHAR" property="loginName" />
-        <result column="password_md5" jdbcType="VARCHAR" property="password" />
-        <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
-        <result column="head_img_url" jdbcType="VARCHAR" property="headImgUrl" />
-        <result column="gender" jdbcType="VARCHAR" property="gender" />
-        <result column="location" jdbcType="VARCHAR" property="location" />
-        <result column="introduce" jdbcType="VARCHAR" property="introduce" />
-        <result column="user_status" jdbcType="TINYINT" property="userStatus" />
-        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <id column="user_id" jdbcType="BIGINT" property="id"/>
+        <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="password_md5" jdbcType="VARCHAR" property="password"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="head_img_url" jdbcType="VARCHAR" property="headImgUrl"/>
+        <result column="gender" jdbcType="VARCHAR" property="gender"/>
+        <result column="location" jdbcType="VARCHAR" property="location"/>
+        <result column="introduce" jdbcType="VARCHAR" property="introduce"/>
+        <result column="user_status" jdbcType="TINYINT" property="userStatus"/>
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
     <sql id="BaseColumnList">
-        user_id, login_name, password_md5, nick_name, head_img_url, gender, location, introduce, user_status, last_login_time, create_time
+        user_id
+        , login_name, password_md5, nick_name, head_img_url, gender, location, introduce, user_status, last_login_time, create_time
     </sql>
 
     <select id="login" resultMap="BaseResultMap">
         select
-        <include refid="BaseColumnList" />
+        <include refid="BaseColumnList"/>
         from tb_bbs_user
         where login_name = #{loginName} and password_md5 = #{password} and user_status = 0
     </select>
 
     <select id="getUserByLoginName" resultMap="BaseResultMap">
         select
-        <include refid="BaseColumnList" />
+        <include refid="BaseColumnList"/>
         from tb_bbs_user
         where login_name = #{loginName}
     </select>
 
     <select id="getUserById" resultMap="BaseResultMap">
         select
-        <include refid="BaseColumnList" />
+        <include refid="BaseColumnList"/>
         from tb_bbs_user
         where user_id = #{userId} and user_status = 0
     </select>
 
     <select id="getAllUserByMap" resultMap="BaseResultMap">
         select
-        <include refid="BaseColumnList" />
+        <include refid="BaseColumnList"/>
         from tb_bbs_user
     </select>
 
     <select id="getAllUser" resultMap="BaseResultMap">
         select
-        <include refid="BaseColumnList" />
+        <include refid="BaseColumnList"/>
         from tb_bbs_user
     </select>
 
     <insert id="register" keyProperty="id" useGeneratedKeys="true">
-        insert into
-        tb_bbs_user (login_name, password_md5, nick_name, head_img_url, gender, location, introduce)
-        values(#{loginName}, #{password}, #{nickName}, #{headImgUrl}, #{gender}, #{location}, #{introduce})
+        insert into tb_bbs_user (login_name, password_md5, nick_name, head_img_url, gender, location, introduce)
+        values (#{loginName}, #{password}, #{nickName}, #{headImgUrl}, #{gender}, #{location}, #{introduce})
     </insert>
 
     <update id="updateLastLoginTimeById">
         update
-        tb_bbs_user 
+            tb_bbs_user
         set last_login_time = CURRENT_TIMESTAMP
         where user_id = #{id}
     </update>
 
     <update id="updateUserInfoById">
         update
-        tb_bbs_user 
-        set nick_name = #{nickName}, 
-        gender = #{gender}, 
-        location = #{location}, 
-        introduce = #{introduce}
+            tb_bbs_user
+        set nick_name = #{nickName},
+            gender    = #{gender},
+            location  = #{location},
+            introduce = #{introduce}
         where user_id = #{userId}
     </update>
 
     <update id="headImgUpdateById">
         update
-        tb_bbs_user 
+            tb_bbs_user
         set head_img_url = #{headImg}
         where user_id = #{userId}
     </update>
 
     <update id="updateUserPass">
         update
-        tb_bbs_user 
+            tb_bbs_user
         set password_md5 = #{passwordMD5}
         where user_id = #{userId}
     </update>
-    
+
     <update id="updateUserStatusToNormal">
         update
-        tb_bbs_user 
+            tb_bbs_user
         set user_status = 0
         where user_id = #{userId}
     </update>
 
     <update id="updateUserStatusToFreeze">
         update
-        tb_bbs_user 
+            tb_bbs_user
         set user_status = 1
         where user_id = #{userId}
     </update>
@@ -107,4 +107,16 @@
         from tb_bbs_user
         where user_id = #{userId}
     </delete>
+
+    <select id="getLoginNum" resultType="java.lang.Integer">
+        SELECT count(user_id)
+        FROM tb_bbs_user
+        WHERE last_login_time > DATE_SUB(CURDATE(), INTERVAL #{count} ${strDate})
+    </select>
+
+    <select id="getSexualFBData" resultType="com.example.studentbbs.dto.CommonDataDto">
+        SELECT gender as name, count(user_id) as value
+        from tb_bbs_user
+        GROUP BY gender
+    </select>
 </mapper>

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import javax.annotation.Resource;
 
 import com.example.studentbbs.dao.UserDao;
+import com.example.studentbbs.dto.CommonDataDto;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.UserService;
 import com.example.studentbbs.util.MD5Util;
@@ -85,5 +86,21 @@ public class UserServiceimpl implements UserService {
     @Override
     public Integer deleteUserById(Integer userId) {
         return userDao.deleteUserById(userId);
+    }
+
+    @Override
+    public ArrayList<Integer> getLoginNum() {
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(userDao.getLoginNum(1, "YEAR"));
+        result.add(userDao.getLoginNum(6, "MONTH"));
+        result.add(userDao.getLoginNum(1, "MONTH"));
+        result.add(userDao.getLoginNum(1, "WEEK"));
+        result.add(userDao.getLoginNum(1, "DAY"));
+        return result;
+    }
+
+    @Override
+    public ArrayList<CommonDataDto> getSexualFBData() {
+        return userDao.getSexualFBData();
     }
 }

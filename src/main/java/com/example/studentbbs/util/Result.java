@@ -9,6 +9,8 @@ public class Result implements Serializable {
 
     private String fileDirectory;
 
+    private Object data;
+
 
     public Result() {
     }
@@ -66,5 +68,12 @@ public class Result implements Serializable {
             ", fileDirectory='" + getFileDirectory() + "'" +
             "}";
     }
-    
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
 }

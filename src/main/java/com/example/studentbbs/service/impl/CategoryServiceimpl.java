@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.annotation.Resource;
 
 import com.example.studentbbs.dao.CategoryDao;
+import com.example.studentbbs.dto.CommonDataDto;
 import com.example.studentbbs.entity.Category;
 import com.example.studentbbs.service.CategoryService;
 
@@ -45,5 +46,10 @@ public class CategoryServiceimpl implements CategoryService {
     public Integer deleteCateById(Integer cateId) {
         return categoryDao.deleteCateById(cateId);
     }
-    
+
+    @Override
+    public ArrayList<CommonDataDto> getCateFBData() {
+        return categoryDao.getCateFBData();
+    }
+
 }

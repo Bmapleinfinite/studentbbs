@@ -3,6 +3,7 @@ package com.example.studentbbs.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.example.studentbbs.dto.CommonDataDto;
 import com.example.studentbbs.entity.User;
 
 public interface UserService {
@@ -104,4 +105,8 @@ public interface UserService {
      * @return
      */
     Integer deleteUserById(Integer userId);
+
+    ArrayList<Integer> getLoginNum();
+
+    ArrayList<CommonDataDto> getSexualFBData();
 }

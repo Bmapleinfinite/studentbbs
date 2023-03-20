@@ -51,4 +51,12 @@
         from tb_post_category
         where category_id = #{cateId}
     </delete>
+
+    <select id="getCateFBData" resultType="com.example.studentbbs.dto.CommonDataDto">
+        SELECT b.category_name as name, count(a.post_id) as value
+        from tb_bbs_post as a,
+             tb_post_category as b
+        WHERE a.post_category_id = b.category_id
+        GROUP BY post_category_id
+    </select>
 </mapper>

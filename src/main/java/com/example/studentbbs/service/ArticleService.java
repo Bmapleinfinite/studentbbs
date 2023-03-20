@@ -3,6 +3,7 @@ package com.example.studentbbs.service;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.example.studentbbs.dto.CommonDataDto;
 import com.example.studentbbs.entity.Article;
 
 public interface ArticleService {
@@ -95,4 +96,6 @@ public interface ArticleService {
      * @return
      */
     Integer updateArticleViewById(Integer id, Integer size, Integer likes, Integer collects);
+
+    ArrayList<CommonDataDto> getReadRankData();
 }
