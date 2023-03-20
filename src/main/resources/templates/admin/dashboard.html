@@ -11,7 +11,7 @@
         <div style="height: 60px;"></div>
         <div style="left: 200px; padding: 10px; height: 100%; min-height: 900px;" class="layui-panel">
             <div class="layui-row">
-                <div class="layui-col-xs5">
+                <div class="layui-col-xs4">
                     <div class="layui-card">
                         <div class="layui-card-header">阅读排行</div>
                         <div class="layui-card-body">
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="layui-col-xs5">
+                <div class="layui-col-xs4">
                     <div class="layui-card">
                         <div class="layui-card-header">性别分布</div>
                         <div class="layui-card-body">
@@ -27,9 +27,39 @@
                         </div>
                     </div>
                 </div>
+                <div class="layui-col-xs3">
+                    <div class="layui-card">
+                        <div class="layui-card-header">发布通知</div>
+                        <div class="layui-card-body">
+                            <div class="layui-form layui-form-pane">
+                                <form method="post" id="addSysNoticeForm" onsubmit="return false;" action="##">
+                                    <div class="layui-form-item">
+                                        <label for="sysNoticeName" class="layui-form-label">通知名</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" id="sysNoticeName" name="sysNoticeName" required
+                                                lay-verify="required" autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label for="sysNoticeContent" class="layui-form-label">通知内容</label>
+                                        <div class="layui-input-inline">
+                                            <textarea id="sysNoticeContent" name="sysNoticeContent" required
+                                                lay-verify="required" autocomplete="off"
+                                                class="layui-textarea"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <button class="layui-btn" lay-filter="*" lay-submit
+                                            onclick="addSysNotice()">发布通知</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="layui-row">
-                <div class="layui-col-xs5">
+                <div class="layui-col-xs4">
                     <div class="layui-card">
                         <div class="layui-card-header">活跃人数</div>
                         <div class="layui-card-body">
@@ -37,7 +67,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="layui-col-xs5">
+                <div class="layui-col-xs4">
                     <div class="layui-card">
                         <div class="layui-card-header">文章分类</div>
                         <div class="layui-card-body">
@@ -158,6 +188,26 @@
                 myChart4.setOption(option4)
             })
 
+            window.addSysNotice = function () {
+                var params = $("#addSysNoticeForm").serialize()
+                var url = "/notice/addSysNotice"
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: url,
+                    data: params,
+                    success: function (result) {
+                        if (result.resultCode == 200) {
+                            window.location.reload()
+                        } else {
+                            layer.msg(result.message)
+                        }
+                        ;
+                    },
+                    error: function () {
+                        layer.alert('操作错误!', { title: '提醒', skin: 'layui-layer-molv', icon: 2 });
+                    }
+                });
+            }
         });
     </script>
 

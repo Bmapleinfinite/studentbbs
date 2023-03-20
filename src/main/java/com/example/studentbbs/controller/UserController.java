@@ -67,6 +67,7 @@ public class UserController {
         ArrayList<Notice> noticesList = noticeService.getAllnoticeByUserId(user.getId(), msgType);
         HashMap<Integer, User> users = userService.getAllUserByMap();
 
+        session.removeAttribute("isNewNotice");
         request.setAttribute("users", users);
         request.setAttribute("noticesList", noticesList);
 

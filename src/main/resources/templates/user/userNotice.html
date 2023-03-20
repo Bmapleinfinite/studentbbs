@@ -35,24 +35,26 @@
 
                                                 <th:block th:if="${n.noticeType} == 1 and ${n.fromUserId} == -1">
                                                     <span class="layui-border-red layui-btn-xs">系统消息</span>
+                                                    <th:block th:if="${n.isChecked == false}"><span class="layui-badge-dot"></span></th:block>
                                                     <a href="">管理员</a> 向你发送了通知
-                                                    <th:block th:text="${n.noticeName}">通知测试</th:block>
+                                                    <th:block th:text="${n.noticeName}">通知测试</th:block><br>
                                                 </th:block>
 
                                                 <th:block th:if="${n.noticeType} == 2 and ${n.fromUserId} != -1">
                                                     <span class="layui-border-green layui-btn-xs">回复</span>
+                                                    <th:block th:if="${n.isChecked == false}"><span class="layui-badge-dot"></span></th:block>
                                                     <a href="" th:text="${users[n.fromUserId].nickName}"></a>
+                                                    回复了你的帖子
+                                                    <a href="">帖子名</a><br>
                                                 </th:block>
 
                                                 <th:block th:if="${n.noticeType} == 3 and ${n.fromUserId} != -1">
-                                                    私信
+                                                    <span class="layui-border-blue layui-btn-xs">私信</span>
+                                                    <th:block th:if="${n.isChecked == false}"><span class="layui-badge-dot"></span></th:block>
+                                                    <a href="" th:text="${users[n.fromUserId].nickName}"></a>
+                                                    向你发送了私信<br>
                                                 </th:block>
 
-                                                <th:block th:if="${n.fromUserId} != -1">
-
-                                                </th:block>
-                                                回复了你的帖子
-                                                <a href="">帖子名</a><br>
                                                 <th:block th:text="${n.createTime}">2021-08-01 13:01:22</th:block><br>
                                                 <span th:utext="${n.noticeContent}"></span>
                                             </div>

@@ -37,4 +37,9 @@ public class NoticeServiceImpl implements NoticeService {
         Boolean result = noticeDao.updateAllNoticeByUserId(id, msgType);
         return result;
     }
+
+    @Override
+    public Integer addNotice(Notice notice) {
+        return noticeDao.addNotice(notice);
+    }
 }

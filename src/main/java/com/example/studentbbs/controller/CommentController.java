@@ -3,12 +3,15 @@ package com.example.studentbbs.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import com.example.studentbbs.common.NoticeTypeEnum;
 import com.example.studentbbs.common.ServiceResultEnum;
 import com.example.studentbbs.entity.Article;
 import com.example.studentbbs.entity.Comment;
+import com.example.studentbbs.entity.Notice;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.ArticleService;
 import com.example.studentbbs.service.CommentService;
+import com.example.studentbbs.service.NoticeService;
 import com.example.studentbbs.util.Result;
 import com.example.studentbbs.util.ResultGenerator;
 
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/comment")
 public class CommentController {
+    public static final String REPLY = "回复";
 
     @Resource
     private CommentService commentService;
@@ -29,13 +33,16 @@ public class CommentController {
     @Resource
     private ArticleService articleService;
 
+    @Resource
+    private NoticeService noticeService;
+
     @PostMapping("/commentPub/{id}")
     @ResponseBody
     public Result commentPub(
             @RequestParam("commentBody") String commentBody,
             @PathVariable Integer id,
             HttpSession session) {
-                
+
         User user = new User();
         user = (User) session.getAttribute("user");
         if (user == null) {
@@ -50,9 +57,21 @@ public class CommentController {
         comment.setPostId(article.getId());
         comment.setUserId(user.getId());
 
+        Notice notice = new Notice();
+        notice.setFromUserId(user.getId());
+        notice.setToUserId(article.getUserId());
+        notice.setNoticeName(REPLY);
+        notice.setNoticeType(NoticeTypeEnum.NOTICE_TYPE_REPLY.getType());
+        notice.setNoticeContent(commentBody);
+
         int result = commentService.commentPub(comment);
         if (result > 0) {
-            return ResultGenerator.genSuccessResult();
+            result = noticeService.addNotice(notice);
+            if (result > 0) {
+                return ResultGenerator.genSuccessResult();
+            } else {
+                return ResultGenerator.genFailResult();
+            }
         } else {
             return ResultGenerator.genFailResult();
         }

@@ -1,7 +1,5 @@
 package com.example.studentbbs.entity;
 
-import java.util.Date;
-
 /**
  * (TbBbsNotice)实体类
  *
@@ -28,11 +26,11 @@ public class Notice{
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
     
-    private String toUserId;
+    private Integer toUserId;
     
-    private String fromUserId;
+    private Integer fromUserId;
 
     /**
      * 通知内容
@@ -79,27 +77,27 @@ public class Notice{
         this.isChecked = isChecked;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public String getToUserId() {
+    public Integer getToUserId() {
         return toUserId;
     }
 
-    public void setToUserId(String toUserId) {
+    public void setToUserId(Integer toUserId) {
         this.toUserId = toUserId;
     }
 
-    public String getFromUserId() {
+    public Integer getFromUserId() {
         return fromUserId;
     }
 
-    public void setFromUserId(String fromUserId) {
+    public void setFromUserId(Integer fromUserId) {
         this.fromUserId = fromUserId;
     }
 

@@ -53,7 +53,8 @@
                                             class="layui-border-green layui-btn-xs">分享</span></a>
                                         <a th:href="@{'article/detail/' + ${a.id}}" th:text="${a.title}">默认</a><br>
                                         <span th:text="${users[a.userId].nickName}">棠槿牵樱</span>
-                                        <span class="layui-font-red" th:text="'最近更新时间：' + ${a.lastUpdateTime}">2021-08-13 13:01:11</span>
+                                        <span class="layui-font-red"
+                                            th:text="'最近更新时间：' + ${a.lastUpdateTime}">2021-08-13 13:01:11</span>
                                         <span th:text="'阅读数' + ${a.views}">111</span>
                                         <div style="position: absolute; right: 10px; bottom: 5px;">
                                             <i class="layui-icon layui-icon-praise layui-font-red"></i><span
@@ -93,6 +94,15 @@
                         </form>
                     </div>
                 </div>
+
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        月均活跃
+                    </div>
+                    <div class="layui-card-body">
+                        <div id="main" style="width: 350px; height: 400px;"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -111,18 +121,21 @@
         readonly>
     <input id="page" name="page" th:value="${page}" style="position: absolute; visibility: hidden;" type="text"
         readonly>
-    <input id="errormsg" name="errormsg" th:value="${session.errormsg}" style="position: absolute; visibility: hidden;" type="text"
-        readonly>
+    <input id="errormsg" name="errormsg" th:value="${session.errormsg}" style="position: absolute; visibility: hidden;"
+        type="text" readonly>
 
     <script th:src="@{/layui/layui.js}"></script>
     <script th:src="@{/js/public.js}"></script>
     <script>
-        layui.use(['layer', 'form', 'element', 'laypage', 'jquery'], function () {
+        layui.config({
+            base: '/js/'
+        }).use(['layer', 'form', 'element', 'laypage', 'jquery', 'echarts'], function () {
             var layer = layui.layer
             var element = layui.element
             var form = layui.form;
             var $ = layui.$
             var laypage = layui.laypage
+            var echarts = layui.echarts
 
             var size = $('#size').val()
             var page = $('#page').val()
@@ -130,8 +143,37 @@
             var keyword = $('#keyword').val()
             var orderby = $('#orderby').val()
             var errormsg = $('#errormsg').val()
+            
+            var myChart = echarts.init(document.getElementById('main'));
+            $.post('/admin/loginNumGragh').done(function (data) {
+                var option = {
+                    tooltip: {},
+                    legend: {
+                        data: ['登录人数']
+                    },
+                    xAxis: {
+                        data: ['过去一年', '过去半年', '过去一月', '过去一周', '今天']
+                    },
+                    yAxis: {},
+                    series: [
+                        {
+                            name: '登录人数',
+                            type: 'bar',
+                            data: data.data,
+                            label: {
+                                show: true,
+                                position: 'top',
+                                textStyle: {
+                                    fontSize: 14
+                                }
+                            }
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            })
 
-            if(!isNull(errormsg)){
+            if (!isNull(errormsg)) {
                 layer.msg(errormsg)
             }
 

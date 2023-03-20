@@ -12,6 +12,7 @@ import com.example.studentbbs.entity.Category;
 import com.example.studentbbs.entity.User;
 import com.example.studentbbs.service.ArticleService;
 import com.example.studentbbs.service.CategoryService;
+import com.example.studentbbs.service.NoticeService;
 import com.example.studentbbs.service.UserService;
 
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,9 @@ public class HomeController {
      */
     @Resource
     private UserService userService;
+
+    @Resource
+    private NoticeService noticeService;
 
     /**
      * 打开网站进入首页
@@ -67,6 +71,12 @@ public class HomeController {
         articlesList = articleService.getAllArticleByParams(orderby, categoryId, keyword);
         // 根据用户ID进行分组
         users = userService.getAllUserByMap();
+
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            Boolean isNewNotice = noticeService.isNewNoticeForUserByUserId(user.getId());
+            session.setAttribute("isNewNotice", isNewNotice);
+        }
 
         // 定义前端数据
         request.setAttribute("categorys", categorys);

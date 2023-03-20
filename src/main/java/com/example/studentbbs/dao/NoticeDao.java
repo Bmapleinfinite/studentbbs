@@ -17,5 +17,7 @@ public interface NoticeDao {
     ArrayList<Notice> getAllnoticeByUserId(int id, int msgType);
 
     Boolean updateAllNoticeByUserId(int id, Integer msgType);
+
+    Integer addNotice(Notice notice);
 }
 

@@ -8,8 +8,8 @@
         <result property="noticeType" column="notice_type" jdbcType="INTEGER"/>
         <result property="isChecked" column="is_checked" jdbcType="INTEGER"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        <result property="toUserId" column="to_user_id" jdbcType="VARCHAR"/>
-        <result property="fromUserId" column="from_user_id" jdbcType="VARCHAR"/>
+        <result property="toUserId" column="to_user_id" jdbcType="INTEGER"/>
+        <result property="fromUserId" column="from_user_id" jdbcType="INTEGER"/>
         <result property="noticeContent" column="notice_content" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -23,7 +23,7 @@
         from tb_bbs_notice
         WHERE to_user_id = #{id} and is_checked = 0
     </select>
-    
+
     <select id="getAllnoticeByUserId" resultMap="NoticeMap">
         SELECT
         <include refid="Base_Column_List"></include>
@@ -40,5 +40,11 @@
         set is_checked = 1
         where to_user_id = #{id} and notice_type = #{msgType}
     </update>
+
+    <insert id="addNotice" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO `my_bbs_db`.`tb_bbs_notice` 
+        (`notice_name`, `notice_type`, `to_user_id`, `from_user_id`, `notice_content`) 
+        VALUES (#{noticeName}, #{noticeType}, #{toUserId}, #{fromUserId}, #{noticeContent});
+    </insert>
 
 </mapper>
