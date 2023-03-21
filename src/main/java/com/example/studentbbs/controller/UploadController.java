@@ -19,7 +19,7 @@ import com.example.studentbbs.util.ResultGenerator;
 
 @Controller
 public class UploadController {
-    private final static String FILE_UPLOAD_DIC = "D:\\upload\\";
+    private final static String FILE_UPLOAD_DIC = "/myFolder/Java/studentbbs/upload/";
     
     @PostMapping("/uploadFile")
     @ResponseBody

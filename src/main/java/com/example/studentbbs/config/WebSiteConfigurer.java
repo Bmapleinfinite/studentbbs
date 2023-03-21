@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebSiteConfigurer implements WebMvcConfigurer {
-    private final static String FILE_UPLOAD_DIC = "D:\\upload\\";
+    private final static String FILE_UPLOAD_DIC = "/myFolder/Java/studentbbs/upload/";
 
     @Autowired
     private AdminLoginInterceptor adminLoginInterceptor;
