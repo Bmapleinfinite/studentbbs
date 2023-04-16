@@ -1,5 +1,6 @@
 package com.example.studentbbs.config;
 
+import com.example.studentbbs.common.SystemVarEnum;
 import com.example.studentbbs.interceptor.AdminLoginInterceptor;
 import com.example.studentbbs.interceptor.UserInterceptor;
 
@@ -12,7 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebSiteConfigurer implements WebMvcConfigurer {
-    private final static String FILE_UPLOAD_DIC = "/myFolder/Java/studentbbs/upload/";
+
+    private final static String FILE_UPLOAD_DIC = SystemVarEnum.FILE_UPLOAD_DIC.getValue();
 
     @Autowired
     private AdminLoginInterceptor adminLoginInterceptor;
