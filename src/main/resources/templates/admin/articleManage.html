@@ -29,6 +29,7 @@
                                     <col width="5">
                                     <col width="100">
                                     <col width="100">
+                                    <col width="50">
                                 </colgroup>
                                 <thead>
                                     <tr>
@@ -42,6 +43,7 @@
                                         <th>帖子状态</th>
                                         <th>上次登录时间</th>
                                         <th>发布时间</th>
+                                        <th>内容预览</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -50,24 +52,37 @@
                                             <th:block
                                                 th:if="${aStat.index} ge ((${page} - 1) * 10) and ${aStat.index} lt (${page} * 10)">
                                                 <tr>
-                                                    <td style="text-align: center;"><input th:value="${a.id}" name="articleId" type="checkbox"></td>
+                                                    <td style="text-align: center;"><input th:value="${a.id}"
+                                                            name="articleId" type="checkbox"></td>
                                                     <td th:text="${a.id}">4</td>
-                                                    <td th:text="${users[a.userId].nickName} + ' id:' + ${a.userId}">棠槿牵樱 id:4</td>
-                                                    <td><a th:text="${#strings.abbreviate(a.title, 15)}" th:title="${a.title}" th:href="@{'/article/detail/' + ${a.id}}">rgbugegjcmu@163.com</a></td>
+                                                    <td th:text="${users[a.userId].nickName} + ' id:' + ${a.userId}">
+                                                        棠槿牵樱 id:4</td>
+                                                    <td><a th:text="${#strings.abbreviate(a.title, 15)}"
+                                                            th:title="${a.title}"
+                                                            th:href="@{'/article/detail/' + ${a.id}}">rgbugegjcmu@163.com</a>
+                                                    </td>
                                                     <td th:text="${a.categoryName}">未知</td>
-                                                    <td th:text="${a.views} + ' | ' + ${a.comments} + ' | ' + ${a.collects} + ' | ' + ${a.likes}"></td>
+                                                    <td
+                                                        th:text="${a.views} + ' | ' + ${a.comments} + ' | ' + ${a.collects} + ' | ' + ${a.likes}">
+                                                    </td>
                                                     <th:block th:if="${a.articleStatus == 1}">
-                                                        <td><span class="layui-bg-green" style="padding: 5px;">已审核</span></td>
+                                                        <td><span class="layui-bg-green"
+                                                                style="padding: 5px;">已审核</span></td>
                                                     </th:block>
                                                     <th:block th:if="${a.articleStatus == 0}">
-                                                        <td><span class="layui-bg-red" style="padding: 5px;">未审核</span></td>
+                                                        <td><span class="layui-bg-red" style="padding: 5px;">未审核</span>
+                                                        </td>
                                                     </th:block>
                                                     <th:block th:if="${a.articleStatus == 2}">
-                                                        <td><span class="layui-bg-black" style="padding: 5px;">审核失败</span></td>
+                                                        <td><span class="layui-bg-black"
+                                                                style="padding: 5px;">审核失败</span></td>
                                                     </th:block>
                                                     <td th:text="${a.lastUpdateTime}">2022-06-05 19:45:11</td>
                                                     <td th:text="${a.createTime}">2022-05-19 08:59:15</td>
-                                                  </tr>
+                                                    <td><button th:onclick="'showArticleContent' + '(' + ${a.id} + ')'"
+                                                            class="layui-btn layui-btn-primary layui-btn-sm">查看</button>
+                                                    </td>
+                                                </tr>
                                             </th:block>
                                         </th:block>
                                     </th:block>
@@ -228,6 +243,17 @@
                     }
                 }
             });
+
+            window.showArticleContent = function (id) {
+                $.get("/article/getArticleContentById/" + id, function (data) {
+                    layer.open({
+                        type: 1,
+                        area: '753px',
+                        title: '内容预览',
+                        content: '<div class="content-body">' + data.message + '</div>'
+                    });
+                })
+            }
 
         });
     </script>

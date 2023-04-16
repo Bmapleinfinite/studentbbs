@@ -257,12 +257,19 @@ public class ArticleController {
     @ResponseBody
     public Result deleteArticle(@RequestParam("arr_id") String arr_id) {
         String[] userId_arr = arr_id.split(",");
-        for(String elem : userId_arr){
+        for (String elem : userId_arr) {
             Integer result = articleService.deleteArticleById(Integer.valueOf(elem));
-            if(result < 0){
+            if (result < 0) {
                 return ResultGenerator.genFailResult("部分帖子删除失败");
             }
         }
         return ResultGenerator.genSuccessResult();
+    }
+
+    @GetMapping("/getArticleContentById/{id}")
+    @ResponseBody
+    public Result getArticleContentById(@PathVariable String id) {
+        String result = articleService.getArticleContentById(id);
+        return ResultGenerator.genSuccessResult(result);
     }
 }

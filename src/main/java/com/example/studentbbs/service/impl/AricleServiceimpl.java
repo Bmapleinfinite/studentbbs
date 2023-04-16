@@ -87,4 +87,9 @@ class AricleServiceimpl implements ArticleService {
     public ArrayList<CommonDataDto> getReadRankData() {
         return articleDao.getReadRankData();
     }
+
+    @Override
+    public String getArticleContentById(String id) {
+        return articleDao.getArticleContentById(id);
+    }
 }

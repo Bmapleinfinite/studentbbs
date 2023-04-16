@@ -40,6 +40,13 @@
         where comment_user_id = #{userId}
     </select>
 
+    <select id="getCommentBodyById" resultType="java.lang.String">
+        SELECT
+        comment_body 
+        FROM tb_post_comment 
+        WHERE comment_id = #{id};
+    </select>
+
     <update id="updateUserStatusToNormal">
         update
         tb_post_comment

@@ -16,6 +16,7 @@ import com.example.studentbbs.util.Result;
 import com.example.studentbbs.util.ResultGenerator;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -114,5 +115,12 @@ public class CommentController {
             }
         }
         return ResultGenerator.genSuccessResult();
+    }
+
+    @GetMapping("/getCommentBodyById/{id}")
+    @ResponseBody
+    public Result getCommentBodyById(@PathVariable Integer id) {
+        String result = commentService.getCommentBodyById(id);
+        return ResultGenerator.genSuccessResult(result);
     }
 }

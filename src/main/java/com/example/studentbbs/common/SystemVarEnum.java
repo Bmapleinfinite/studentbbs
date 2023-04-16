@@ -2,7 +2,7 @@ package com.example.studentbbs.common;
 
 public enum SystemVarEnum {
 
-    FILE_UPLOAD_DIC(System.getProperty("user.dir") + "\\upload\\");
+    FILE_UPLOAD_DIC(System.getProperty("user.dir") + "/upload/");
 
     private String value;
 

@@ -21,4 +21,6 @@ public interface CommentDao {
     Integer updateCommentStatusToFreeze(Integer id);
 
     Integer deleteCommentById(Integer id);
+
+    String getCommentBodyById(Integer id);
 }

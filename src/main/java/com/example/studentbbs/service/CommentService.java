@@ -52,4 +52,11 @@ public interface CommentService {
      * @return
      */
     Integer deleteCommentById(Integer id);
+
+    /**
+     * 根据ID获取评论内容
+     * @param id
+     * @return
+     */
+    String getCommentBodyById(Integer id);
 }

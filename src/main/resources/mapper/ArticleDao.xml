@@ -79,6 +79,13 @@
         WHERE post_status = 1
     </select>
 
+    <select id="getArticleContentById" resultType="java.lang.String">
+        SELECT
+        post_content 
+        FROM tb_bbs_post 
+        WHERE post_id = #{id};
+    </select>
+
     <insert id="articlePub" keyProperty="id" useGeneratedKeys="true">
         insert into
         tb_bbs_post (publish_user_id, post_title, post_content, post_category_id, post_category_name)

@@ -50,5 +50,10 @@ public class CommentServiceimpl implements CommentService {
     public Integer deleteCommentById(Integer id) {
         return commentDao.deleteCommentById(id);
     }
+
+    @Override
+    public String getCommentBodyById(Integer id) {
+        return commentDao.getCommentBodyById(id);
+    }
     
 }

@@ -26,6 +26,7 @@
                                     <col width="100">
                                     <col width="100">
                                     <col width="100">
+                                    <col width="100">
                                   </colgroup>
                                   <thead>
                                     <tr>
@@ -35,6 +36,7 @@
                                       <th>评论者</th>
                                       <th>评论状态</th>
                                       <th>评论时间</th>
+                                      <th>内容预览</th>
                                     </tr> 
                                   </thead>
                                 <tbody>
@@ -54,6 +56,8 @@
                                                         <td><span class="layui-bg-red" style="padding: 5px;">未审核</span></td>
                                                     </th:block>
                                                     <td th:text="${c.createTime}">2022-06-07 16:36:27</td>
+                                                    <td><button th:onclick="'showCommentContent' + '(' + ${c.id} +')'"
+                                                        class="layui-btn layui-btn-primary layui-btn-sm">查看</button></td>
                                                   </tr>
                                             </th:block>
                                         </th:block>
@@ -215,6 +219,17 @@
                     }
                 }
             });
+
+            window.showCommentContent = function (id) {
+                $.get("/comment/getCommentBodyById/" + id, function (data) {
+                    layer.open({
+                        type: 1,
+                        area: '753px',
+                        title: '内容预览',
+                        content: '<div class="content-body">' + data.message + '</div>'
+                    });
+                })
+            }
 
         });
     </script>

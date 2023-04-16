@@ -98,4 +98,6 @@ public interface ArticleService {
     Integer updateArticleViewById(Integer id, Integer size, Integer likes, Integer collects);
 
     ArrayList<CommonDataDto> getReadRankData();
+
+    String getArticleContentById(String id);
 }

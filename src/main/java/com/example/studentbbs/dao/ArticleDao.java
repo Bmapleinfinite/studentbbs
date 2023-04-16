@@ -39,4 +39,6 @@ public interface ArticleDao {
     Integer deleteCommentByPostId(Integer id);
 
     ArrayList<CommonDataDto> getReadRankData();
+
+    String getArticleContentById(String id);
 }
