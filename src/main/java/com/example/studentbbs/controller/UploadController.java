@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.studentbbs.common.SystemVarEnum;
 import com.example.studentbbs.util.Result;
 import com.example.studentbbs.util.ResultGenerator;
 
 @Controller
 public class UploadController {
-    private final static String FILE_UPLOAD_DIC = "D:\\upload\\";
+    private final static String FILE_UPLOAD_DIC = SystemVarEnum.FILE_UPLOAD_DIC.getValue();
     
     @PostMapping("/uploadFile")
     @ResponseBody
