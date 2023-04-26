@@ -1,5 +1,5 @@
 package com.example.studentbbs.dto;
-
+@Deprecated
 public class CateFBDto {
 
     private String cateName;

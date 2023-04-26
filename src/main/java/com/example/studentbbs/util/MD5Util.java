@@ -1,3 +1,6 @@
+/**
+ * MD5加密工具类
+ */
 package com.example.studentbbs.util;
 
 import java.security.MessageDigest;

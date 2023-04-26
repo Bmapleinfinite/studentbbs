@@ -1,3 +1,6 @@
+/**
+ * 文章控制层
+ */
 package com.example.studentbbs.controller;
 
 import java.util.ArrayList;
@@ -266,6 +269,11 @@ public class ArticleController {
         return ResultGenerator.genSuccessResult();
     }
 
+    /**
+     * 通过id获取文章内容
+     * @param id
+     * @return
+     */
     @GetMapping("/getArticleContentById/{id}")
     @ResponseBody
     public Result getArticleContentById(@PathVariable String id) {

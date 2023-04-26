@@ -1,3 +1,6 @@
+/**
+ * 主页控制层
+ */
 package com.example.studentbbs.controller;
 
 import java.util.ArrayList;
@@ -22,21 +25,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
 
-    /**
-     * 文章分类 Service
-     */
     @Resource
     private CategoryService categoryService;
 
-    /**
-     * 文章 Service
-     */
     @Resource
     private ArticleService articleService;
 
-    /**
-     * 用户 Service
-     */
     @Resource
     private UserService userService;
 

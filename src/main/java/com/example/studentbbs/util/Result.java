@@ -1,3 +1,6 @@
+/**
+ * 后端返回结果类
+ */
 package com.example.studentbbs.util;
 
 import java.io.Serializable;

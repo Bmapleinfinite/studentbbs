@@ -1,3 +1,6 @@
+/**
+ * 用户控制层
+ */
 package com.example.studentbbs.controller;
 
 import java.util.ArrayList;

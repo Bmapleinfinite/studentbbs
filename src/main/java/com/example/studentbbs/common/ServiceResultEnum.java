@@ -1,3 +1,7 @@
+/**
+ * Result类返回信息枚举
+ */
+
 package com.example.studentbbs.common;
 
 public enum ServiceResultEnum {

@@ -1,7 +1,7 @@
 package com.example.studentbbs.dto;
 
 import java.util.ArrayList;
-
+@Deprecated
 public class CommonDataArrDto {
     private ArrayList<String> names;
 

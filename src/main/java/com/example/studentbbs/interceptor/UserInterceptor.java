@@ -1,3 +1,6 @@
+/**
+ * 用户登录过滤器
+ */
 package com.example.studentbbs.interceptor;
 
 import javax.servlet.http.HttpServletRequest;

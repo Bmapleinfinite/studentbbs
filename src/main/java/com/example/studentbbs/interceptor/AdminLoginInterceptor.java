@@ -1,3 +1,6 @@
+/**
+ * 管理员登录拦截器
+ */
 package com.example.studentbbs.interceptor;
 
 import javax.servlet.http.HttpServletRequest;

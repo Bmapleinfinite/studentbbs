@@ -1,3 +1,6 @@
+/**
+ * 通用数据传输对象
+ */
 package com.example.studentbbs.dto;
 
 public class CommonDataDto {

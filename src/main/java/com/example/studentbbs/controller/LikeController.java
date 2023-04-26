@@ -1,3 +1,6 @@
+/**
+ * 点赞控制层
+ */
 package com.example.studentbbs.controller;
 
 import javax.annotation.Resource;
@@ -22,7 +25,7 @@ public class LikeController {
 
     /**
      * 添加点赞操作
-     * @param id
+     * @param id 文章id
      * @param session
      * @return
      */
@@ -43,7 +46,7 @@ public class LikeController {
 
     /**
      * 移除点赞操作
-     * @param id
+     * @param id 文章id
      * @param session
      * @return
      */

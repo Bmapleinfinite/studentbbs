@@ -1,3 +1,6 @@
+/**
+ * 错误页面控制层
+ */
 package com.example.studentbbs.controller;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,3 +1,6 @@
+/**
+ * 收藏控制层
+ */
 package com.example.studentbbs.controller;
 
 import javax.annotation.Resource;

@@ -1,3 +1,6 @@
+/**
+ * 管理员控制层
+ */
 package com.example.studentbbs.controller;
 
 import java.util.ArrayList;
@@ -56,26 +59,42 @@ public class AdminController {
     private HomeController homeController;
 
 
+    /**
+     * 跳转到仪表盘页面
+     * @return 页面路径
+     */
     @GetMapping("/dashboard")
-    public String dashboard(){
+    public String dashboard() {
         return "admin/dashboard";
     }
 
+    /**
+     * 获取性别分布图表数据
+     * @return JSON数据格式
+     */
     @PostMapping("/getSexualFBGragh")
     @ResponseBody
-    public Result getSexualFBGragh(){
+    public Result getSexualFBGragh() {
         ArrayList<CommonDataDto> result = userService.getSexualFBData();
         return ResultGenerator.genSuccessResult(result);
     }
 
+    /**
+     * 获取阅读量图表数据
+     * @return JSON数据格式
+     */
     @PostMapping("/getReadRankGragh")
     @ResponseBody
-    public Result getReadRankGragh(){
+    public Result getReadRankGragh() {
         ArrayList<CommonDataDto> result = articleService.getReadRankData();
         Collections.reverse(result);
         return ResultGenerator.genSuccessResult(result);
     }
 
+    /**
+     * 获取文章分类分布图表数据
+     * @return JSON数据格式
+     */
     @PostMapping("/cateFBGragh")
     @ResponseBody
     public Result getCateFBGragh(){
@@ -86,6 +105,10 @@ public class AdminController {
         return ResultGenerator.genSuccessResult(result);
     }
 
+    /**
+     * 获取活跃人数图表数据
+     * @return JSON数据格式
+     */
     @PostMapping("/loginNumGragh")
     @ResponseBody
     public Result getLoginNumDto(){

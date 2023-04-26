@@ -1,3 +1,6 @@
+/**
+ * 分类数据访问对象
+ */
 package com.example.studentbbs.dao;
 
 import java.util.ArrayList;

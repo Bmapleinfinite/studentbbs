@@ -1,19 +1,22 @@
+/**
+ * 文章实体类
+ */
 package com.example.studentbbs.entity;
 
 public class Article {
-    private int id;
-    private int userId;
-    private String title;
-    private String content;
-    private int categoryID;
-    private String categoryName;
-    private int articleStatus;
-    private int views;
-    private int comments;
-    private int collects;
-    private int likes;
-    private String lastUpdateTime;
-    private String createTime;
+    private int id; /*帖子主键id*/
+    private int userId; /*发布者id*/
+    private String title; /*帖子标题*/
+    private String content; /*帖子内容*/
+    private int categoryID; /*帖子分类id*/
+    private String categoryName; /*帖子分类(冗余字段)*/
+    private int articleStatus; /*0-未审核 1-审核通过 2-审核失败 (默认未审核)*/
+    private int views; /*阅读量*/
+    private int comments; /*评论量*/
+    private int collects; /*收藏量*/
+    private int likes; /*点赞数*/
+    private String lastUpdateTime; /*最新修改时间*/
+    private String createTime; /*添加时间*/
 
 
     public Article() {

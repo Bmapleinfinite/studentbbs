@@ -1,3 +1,6 @@
+/**
+ * 后端数据返回结果生成类
+ */
 package com.example.studentbbs.util;
 
 public class ResultGenerator {

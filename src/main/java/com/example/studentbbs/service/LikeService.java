@@ -1,3 +1,6 @@
+/**
+ * 点赞服务类
+ */
 package com.example.studentbbs.service;
 
 import java.util.ArrayList;

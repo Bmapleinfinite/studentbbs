@@ -32,6 +32,12 @@ public class NoticeController {
     @Resource
     private UserService userService;
 
+    /**
+     * 发送系统通知
+     * @param sysNoticeName 通知名
+     * @param sysNoticeContent 通知内容
+     * @return
+     */
     @PostMapping("/addSysNotice")
     @ResponseBody
     public Result addSysNotice(
@@ -40,10 +46,13 @@ public class NoticeController {
         Notice notice = new Notice();
 
         ArrayList<User> allUser = userService.getAllUser();
+        /* -1 为管理员发送 */
         notice.setFromUserId(-1);
         notice.setNoticeContent(sysNoticeContent);
         notice.setNoticeName(sysNoticeName);
+        /* 将通知设置为系统通知 */
         notice.setNoticeType(NoticeTypeEnum.NOTICE_TYPE_SYSTEM.getType());
+        /* 通过stream流 向所有用户发送通知 */
         allUser.forEach((x) -> {
             notice.setToUserId(x.getId());
             noticeService.addNotice(notice);

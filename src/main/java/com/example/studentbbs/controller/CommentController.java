@@ -1,3 +1,6 @@
+/**
+ * 评论控制层
+ */
 package com.example.studentbbs.controller;
 
 import javax.annotation.Resource;
@@ -37,6 +40,13 @@ public class CommentController {
     @Resource
     private NoticeService noticeService;
 
+    /**
+     * 发布评论操作
+     * @param commentBody 评论体
+     * @param id 文章id
+     * @param session
+     * @return
+     */
     @PostMapping("/commentPub/{id}")
     @ResponseBody
     public Result commentPub(

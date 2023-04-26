@@ -1,3 +1,6 @@
+/**
+ * 管理员服务类
+ */
 package com.example.studentbbs.service;
 
 import com.example.studentbbs.entity.Admin;
